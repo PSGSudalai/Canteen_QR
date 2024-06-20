@@ -39,3 +39,12 @@ class Transaction(BaseModels):
 
     def __str__(self) -> str:
         return f"{self.student} - {self.payment_type}"
+
+
+class Cart(BaseModels):
+    item = models.ForeignKey(CanteenItems, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField()
+    is_sold = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f"{self.item} - {self.quantity}"
