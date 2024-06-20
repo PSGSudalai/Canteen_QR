@@ -1,0 +1,17 @@
+<!-- templates/canteen_items/item_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canteen Items</title>
+</head>
+<body>
+    <h1>Canteen Items</h1>
+    <a href="{% url 'canteen_item_create' %}">Add New Item</a>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.identity }} - ${{ item.price }} - {% if item.availability %}Available{% else %}Not Available{% endif %} - {{ item.category }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
