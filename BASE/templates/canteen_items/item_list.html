@@ -1,16 +1,153 @@
-<!-- templates/canteen_items/item_list.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Canteen Items</title>
+    <style>
+
+        /* styles.css */
+
+/* Style for the body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Style for the h1 */
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+/* Style for the list */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Style for list items */
+li {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 145px; /* Fixed width */
+    height: 260px; /* Fixed height for card */
+    display: inline-block; /* Ensure items are inline */
+    vertical-align: top; /* Align items properly */
+    text-align: center; /* Center align content */
+}
+
+/* Style for item image */
+.item-image-container {
+    height: 160px; /* Height for image container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0; /* Rounded corners on top */
+}
+
+.item-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+/* Style for item details */
+.item-details {
+    padding: 10px;
+    text-align: left; /* Align text to the left */
+}
+
+/* Style for item identity */
+.item-identity {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Style for item price */
+.item-price {
+    color: #555;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* Style for form and input */
+form {
+    display: flex;
+    justify-content: space-between; /* Align elements in a row with space between */
+    align-items: center; /* Center items vertically */
+    margin-top: 10px;
+}
+
+input[type="number"] {
+    width: 50px; /* Smaller width for input */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    text-align: center;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+
+    </style>
 </head>
 <body>
     <h1>Canteen Items</h1>
     <a href="{% url 'canteen_item_create' %}">Add New Item</a>
+
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'canteen_item_list' %}">
+        <input type="text" name="q" placeholder="Search...">
+        <label for="min_price">Min Price:</label>
+        <input type="number" id="min_price" name="min_price" min="0">
+        <label for="max_price">Max Price:</label>
+        <input type="number" id="max_price" name="max_price" min="0">
+        <!-- Assuming category is a ForeignKey field -->
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">All Categories</option>
+            <!-- Replace with dynamic options based on your categories -->
+            <option value="Category1">Category 1</option>
+            <option value="Category2">Category 2</option>
+            <!-- Add more options as needed -->
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
     <ul>
         {% for item in items %}
-            <li>{{ item.identity }} - ${{ item.price }} - {% if item.availability %}Available{% else %}Not Available{% endif %} - {{ item.category }}</li>
+            <li>
+                <div class="item-image-container">
+                    <img class="item-image" src="{{ item.image.url }}" alt="{{ item.identity }}">
+                </div>
+                <div class="item-details">
+                    <p class="item-identity">{{ item.identity }}</p>
+                    <p class="item-price">Rs.{{ item.price }}</p>
+                    <form action="{% url 'add_to_cart' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="number" name="quantity" value="1" min="1">
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                </div>
+            </li>
         {% endfor %}
     </ul>
 </body>
