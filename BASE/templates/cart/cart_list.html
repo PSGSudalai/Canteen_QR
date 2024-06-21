@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
     <style>
         /* Style for the body */
@@ -103,6 +105,20 @@
         .back-link:hover {
             background-color: #5a6268;
         }
+
+        /* Style for payment button */
+        .payment-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .payment-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -128,6 +144,13 @@
             {% csrf_token %}
             <button class="clear-cart-button" type="submit">Clear Cart</button>
         </form>
+        <button class="payment-button" onclick="openQRScanner()">Proceed to Payment</button>
     </div>
+
+    <script>
+        function openQRScanner() {
+            window.location.href = "{% url 'qr_scan' %}"; // Replace 'qr_scan_page' with the actual URL name for your QR scan page
+        }
+    </script>
 </body>
 </html>

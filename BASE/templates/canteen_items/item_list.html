@@ -201,7 +201,7 @@
                 <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
                 <li><a href="#" class="order-history-button">Order History</a></li>
                 <li><a href="#" class="transaction-history-button">Transaction History</a></li>
-                <li><a href="#" class="transaction-history-button">Recharge</a></li>
+                <li><a href="{% url 'qr_scan' %}" class="transaction-history-button">Recharge</a></li>
             {% else %}
                 <li><a href="#" class="add-item-button">Order History</a></li>
                 <li><a href="#" class="transaction-history-button">Transaction History</a></li>
