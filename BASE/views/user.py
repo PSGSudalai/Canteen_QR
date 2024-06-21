@@ -4,38 +4,55 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from BASE.forms import CustomUserCreationForm, CustomUserLoginForm
+from BASE.models import CustomUser
 
 
 def signup_view(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        firstname = request.POST.get("firstname")
+        lastname = request.POST.get("lastname")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+
+        if CustomUser.objects.filter(username=username).exists():
+            messages.error(
+                request, "Username already exists. Please choose another username."
+            )
+
+        elif CustomUser.objects.filter(email=email).exists():
+            messages.error(
+                request, "Email address is already in use. Please use another email."
+            )
+
+        else:
+            user = CustomUser.objects.create_user(
+                username=username,
+                email=email,
+                password=password1,
+                first_name=firstname,
+                last_name=lastname,
+            )
             login(request, user)
-            return redirect("home")  # Redirect to a homepage or any other page
-    else:
-        form = CustomUserCreationForm()
-    return render(request, "registration/signup.html", {"form": form})
+            messages.success(request, "Registration successful")
+            return redirect("home")
+
+    return render(request, "registration/signup.html")
 
 
 def login_view(request):
     if request.method == "POST":
-        form = CustomUserLoginForm(data=request.POST)
-        if form.is_valid():
-            user = authenticate(
-                request,
-                email=form.cleaned_data["username"],
-                password=form.cleaned_data["password"],
-            )
-            if user is not None:
-                login(request, user)
-                return redirect("home")  # Redirect to a homepage or any other page
-            else:
-                messages.error(request, "Invalid email or password")
-    else:
-        form = CustomUserLoginForm()
-    return render(request, "registration/login.html", {"form": form})
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("canteen_item_list")
+        else:
+            messages.error(request, "Invalid UserName or Password")
+            return redirect("signin")
+
+    return render(request, "registration/login.html")
 
 
 @login_required
