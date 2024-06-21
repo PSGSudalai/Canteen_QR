@@ -2,9 +2,9 @@
 <html>
 <head>
     <title>Canteen Items</title>
-     <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
         /* Style for the body */
         body {
             font-family: Arial, sans-serif;
@@ -19,15 +19,13 @@
             justify-content: space-between;
             align-items: center;
             background-color: #ebe8e8;
-            color: white;
+            color: black;
             padding: 10px 20px;
         }
 
-       .header .glyphicon {
-        color:black;
-        font-size: 25px;
-
-       }
+        .header .glyphicon {
+            font-size: 25px;
+        }
 
         .header .logout {
             background-color: #dc3545;
@@ -49,18 +47,67 @@
             text-align: center;
         }
 
+        /* Style for the navigation */
+        .navigation {
+            text-align: right;
+            background-color: #ebe8e8;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the search section */
+        .search {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background-color: #fffcfc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .search form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .search label, .search input[type="number"], .search input[type="text"], .search select, .search button {
+            margin-bottom: 0;
+        }
+
+        .search button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+
+        .search button:hover {
+            background-color: #0056b3;
+        }
+
         /* Style for the list */
         ul {
             list-style-type: none;
             padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         /* Style for list items */
-        li {
-            display: inline-block; /* Ensure items are inline */
-            vertical-align: top; /* Align items properly */
-            text-align: center; /* Center align content */
-            padding: 0px 20px;
+        .item-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: calc(25% - 40px); /* 25% width minus the gaps */
+            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         /* Style for item image */
@@ -70,7 +117,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border-radius: 5px 5px 0 0; /* Rounded corners on top */
+            border-radius: 8px 8px 0 0; /* Rounded corners on top */
         }
 
         .item-image {
@@ -111,7 +158,6 @@
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
-            text-align: center;
         }
 
         button[type="submit"], .redirect-button {
@@ -127,24 +173,26 @@
         button[type="submit"]:hover, .redirect-button:hover {
             background-color: #0056b3;
         }
-        
-        .navigation{
-            text-align: right;
-            background-color: #ebe8e8;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+
+        @media (max-width: 768px) {
+            .item-card {
+                width: calc(50% - 40px); /* 50% width for smaller screens */
+            }
         }
-        
+
+        @media (max-width: 480px) {
+            .item-card {
+                width: calc(100% - 40px); /* Full width for very small screens */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="glyphicon glyphicon-user" > {{ user.first_name }}</div>
-         <h1 style="color:black">Canteen Items</h1>
+        <div class="glyphicon glyphicon-user">{{ user.first_name }}</div>
+        <h1 style="color:black">Canteen Items</h1>
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
-
-
 
     <div class="navigation">
         <ul>
@@ -161,40 +209,40 @@
         </ul>
     </div>
 
-    <form method="GET" action="{% url 'canteen_item_list' %}">
-        <input type="text" name="q" placeholder="Search...">
-        <label for="min_price">Min Price:</label>
-        <input type="number" id="min_price" name="min_price" min="0">
-        <label for="max_price">Max Price:</label>
-        <input type="number" id="max_price" name="max_price" min="0">
-        <label for="category">Category:</label>
-        <select id="category" name="category">
-            <option value="">All Categories</option>
-            <!-- Replace with dynamic options based on your categories -->
-            <option value="FOOD">Food</option>
-            <option value="SNACK">Snacks</option>
-            <option value="beverage">beverage</option>
-        </select>
-        <button type="submit">Search</button>
-    </form>
+    <div class="search">
+        <form method="GET" action="{% url 'canteen_item_list' %}">
+            <input type="text" name="q" placeholder="Search..." class="glyphicon glyphicon-search">
+            <label for="min_price">Min Price:</label>
+            <input type="number" id="min_price" name="min_price" min="0">
+            <label for="max_price">Max Price:</label>
+            <input type="number" id="max_price" name="max_price" min="0">
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="">All Categories</option>
+                <!-- Replace with dynamic options based on your categories -->
+                <option value="FOOD">Food</option>
+                <option value="SNACK">Snacks</option>
+                <option value="beverage">Beverage</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
-    <ul class="card">
+    <ul class="item">
         {% for item in items %}
-            <li>
+            <li class="item-card">
                 <div class="item-image-container">
                     <img class="item-image" src="{{ item.image.url }}" alt="{{ item.identity }}">
                 </div>
                 <div class="item-details">
                     <p class="item-identity">{{ item.identity }}</p>
                     <p class="item-price">Rs.{{ item.price }}</p>
-                    {% if user.is_staff or user.is_admin %}
-                        <form action="{% url 'add_to_cart' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
-                            <input type="number" name="quantity" value="1" min="1">
-                            <button type="submit">Add to Cart</button>
-                        </form>
-                    {% endif %}
+                    <form action="{% url 'add_to_cart' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="number" name="quantity" value="1" min="1">
+                        <button type="submit">Add to Cart</button>
+                    </form>
                 </div>
             </li>
         {% endfor %}
