@@ -4,3 +4,4 @@ from .add_cart import add_to_cart, CartListView, clear_cart_items, delete_cart_i
 from .qr_scan import qr_scan_view
 from .previous_order import PreviousOrdersListView
 from .transaction import TransactionListView
+from .user_list import staff_list, student_list

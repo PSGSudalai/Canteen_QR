@@ -16,6 +16,8 @@ from BASE.views import (
     qr_scan_view,
     PreviousOrdersListView,
     TransactionListView,
+    student_list,
+    staff_list,
 )
 
 urlpatterns = [
@@ -36,4 +38,6 @@ urlpatterns = [
         name="previous_orders_list",
     ),
     path("transactions/", TransactionListView.as_view(), name="transaction_list"),
+    path("staff_list/", staff_list, name="staff_list"),
+    path("student_list/", student_list, name="student_list"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
