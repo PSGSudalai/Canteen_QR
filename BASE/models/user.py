@@ -38,7 +38,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, BaseModels):
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     balance = models.IntegerField(default=0)
     qr_code = models.ImageField(upload_to="qr_codes/", blank=True, null=True)
