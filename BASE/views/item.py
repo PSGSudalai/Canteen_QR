@@ -1,15 +1,15 @@
 # BASE/views.py
 
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from BASE.models import CanteenItems
 from BASE.forms import CanteenItemForm
 from django.db.models import Q
 
 
+@login_required
 def canteen_item_list(request):
-    items = CanteenItems.objects.filter(
-        availability=True
-    )  # Filter available items only
+    items = CanteenItems.objects.filter(availability=True)
 
     # Filtering based on price range
     min_price = request.GET.get("min_price")
@@ -24,19 +24,23 @@ def canteen_item_list(request):
     # Filtering based on category (assuming category is a ForeignKey)
     category = request.GET.get("category")
     if category:
-        items = items.filter(category__name=category)
+        items = items.filter(category=category)
 
     # Search functionality
     query = request.GET.get("q")
     if query:
         items = items.filter(
-            Q(identity__icontains=query)
-            | Q(  # Case-insensitive search by identity
-                price__icontains=query
-            )  # Case-insensitive search by price (if applicable)
-        ).distinct()  # Ensure distinct results
+            Q(identity__icontains=query) | Q(price__icontains=query)
+        ).distinct()
 
-    return render(request, "canteen_items/item_list.html", {"items": items})
+    # Pass user roles to the template
+    context = {
+        "items": items,
+        "is_admin": request.user.is_admin,
+        "is_staff": request.user.is_staff,
+    }
+
+    return render(request, "canteen_items/item_list.html", context)
 
 
 def canteen_item_create(request):
