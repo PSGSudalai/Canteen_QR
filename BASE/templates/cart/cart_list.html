@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <style>
+        /* Style for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Style for the h1 */
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        /* Style for the list */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        /* Style for list items */
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
+
+        /* Style for item image */
+        .item-image {
+            max-width: 80px; /* Adjust image size as needed */
+            max-height: 80px; /* Adjust image size as needed */
+            border-radius: 5px;
+            margin-right: 10px; /* Space between image and details */
+        }
+
+        /* Style for item details */
+        .item-details {
+            flex: 1; /* Take remaining space */
+        }
+
+        .item-details p {
+            margin: 5px 0;
+        }
+
+        /* Style for delete button */
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Style for buttons container */
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        /* Style for clear cart button */
+        .clear-cart-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .clear-cart-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style for back to canteen items button */
+        .back-link {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                <img class="item-image" src="{{ item.item.image.url }}" alt="Item Image">
+                <div class="item-details">
+                    <p>{{ item.item.identity }}</p>
+                    <p>Quantity: {{ item.quantity }}</p>
+                </div>
+                <form method="post" action="{% url 'delete_cart_item' item.id %}">
+                    {% csrf_token %}
+                    <button class="delete-button" type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="buttons-container">
+        <a href="{% url 'canteen_item_list' %}" class="back-link">Back to Canteen Items</a>
+        <form method="post" action="{% url 'clear_cart' %}">
+            {% csrf_token %}
+            <button class="clear-cart-button" type="submit">Clear Cart</button>
+        </form>
+    </div>
+</body>
+</html>
