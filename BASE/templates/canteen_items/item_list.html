@@ -2,7 +2,9 @@
 <html>
 <head>
     <title>Canteen Items</title>
-    <style>
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
         /* Style for the body */
         body {
             font-family: Arial, sans-serif;
@@ -16,14 +18,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #333;
+            background-color: #ebe8e8;
             color: white;
             padding: 10px 20px;
         }
 
-        .header .welcome {
-            font-size: 18px;
-        }
+       .header .glyphicon {
+        color:black;
+        font-size: 25px;
+
+       }
 
         .header .logout {
             background-color: #dc3545;
@@ -56,6 +60,7 @@
             display: inline-block; /* Ensure items are inline */
             vertical-align: top; /* Align items properly */
             text-align: center; /* Center align content */
+            padding: 0px 20px;
         }
 
         /* Style for item image */
@@ -122,77 +127,33 @@
         button[type="submit"]:hover, .redirect-button:hover {
             background-color: #0056b3;
         }
-
-        .nav {
-            background-color: #555;
+        
+        .navigation{
+            text-align: right;
+            background-color: #ebe8e8;
             padding: 10px 20px;
             margin-bottom: 20px;
         }
-
-        .add-item-button {
-            background-color: #28a745;
-        }
-
-        .add-item-button:hover {
-            background-color: #218838;
-        }
-
-        .view-cart-button {
-            background-color: #007bff;
-        }
-
-        .view-cart-button:hover {
-            background-color: #0056b3;
-        }
-
-        .order-history-button {
-            background-color: #17a2b8;
-        }
-
-        .order-history-button:hover {
-            background-color: #138496;
-        }
-
-        .transaction-history-button {
-            background-color: #ffc107;
-        }
-
-        .transaction-history-button:hover {
-            background-color: #d39e00;
-        }
-
-        .recharge-button {
-            background-color: #007bff;
-        }
-
-        .recharge-button:hover {
-            background-color: #0056b3;
-        }
-
-        .add-item-admin-button {
-            background-color: #28a745;
-        }
-
-        .add-item-admin-button:hover {
-            background-color: #218838;
-        }
+        
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="welcome">Welcome, {{ user.first_name }}</div>
+        <div class="glyphicon glyphicon-user" > {{ user.first_name }}</div>
+         <h1 style="color:black">Canteen Items</h1>
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
 
-    <h1>Canteen Items</h1>
 
-    <div class="nav">
+
+    <div class="navigation">
         <ul>
             {% if user.is_staff or user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
                 <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
                 <li><a href="#" class="order-history-button">Order History</a></li>
                 <li><a href="#" class="transaction-history-button">Transaction History</a></li>
+                <li><a href="#" class="transaction-history-button">Recharge</a></li>
             {% else %}
                 <li><a href="#" class="add-item-button">Order History</a></li>
                 <li><a href="#" class="transaction-history-button">Transaction History</a></li>
