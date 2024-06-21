@@ -14,6 +14,8 @@ from BASE.views import (
     CartListView,
     qr_image_view,
     qr_scan_view,
+    PreviousOrdersListView,
+    TransactionListView,
 )
 
 urlpatterns = [
@@ -28,4 +30,10 @@ urlpatterns = [
     path("delete_cart_item/<int:item_id>/", delete_cart_item, name="delete_cart_item"),
     path("cart/", CartListView.as_view(), name="cart_list"),
     path("canteen/qr_scan/", qr_scan_view, name="qr_scan"),
+    path(
+        "previous-orders/",
+        PreviousOrdersListView.as_view(),
+        name="previous_orders_list",
+    ),
+    path("transactions/", TransactionListView.as_view(), name="transaction_list"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
