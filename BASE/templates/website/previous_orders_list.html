@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Orders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        .back-link {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Previous Orders</h1>
+    <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                {% if user.is_staff or user.is_admin %}
+                    <th>Staff</th>
+                {% endif %}
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in object_list %}
+                <tr>
+                    <td>{{ order.student }}</td>
+                    {% if user.is_staff or user.is_admin %}
+                        <td>{{ order.staff }}</td>
+                    {% endif %}
+                    <td>{{ order.item }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
