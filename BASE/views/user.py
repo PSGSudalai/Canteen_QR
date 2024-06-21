@@ -54,7 +54,7 @@ def signup_view(request):
 
             # Login user
             login(request, user)
-            messages.success(request, "Registration successful")
+            # messages.success(request, "Registration successful")
             return redirect(
                 "qr_image"
             )  # Redirect to a view that displays/shares the QR image

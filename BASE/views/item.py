@@ -45,10 +45,18 @@ def canteen_item_list(request):
 
 def canteen_item_create(request):
     if request.method == "POST":
-        form = CanteenItemForm(request.POST)
-        if form.is_valid():
-            form.save()
+        identity = request.POST.get("identity")
+        price = request.POST.get("price")
+        availability = request.POST.get("availability") == "on"
+        category = request.POST.get("category")
+
+        if identity and price and category:
+            canteen_item = CanteenItems(
+                identity=identity,
+                price=price,
+                availability=availability,
+                category=category,
+            )
+            canteen_item.save()
             return redirect("canteen_item_list")
-    else:
-        form = CanteenItemForm()
-    return render(request, "canteen_items/item_form.html", {"form": form})
+    return render(request, "canteen_items/item_form.html")
