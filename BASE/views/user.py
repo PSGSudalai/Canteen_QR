@@ -72,7 +72,7 @@ def login_view(request):
             return redirect("canteen_item_list")
         else:
             messages.error(request, "Invalid UserName or Password")
-            return redirect("signin")
+            return redirect("login")
 
     return render(request, "registration/login.html")
 
@@ -80,7 +80,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect("login")  # Redirect to login page after logout
+    return redirect("login")
 
 
 def qr_image_view(request):

@@ -3,130 +3,194 @@
 <head>
     <title>Canteen Items</title>
     <style>
+        /* Style for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
 
-        /* styles.css */
+        /* Style for the header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
 
-/* Style for the body */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-}
+        .header .welcome {
+            font-size: 18px;
+        }
 
-/* Style for the h1 */
-h1 {
-    color: #333;
-    text-align: center;
-}
+        .header .logout {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+        }
 
-/* Style for the list */
-ul {
-    list-style-type: none;
-    padding: 0;
-}
+        .header .logout:hover {
+            background-color: #c82333;
+        }
 
-/* Style for list items */
-li {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 145px; /* Fixed width */
-    height: 260px; /* Fixed height for card */
-    display: inline-block; /* Ensure items are inline */
-    vertical-align: top; /* Align items properly */
-    text-align: center; /* Center align content */
-}
+        /* Style for the h1 */
+        h1 {
+            color: #333;
+            text-align: center;
+        }
 
-/* Style for item image */
-.item-image-container {
-    height: 160px; /* Height for image container */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 5px 5px 0 0; /* Rounded corners on top */
-}
+        /* Style for the list */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-.item-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover; /* Maintain aspect ratio */
-}
+        /* Style for list items */
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 145px; /* Fixed width */
+            height: 260px; /* Fixed height for card */
+            display: inline-block; /* Ensure items are inline */
+            vertical-align: top; /* Align items properly */
+            text-align: center; /* Center align content */
+        }
 
-/* Style for item details */
-.item-details {
-    padding: 10px;
-    text-align: left; /* Align text to the left */
-}
+        /* Style for item image */
+        .item-image-container {
+            height: 160px; /* Height for image container */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 5px 5px 0 0; /* Rounded corners on top */
+        }
 
-/* Style for item identity */
-.item-identity {
-    font-weight: bold;
-    font-size: 14px;
-}
+        .item-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
 
-/* Style for item price */
-.item-price {
-    color: #555;
-    margin-top: 5px;
-    font-size: 12px;
-}
+        /* Style for item details */
+        .item-details {
+            padding: 10px;
+            text-align: left; /* Align text to the left */
+        }
 
-/* Style for form and input */
-form {
-    display: flex;
-    justify-content: space-between; /* Align elements in a row with space between */
-    align-items: center; /* Center items vertically */
-    margin-top: 10px;
-}
+        /* Style for item identity */
+        .item-identity {
+            font-weight: bold;
+            font-size: 14px;
+        }
 
-input[type="number"] {
-    width: 50px; /* Smaller width for input */
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    text-align: center;
-}
+        /* Style for item price */
+        .item-price {
+            color: #555;
+            margin-top: 5px;
+            font-size: 12px;
+        }
 
-button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 3px;
-}
+        /* Style for form and input */
+        form {
+            display: flex;
+            justify-content: space-between; /* Align elements in a row with space between */
+            align-items: center; /* Center items vertically */
+            margin-top: 10px;
+        }
 
-button[type="submit"]:hover {
-    background-color: #45a049;
-}
+        input[type="number"] {
+            width: 50px; /* Smaller width for input */
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+        }
 
+        button[type="submit"], .redirect-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+        }
 
+        button[type="submit"]:hover, .redirect-button:hover {
+            background-color: #0056b3;
+        }
 
+        .add-item-button {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .add-item-button:hover {
+            background-color: #218838;
+        }
+
+        .view-cart-button {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: auto; /* Aligns to the right */
+        }
+
+        .view-cart-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <h1>Canteen Items</h1>
-    <a href="{% url 'canteen_item_create' %}">Add New Item</a>
+    <div class="header">
+        <div class="welcome">Welcome, {{ user.first_name }}</div>
+        <a href="{% url 'logout' %}" class="logout">Logout</a>
+    </div>
 
-    <!-- Search Form -->
+    <h1>Canteen Items</h1>
+
+    <a href="{% url 'canteen_item_create' %}" class="add-item-button">Add Item</a>
+
+    {% if user.is_staff or user.is_admin %}
+        <a href="{% url 'cart_list' %}" class="view-cart-button">View Cart</a>
+    {% endif %}
+
     <form method="GET" action="{% url 'canteen_item_list' %}">
         <input type="text" name="q" placeholder="Search...">
         <label for="min_price">Min Price:</label>
         <input type="number" id="min_price" name="min_price" min="0">
         <label for="max_price">Max Price:</label>
         <input type="number" id="max_price" name="max_price" min="0">
-        <!-- Assuming category is a ForeignKey field -->
         <label for="category">Category:</label>
         <select id="category" name="category">
             <option value="">All Categories</option>
             <!-- Replace with dynamic options based on your categories -->
-            <option value="Category1">Category 1</option>
-            <option value="Category2">Category 2</option>
-            <!-- Add more options as needed -->
+            <option value="FOOD">Food</option>
+            <option value="SNACK">Snacks</option>
+            <option value="DRINK">Drink</option>
         </select>
         <button type="submit">Search</button>
     </form>
@@ -140,12 +204,14 @@ button[type="submit"]:hover {
                 <div class="item-details">
                     <p class="item-identity">{{ item.identity }}</p>
                     <p class="item-price">Rs.{{ item.price }}</p>
-                    <form action="{% url 'add_to_cart' %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <input type="number" name="quantity" value="1" min="1">
-                        <button type="submit">Add to Cart</button>
-                    </form>
+                    {% if user.is_staff or user.is_admin %}
+                        <form action="{% url 'add_to_cart' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <input type="number" name="quantity" value="1" min="1">
+                            <button type="submit">Add to Cart</button>
+                        </form>
+                    {% endif %}
                 </div>
             </li>
         {% endfor %}
