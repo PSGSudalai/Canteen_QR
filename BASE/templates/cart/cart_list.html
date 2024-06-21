@@ -67,6 +67,13 @@
             background-color: #c82333;
         }
 
+        /* Style for buttons container */
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
         /* Style for clear cart button */
         .clear-cart-button {
             background-color: #007bff;
@@ -75,26 +82,26 @@
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 3px;
-            margin-top: 10px;
         }
 
         .clear-cart-button:hover {
             background-color: #0056b3;
         }
 
-        /* Style for back link */
+        /* Style for back to canteen items button */
         .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link a {
-            color: #007bff;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
             text-decoration: none;
+            display: inline-block;
         }
 
-        .back-link a:hover {
-            text-decoration: underline;
+        .back-link:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -108,26 +115,19 @@
                     <p>{{ item.item.identity }}</p>
                     <p>Quantity: {{ item.quantity }}</p>
                 </div>
-                <button class="delete-button" onclick="deleteItem({{ item.id }})">Delete</button>
+                <form method="post" action="{% url 'delete_cart_item' item.id %}">
+                    {% csrf_token %}
+                    <button class="delete-button" type="submit">Delete</button>
+                </form>
             </li>
         {% endfor %}
     </ul>
-    <button class="clear-cart-button" onclick="clearCart()">Clear Cart</button>
-    <div class="back-link">
-        <a href="{% url 'canteen_item_list' %}">Back to Canteen Items</a>
+    <div class="buttons-container">
+        <a href="{% url 'canteen_item_list' %}" class="back-link">Back to Canteen Items</a>
+        <form method="post" action="{% url 'clear_cart' %}">
+            {% csrf_token %}
+            <button class="clear-cart-button" type="submit">Clear Cart</button>
+        </form>
     </div>
-
-    <!-- JavaScript functions for delete item and clear cart -->
-    <script>
-        function deleteItem(itemId) {
-            // Implement logic to delete item from cart
-            alert('Deleted item with ID: ' + itemId);
-        }
-
-        function clearCart() {
-            // Implement logic to clear the entire cart
-            alert('Cleared cart');
-        }
-    </script>
 </body>
 </html>

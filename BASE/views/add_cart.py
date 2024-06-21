@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from BASE.models import CanteenItems, Cart
 from django.http import JsonResponse
 from django.views.generic import ListView
+from django.views.decorators.http import require_POST
 
 
 def add_to_cart(request):
@@ -25,11 +26,17 @@ def add_to_cart(request):
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
+@require_POST
 def clear_cart_items(request):
-    if request.method == "POST":
-        Cart.objects.filter(is_sold=False).delete()
-        return redirect("cart_list")
-    return render(request, "cart/clear_cart.html")
+    Cart.objects.filter(is_sold=False).delete()
+    return redirect("cart_list")
+
+
+@require_POST
+def delete_cart_item(request, item_id):
+    item = get_object_or_404(Cart, id=item_id, is_sold=False)
+    item.delete()
+    return redirect("cart_list")
 
 
 class CartListView(ListView):
