@@ -4,11 +4,20 @@
 <html>
 <head>
     <title>Add New Item</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 0;
+        }
+        .new{
+            text-align: center;
+        }
+        #identity{
+            align-items: 10px;
         }
         h1 {
             text-align: center;
@@ -32,16 +41,26 @@
             margin-bottom: 10px;
             box-sizing: border-box;
         }
+
+        .add{
+            padding: 20px;
+            display: flex;
+
+        }
         input[type="checkbox"] {
             margin-left: 0;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #007BFF;
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
             margin-top: 10px;
+            
+        }
+        .btn:hover {
+            background-color: #0056b3;
         }
         button a {
             color: white;
@@ -49,6 +68,7 @@
         }
         .button-right {
             text-align: right;
+            margin-left: 40px;
         }
         .button-right button {
             float: right;
@@ -56,13 +76,12 @@
     </style>
 </head>
 <body>
-    <h1>Add New Item</h1>
-    <div class="button-right">
-        <button>
-            <a href="{% url 'canteen_item_list' %}">Item List</a>
-        </button>
-    </div>
-    <form method="post">
+    <div class="container">
+            <h3 class="new">Add New Item</h3>
+  
+   
+   <div class="add">
+     <form method="post">
         {% csrf_token %}
         <p>
             <label for="identity">Identity:</label>
@@ -85,7 +104,15 @@
                 <!-- Add other categories as needed -->
             </select>
         </p>
-        <button type="submit">Save</button>
+        
+        <div >
+            <button type="submit">Save</button>
+            <button class="button-right">
+                <a href="{% url 'canteen_item_list' %}">Back</a>
+            </button>
+        </div>
     </form>
+    </div>
+    </div>
 </body>
 </html>
