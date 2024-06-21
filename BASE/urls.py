@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 from BASE.views import (
     signup_view,
     login_view,
@@ -12,6 +13,8 @@ from BASE.views import (
     delete_cart_item,
     CartListView,
     qr_image_view,
+    payment_transaction_view,
+    recharge_transaction_view,
 )
 
 urlpatterns = [
@@ -25,4 +28,22 @@ urlpatterns = [
     path("clear_cart/", clear_cart_items, name="clear_cart"),
     path("delete_cart_item/<int:item_id>/", delete_cart_item, name="delete_cart_item"),
     path("cart/", CartListView.as_view(), name="cart_list"),
+    path(
+        "api/recharge-transaction/",
+        recharge_transaction_view,
+        name="recharge_transaction",
+    ),
+    path(
+        "api/payment-transaction/", payment_transaction_view, name="payment_transaction"
+    ),
+    path(
+        "recharge-transaction/",
+        TemplateView.as_view(template_name="recharge_transaction.html"),
+        name="recharge_transaction_form",
+    ),
+    path(
+        "payment-transaction/",
+        TemplateView.as_view(template_name="payment_transaction.html"),
+        name="payment_transaction_form",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

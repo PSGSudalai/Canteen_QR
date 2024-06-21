@@ -1,6 +1,6 @@
 CATEGORY_CHOICES = {
     ("FOOD", "Food"),
-    ("DRINK", "Drink"),
+    ("beverage", "beverage"),
     ("SNACK", "Snack"),
 }
 

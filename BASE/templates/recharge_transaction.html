@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recharge Transaction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .button-right {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recharge Transaction</h1>
+    <div class="button-right">
+        <button>
+            <a href="{% url 'canteen_item_list' %}" style="color: white; text-decoration: none;">BACK</a>
+        </button>
+    </div>
+    <form method="post" action="{% url 'recharge_transaction' %}">
+        {% csrf_token %}
+        <p>
+            <label for="uuid">Student UUID:</label>
+            <input type="text" name="uuid" id="uuid" required>
+        </p>
+        <p>
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" id="amount" required>
+        </p>
+        <p>
+            <label for="payment_method">Payment Method:</label>
+            <select name="payment_method" id="payment_method" required>
+                <option value="cash">Cash</option>
+                <option value="upi">UPI</option>
+                <!-- Add other payment methods as needed -->
+            </select>
+        </p>
+        <button type="submit">Recharge</button>
+    </form>
+</body>
+</html>

@@ -4,14 +4,88 @@
 <html>
 <head>
     <title>Add New Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            margin-left: 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+        .button-right {
+            text-align: right;
+        }
+        .button-right button {
+            float: right;
+        }
+    </style>
 </head>
 <body>
     <h1>Add New Item</h1>
+    <div class="button-right">
+        <button>
+            <a href="{% url 'canteen_item_list' %}">Item List</a>
+        </button>
+    </div>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label for="identity">Identity:</label>
+            <input type="text" name="identity" id="identity" required>
+        </p>
+        <p>
+            <label for="price">Price:</label>
+            <input type="number" name="price" id="price" required>
+        </p>
+        <p>
+            <label for="availability">Availability:</label>
+            <input type="checkbox" name="availability" id="availability">
+        </p>
+        <p>
+            <label for="category">Category:</label>
+            <select name="category" id="category" required>
+                <option value="snack">Snack</option>
+                <option value="beverage">Beverage</option>
+                <option value="food">Food</option>
+                <!-- Add other categories as needed -->
+            </select>
+        </p>
         <button type="submit">Save</button>
     </form>
-    <a href="{% url 'canteen_item_list' %}">Back to list</a>
 </body>
 </html>
