@@ -157,7 +157,7 @@
             {% csrf_token %}
             <button class="clear-cart-button" type="submit">Clear Cart</button>
         </form>
-        <button class="payment-button"><a href="{% url 'qr_scan' %}"/>Proceed to Payment</button>
+        <button class="payment-button"><a href="{% url 'qr_scan' %}"></a>Proceed to Payment</button>
         <label>Total Cost: Rs.{{ total_cost }}</label>
     </div>
     </div>
