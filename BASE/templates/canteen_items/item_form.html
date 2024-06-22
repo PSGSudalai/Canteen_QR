@@ -8,11 +8,16 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
         }
         .new {
             text-align: center;
+            font-style:Bold;
         }
         #identity {
             align-items: 10px;
@@ -21,8 +26,12 @@
             text-align: center;
         }
         form {
-            max-width: 600px;
-            margin: 0 auto;
+            background-color: #fff;
+            padding: 50px;
+           
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Adjust width as needed */
         }
         p {
             margin-bottom: 10px;
@@ -34,12 +43,13 @@
         input[type="text"],
         input[type="number"],
         select {
-            width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 10px;
+            width: 100%;
             box-sizing: border-box;
         }
         .add {
+            align-items: center;
             padding: 20px;
             display: flex;
         }
@@ -71,11 +81,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
-
+    <div>
+      
         <div class="add">
+            
             <form method="post">
+                <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
+
                 {% csrf_token %}
                 <p>
                     <label for="identity">Identity:</label>
