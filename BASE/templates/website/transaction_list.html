@@ -32,6 +32,7 @@
         th {
             background-color: #f2f2f2;
         }
+
         .back-link {
             background-color: #6c757d;
             color: white;
@@ -41,11 +42,48 @@
             border-radius: 3px;
             text-decoration: none;
         }
+
+        .filter-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-input {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .filter-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .filter-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <h1>Transactions</h1>
     <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+
+    <div class="filter-form">
+        <form method="GET" action="{% url 'transaction_list' %}">
+            <input type="number" name="min_amount" class="filter-input" placeholder="Min Amount" value="{{ min_amount }}">
+            <input type="number" name="max_amount" class="filter-input" placeholder="Max Amount" value="{{ max_amount }}">
+            {% if user.is_admin %}
+                <input type="text" name="user_email" class="filter-input" placeholder="User Email" value="{{ user_email }}">
+            {% endif %}
+            <button type="submit" class="filter-button">Filter</button>
+        </form>
+    </div>
+
     <table>
         <thead>
             <tr>

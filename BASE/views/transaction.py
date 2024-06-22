@@ -4,21 +4,42 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseBadRequest
 from BASE.models import Transaction, CustomUser, Cart, PreviousOrders
 from BASE.helpers import calculating_total_cost
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.db.models import Q
 
 
+@method_decorator(login_required, name="dispatch")
 class TransactionListView(ListView):
     model = Transaction
     template_name = "website/transaction_list.html"
 
     def get_queryset(self):
-        if self.request.user.is_admin or self.request.user.is_staff:
-            return Transaction.objects.all()
-        else:
-            return Transaction.objects.filter(student=self.request.user)
+        queryset = (
+            Transaction.objects.all()
+            if self.request.user.is_admin or self.request.user.is_staff
+            else Transaction.objects.filter(student=self.request.user)
+        )
+
+        min_amount = self.request.GET.get("min_amount")
+        max_amount = self.request.GET.get("max_amount")
+        user_email = self.request.GET.get("user_email")
+
+        if min_amount:
+            queryset = queryset.filter(amount__gte=min_amount)
+        if max_amount:
+            queryset = queryset.filter(amount__lte=max_amount)
+        if user_email and (self.request.user.is_admin or self.request.user.is_staff):
+            queryset = queryset.filter(student__email__icontains=user_email)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user"] = self.request.user
+        context["min_amount"] = self.request.GET.get("min_amount", "")
+        context["max_amount"] = self.request.GET.get("max_amount", "")
+        context["user_email"] = self.request.GET.get("user_email", "")
         return context
 
 
