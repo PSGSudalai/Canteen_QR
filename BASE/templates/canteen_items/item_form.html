@@ -1,22 +1,20 @@
-<!-- templates/canteen_items/item_form.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add New Item</title>
+    <title>{% if item %}Edit Item{% else %}Add New Item{% endif %}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 0;
         }
-        .new{
+        .new {
             text-align: center;
         }
-        #identity{
+        #identity {
             align-items: 10px;
         }
         h1 {
@@ -41,11 +39,9 @@
             margin-bottom: 10px;
             box-sizing: border-box;
         }
-
-        .add{
+        .add {
             padding: 20px;
             display: flex;
-
         }
         input[type="checkbox"] {
             margin-left: 0;
@@ -57,7 +53,6 @@
             border: none;
             cursor: pointer;
             margin-top: 10px;
-            
         }
         .btn:hover {
             background-color: #0056b3;
@@ -77,42 +72,40 @@
 </head>
 <body>
     <div class="container">
-            <h3 class="new">Add New Item</h3>
-  
-   
-   <div class="add">
-     <form method="post">
-        {% csrf_token %}
-        <p>
-            <label for="identity">Identity:</label>
-            <input type="text" name="identity" id="identity" required>
-        </p>
-        <p>
-            <label for="price">Price:</label>
-            <input type="number" name="price" id="price" required>
-        </p>
-        <p>
-            <label for="availability">Availability:</label>
-            <input type="checkbox" name="availability" id="availability">
-        </p>
-        <p>
-            <label for="category">Category:</label>
-            <select name="category" id="category" required>
-                <option value="snack">Snack</option>
-                <option value="beverage">Beverage</option>
-                <option value="food">Food</option>
-                <!-- Add other categories as needed -->
-            </select>
-        </p>
-        
-        <div >
-            <button type="submit">Save</button>
-            <button class="button-right">
-                <a href="{% url 'canteen_item_list' %}">Back</a>
-            </button>
+        <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
+
+        <div class="add">
+            <form method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="identity">Identity:</label>
+                    <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" required>
+                </p>
+                <p>
+                    <label for="price">Price:</label>
+                    <input type="number" name="price" id="price" value="{{ form_data.price }}" required>
+                </p>
+                <p>
+                    <label for="availability">Availability:</label>
+                    <input type="checkbox" name="availability" id="availability" {% if form_data.availability %}checked{% endif %}>
+                </p>
+                <p>
+                    <label for="category">Category:</label>
+                    <select name="category" id="category" required>
+                        <option value="snack" {% if form_data.category == "snack" %}selected{% endif %}>Snack</option>
+                        <option value="beverage" {% if form_data.category == "beverage" %}selected{% endif %}>Beverage</option>
+                        <option value="food" {% if form_data.category == "food" %}selected{% endif %}>Food</option>
+                    </select>
+                </p>
+
+                <div>
+                    <button type="submit">Save</button>
+                    <button class="button-right">
+                        <a href="{% url 'canteen_item_list' %}">Back</a>
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-    </div>
     </div>
 </body>
 </html>
