@@ -203,7 +203,9 @@
             padding: 0px 5px;
         }
 
-
+        iframe {
+            display: none; /* Hide the iframe */
+        }
     </style>
 </head>
 <body>
@@ -273,7 +275,9 @@
                         </p>
                     {% endif %}
                     {% if user.is_admin or user.is_staff %}
-                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline">
+                    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+
+                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
                         {% csrf_token %}
                         <input type="hidden" name="item_id" value="{{ item.id }}">
                         <div class="form-group">
@@ -283,6 +287,7 @@
                             <button type="submit" style="background-color: #007bff;">Add to Cart</button>
                         </div>
                     </form>
+
                     {% endif %}
 
                     {% if user.is_admin %}
@@ -302,5 +307,17 @@
             </li>
         {% endfor %}
     </ul>
+    <script>
+        // Show alert if message is present
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertContainer = document.getElementById('alert-container');
+            if (alertContainer) {
+                alertContainer.style.display = 'block';
+                setTimeout(function() {
+                    alertContainer.style.display = 'none';
+                }, 3000);  // Hide after 3 seconds
+            }
+        });
+    </script>
 </body>
 </html>
