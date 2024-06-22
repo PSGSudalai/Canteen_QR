@@ -241,11 +241,8 @@
     <div class="search">
         <form method="GET" action="{% url 'canteen_item_list' %}">
             <input type="text" name="q" placeholder="Search..." class="form-control">
-            <label for="min_price">Min Price:</label>
-            <input type="number" id="min_price" name="min_price" min="0" class="form-control">
-            <label for="max_price">Max Price:</label>
-            <input type="number" id="max_price" name="max_price" min="0" class="form-control">
-            <label for="category">Category:</label>
+            <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price.">
+            <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
             <select id="category" name="category" class="form-control">
                 <option value="">All Categories</option>
                 <!-- Replace with dynamic options based on your categories -->
