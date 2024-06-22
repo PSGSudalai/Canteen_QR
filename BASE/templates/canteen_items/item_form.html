@@ -17,10 +17,10 @@
         }
         .new {
             text-align: center;
-            font-style:Bold;
+            font-weight: bold;
         }
         #identity {
-            align-items: 10px;
+            margin-bottom: 10px;
         }
         h1 {
             text-align: center;
@@ -28,7 +28,6 @@
         form {
             background-color: #fff;
             padding: 50px;
-           
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px; /* Adjust width as needed */
@@ -49,9 +48,10 @@
             box-sizing: border-box;
         }
         .add {
-            align-items: center;
-            padding: 20px;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         input[type="checkbox"] {
             margin-left: 0;
@@ -73,7 +73,6 @@
         }
         .button-right {
             text-align: right;
-            margin-left: 40px;
         }
         .button-right button {
             float: right;
@@ -81,43 +80,39 @@
     </style>
 </head>
 <body>
-    <div>
-      
-        <div class="add">
-            
-            <form method="post">
-                <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
+    <div class="add">
+        <form method="post">
+            <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
 
-                {% csrf_token %}
-                <p>
-                    <label for="identity">Identity:</label>
-                    <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" required>
-                </p>
-                <p>
-                    <label for="price">Price:</label>
-                    <input type="number" name="price" id="price" value="{{ form_data.price }}" required>
-                </p>
-                <p>
-                    <label for="availability">Availability:</label>
-                    <input type="checkbox" name="availability" id="availability" {% if form_data.availability %}checked{% endif %}>
-                </p>
-                <p>
-                    <label for="category">Category:</label>
-                    <select name="category" id="category" required>
-                        <option value="snack" {% if form_data.category == "snack" %}selected{% endif %}>Snack</option>
-                        <option value="Beverage" {% if form_data.category == "Beverage" %}selected{% endif %}>Beverage</option>
-                        <option value="Food" {% if form_data.category == "Food" %}selected{% endif %}>Food</option>
-                    </select>
-                </p>
+            {% csrf_token %}
+            <p>
+                <label for="identity">Identity:</label>
+                <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" {% if item %}readonly{% endif %} required>
+            </p>
+            <p>
+                <label for="price">Price:</label>
+                <input type="number" name="price" id="price" value="{{ form_data.price }}" min="1" required>
+            </p>
+            <p>
+                <label for="availability">Availability:</label>
+                <input type="checkbox" name="availability" id="availability" {% if form_data.availability %}checked{% endif %}>
+            </p>
+            <p>
+                <label for="category">Category:</label>
+                <select name="category" id="category" required>
+                    <option value="snack" {% if form_data.category == "snack" %}selected{% endif %}>Snack</option>
+                    <option value="Beverage" {% if form_data.category == "Beverage" %}selected{% endif %}>Beverage</option>
+                    <option value="Food" {% if form_data.category == "Food" %}selected{% endif %}>Food</option>
+                </select>
+            </p>
 
-                <div>
-                    <button type="submit">Save</button>
-                    <button class="button-right">
-                        <a href="{% url 'canteen_item_list' %}">Back</a>
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div>
+                <button type="submit">Save</button>
+                <button class="button-right">
+                    <a href="{% url 'canteen_item_list' %}">Back</a>
+                </button>
+            </div>
+        </form>
     </div>
 </body>
 </html>
