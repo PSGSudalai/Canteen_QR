@@ -12,24 +12,28 @@
             margin: 0;
             padding: 20px;
         }
-        span{
-            font-size: 30px;
-            margin-left: 10px;
+        h1 {
+            color: #333;
+            text-align: center;
         }
-
-        /* Style for the header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ebe8e8;
-            color: black;
-            padding: 10px 20px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
-        .header .glyphicon{
+        .header .glyphicon {
             font-size: 20px;
         }
-
+        .header h1 {
+            margin: 0;
+        }
+        .header span {
+            font-size: 23px;
+            margin-left: 6px;
+        }
         .header .logout {
             background-color: #dc3545;
             color: white;
@@ -45,10 +49,7 @@
         }
 
         /* Style for the h1 */
-        h1 {
-            color: #333;
-            text-align: center;
-        }
+
 
         /* Style for the navigation */
         .navigation {
@@ -160,7 +161,7 @@
         }
 
         button[type="submit"] {
-           
+
             color: white;
             border: none;
             padding: 8px 12px;
@@ -207,7 +208,10 @@
 </head>
 <body>
     <div class="header">
-        <div class="glyphicon glyphicon-user"><span>{{ user.first_name }}</span></div>
+        <div>
+            <span class="glyphicon glyphicon-user"></span>
+            <span>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
+        </div>
         <h1>Canteen Items</h1>
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
@@ -245,9 +249,9 @@
             <select id="category" name="category" class="form-control">
                 <option value="">All Categories</option>
                 <!-- Replace with dynamic options based on your categories -->
-                <option value="FOOD">Food</option>
+                <option value="Food">Food</option>
                 <option value="SNACK">Snacks</option>
-                <option value="beverage">Beverage</option>
+                <option value="Beverage">Beverage</option>
             </select>
             <button type="submit" style=" background-color: #007bff;">Search</button>
         </form>
@@ -271,7 +275,7 @@
                             {% endif %}
                         </p>
                     {% endif %}
-
+                    {% if user.is_admin or user.is_staff %}
                     <form action="{% url 'add_to_cart' %}" method="post" class="form-inline">
                         {% csrf_token %}
                         <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -282,6 +286,7 @@
                             <button type="submit" style="background-color: #007bff;">Add to Cart</button>
                         </div>
                     </form>
+                    {% endif %}
 
                     {% if user.is_admin %}
                         <div class="admin-actions">
