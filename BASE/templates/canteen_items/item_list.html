@@ -12,6 +12,10 @@
             margin: 0;
             padding: 20px;
         }
+        span{
+            font-size: 30px;
+            margin-left: 10px;
+        }
 
         /* Style for the header */
         .header {
@@ -21,6 +25,9 @@
             background-color: #ebe8e8;
             color: black;
             padding: 10px 20px;
+        }
+        .header .glyphicon{
+            font-size: 20px;
         }
 
         .header .logout {
@@ -49,6 +56,7 @@
             background-color: #ebe8e8;
             padding: 10px 20px;
             margin-bottom: 20px;
+            font-size: 15px;
         }
 
         /* Style for the search section */
@@ -76,7 +84,6 @@
         }
 
         .search button {
-            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
@@ -105,6 +112,7 @@
             box-sizing: border-box;
             margin-bottom: 20px;
             min-width: 220px; /* Minimum width */
+            max-width:250px;
         }
 
         .item-image-container {
@@ -152,7 +160,7 @@
         }
 
         button[type="submit"] {
-            background-color: #007bff;
+           
             color: white;
             border: none;
             padding: 8px 12px;
@@ -174,15 +182,15 @@
             flex: 1; /* Each form takes equal space */
         }
 
-        .btn-warning {
+        /* .btn-warning {
             background-color: #ffc107;
             border-color: #ffc107;
-        }
+        } */
 
-        .btn-info {
+        /* .btn-info {
             background-color: #007bff;
             border-color: #007bff;
-        }
+        } */
 
         .quantity-control{
             height: 36px;
@@ -199,7 +207,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="glyphicon glyphicon-user">{{ user.first_name }}</div>
+        <div class="glyphicon glyphicon-user"><span>{{ user.first_name }}</span></div>
         <h1>Canteen Items</h1>
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
@@ -241,7 +249,7 @@
                 <option value="SNACK">Snacks</option>
                 <option value="beverage">Beverage</option>
             </select>
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" style=" background-color: #007bff;">Search</button>
         </form>
     </div>
 
@@ -271,7 +279,7 @@
                             <input type="number" name="quantity" value="1" min="1" class="quantity-control">
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            <button type="submit" style="background-color: #007bff;">Add to Cart</button>
                         </div>
                     </form>
 
