@@ -16,6 +16,7 @@ def signup_view(request):
         firstname = request.POST.get("firstname")
         lastname = request.POST.get("lastname")
         email = request.POST.get("email")
+        phone_number = request.POST.get("phone_number")
         password1 = request.POST.get("password1")
 
         if CustomUser.objects.filter(email=email).exists():
@@ -27,6 +28,7 @@ def signup_view(request):
             # Create the user
             user = CustomUser.objects.create_user(
                 email=email,
+                phone_number=phone_number,
                 password=password1,
                 first_name=firstname,
                 last_name=lastname,
@@ -54,10 +56,7 @@ def signup_view(request):
 
             # Login user
             login(request, user)
-            # messages.success(request, "Registration successful")
-            return redirect(
-                "qr_image"
-            )  # Redirect to a view that displays/shares the QR image
+            return redirect("qr_image")
 
     return render(request, "registration/signup.html")
 

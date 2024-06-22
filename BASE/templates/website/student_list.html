@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staffs List</title>
+    <title>Student List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,10 +52,43 @@
             border-radius: 3px;
             text-decoration: none;
         }
+
+        .search-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <h1>Staffs List</h1>
+    <h1>Student List</h1>
+    <div class="search-form">
+        <form method="GET" action="{% url 'student_list' %}">
+            <input type="text" name="q" class="search-input" placeholder="Search ..." value="{{ query }}">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
     <a href="{% url 'canteen_item_list' %}" class="back-button">Back</a>
     <table>
         <thead>

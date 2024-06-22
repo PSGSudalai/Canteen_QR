@@ -1,5 +1,4 @@
 # BASE/views.py
-
 from django.shortcuts import render, redirect, get_object_or_404
 from BASE.models import CanteenItems, Cart
 from django.http import HttpResponseBadRequest, JsonResponse
