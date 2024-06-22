@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student List</title>
+    <title>Staffs List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,8 +32,19 @@
         th {
             background-color: #f2f2f2;
         }
+
         .back-button {
             background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+
+        .edit-button {
+            background-color: #007bff;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -44,7 +55,7 @@
     </style>
 </head>
 <body>
-    <h1>Students List</h1>
+    <h1>Staffs List</h1>
     <a href="{% url 'canteen_item_list' %}" class="back-button">Back</a>
     <table>
         <thead>
@@ -54,6 +65,7 @@
                 <th>Last Name</th>
                 <th>Phone Number</th>
                 <th>Balance</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +76,7 @@
                     <td>{{ user.last_name }}</td>
                     <td>{{ user.phone_number }}</td>
                     <td>{{ user.balance }}</td>
+                    <td><a href="{% url 'edit_user' user.id %}" class="edit-button">Edit</a></td>
                 </tr>
             {% endfor %}
         </tbody>

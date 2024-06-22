@@ -2,9 +2,10 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from BASE.models import CanteenItems, Cart
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.views.generic import ListView
 from django.views.decorators.http import require_POST
+from BASE.helpers import calculating_total_cost
 
 
 def add_to_cart(request):
@@ -26,6 +27,25 @@ def add_to_cart(request):
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
+def update_cart_item(request, item_id):
+    if request.method == "POST":
+        quantity = request.POST.get("quantity")
+
+        try:
+            cart_item = Cart.objects.get(id=item_id)
+        except Cart.DoesNotExist:
+            return HttpResponseBadRequest("Cart item not found")
+
+        try:
+            cart_item.quantity = int(quantity)
+            cart_item.save()
+        except ValueError:
+            return HttpResponseBadRequest("Invalid quantity")
+
+        return redirect("cart_list")
+    return HttpResponseBadRequest("Method not allowed")
+
+
 @require_POST
 def clear_cart_items(request):
     Cart.objects.filter(is_sold=False).delete()
@@ -43,6 +63,17 @@ class CartListView(ListView):
     model = Cart
     template_name = "cart/cart_list.html"
     context_object_name = "cart_items"
+    cart_items = Cart.objects.filter(is_sold=False)
 
     def get_queryset(self):
         return Cart.objects.filter(is_sold=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Calculate total cost for items in the cart
+        cart_items = context["cart_items"]
+        total_cost = calculating_total_cost(cart_items)
+
+        context["total_cost"] = total_cost
+        return context

@@ -23,10 +23,6 @@
             padding: 10px 20px;
         }
 
-        .header .glyphicon {
-            font-size: 25px;
-        }
-
         .header .logout {
             background-color: #dc3545;
             color: white;
@@ -67,21 +63,22 @@
 
         .search form {
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            flex-wrap: wrap;
             gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
-        .search label, .search input[type="number"], .search input[type="text"], .search select, .search button {
-            margin-bottom: 0;
+        .search input[type="text"], .search input[type="number"], .search select, .search button {
+            flex: 1; /* Make all elements take equal width */
+            min-width: 120px; /* Set a minimum width for all elements */
+            padding: 10px; /* Add padding for a consistent height */
+            margin-bottom: 0; /* Remove margin bottom */
         }
 
         .search button {
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 8px 12px;
             cursor: pointer;
             border-radius: 3px;
             text-decoration: none;
@@ -100,7 +97,6 @@
             gap: 20px;
         }
 
-        /* Style for list items */
         .item-card {
             background: #fff;
             border-radius: 8px;
@@ -108,9 +104,9 @@
             width: calc(25% - 40px); /* 25% width minus the gaps */
             box-sizing: border-box;
             margin-bottom: 20px;
+            min-width: 220px; /* Minimum width */
         }
 
-        /* Style for item image */
         .item-image-container {
             height: 160px; /* Height for image container */
             display: flex;
@@ -126,29 +122,24 @@
             object-fit: cover; /* Maintain aspect ratio */
         }
 
-        /* Style for item details */
         .item-details {
             padding: 10px;
             text-align: left; /* Align text to the left */
         }
 
-        /* Style for item identity */
         .item-identity {
             font-weight: bold;
             font-size: 14px;
         }
 
-        /* Style for item price */
         .item-price {
             color: #555;
             margin-top: 5px;
             font-size: 12px;
         }
 
-        /* Style for form and input */
         form {
             display: flex;
-            justify-content: space-between; /* Align elements in a row with space between */
             align-items: center; /* Center items vertically */
             margin-top: 10px;
         }
@@ -160,7 +151,7 @@
             border-radius: 3px;
         }
 
-        button[type="submit"], .redirect-button {
+        button[type="submit"] {
             background-color: #007bff;
             color: white;
             border: none;
@@ -170,34 +161,51 @@
             text-decoration: none;
         }
 
-        button[type="submit"]:hover, .redirect-button:hover {
+        button[type="submit"]:hover {
             background-color: #0056b3;
         }
 
-        @media (max-width: 768px) {
-            .item-card {
-                width: calc(50% - 40px); /* 50% width for smaller screens */
-            }
+        .admin-actions {
+            display: flex;
+            gap: 10px; /* Adjust the gap between buttons */
         }
 
-        @media (max-width: 480px) {
-            .item-card {
-                width: calc(100% - 40px); /* Full width for very small screens */
-            }
+        .admin-actions form {
+            flex: 1; /* Each form takes equal space */
         }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .btn-info {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .quantity-control{
+            height: 36px;
+            width: 75px;
+        }
+
+        .form-group{
+            height: 36px;
+            padding: 0px 5px;
+        }
+
+
     </style>
 </head>
 <body>
     <div class="header">
         <div class="glyphicon glyphicon-user">{{ user.first_name }}</div>
-        <h1 style="color:black">Canteen Items</h1>
+        <h1>Canteen Items</h1>
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
 
     <div class="navigation">
         <ul>
-
-
             {% if user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
                 <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
@@ -206,35 +214,34 @@
                 <li><a href="{% url 'student_list' %}" class="non-staff-list-button">Student List</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
-
             {% elif user.is_staff %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
                 <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
                 <li><a href="{% url 'qr_scan' %}" class="transaction-history-button">Recharge</a></li>
             {% else %}
+                <li><a href="{% url 'qr_image' %}" class="add-item-button">Show QR</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
             {% endif %}
         </ul>
     </div>
 
-
     <div class="search">
         <form method="GET" action="{% url 'canteen_item_list' %}">
-            <input type="text" name="q" placeholder="Search..." class="glyphicon glyphicon-search">
+            <input type="text" name="q" placeholder="Search..." class="form-control">
             <label for="min_price">Min Price:</label>
-            <input type="number" id="min_price" name="min_price" min="0">
+            <input type="number" id="min_price" name="min_price" min="0" class="form-control">
             <label for="max_price">Max Price:</label>
-            <input type="number" id="max_price" name="max_price" min="0">
+            <input type="number" id="max_price" name="max_price" min="0" class="form-control">
             <label for="category">Category:</label>
-            <select id="category" name="category">
+            <select id="category" name="category" class="form-control">
                 <option value="">All Categories</option>
                 <!-- Replace with dynamic options based on your categories -->
                 <option value="FOOD">Food</option>
                 <option value="SNACK">Snacks</option>
                 <option value="beverage">Beverage</option>
             </select>
-            <button type="submit">Search</button>
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
 
@@ -247,12 +254,40 @@
                 <div class="item-details">
                     <p class="item-identity">{{ item.identity }}</p>
                     <p class="item-price">Rs.{{ item.price }}</p>
-                    <form action="{% url 'add_to_cart' %}" method="post">
+                    {% if user.is_admin %}
+                        <p class="item-availability">
+                            {% if item.availability %}
+                                Available
+                            {% else %}
+                                Unavailable
+                            {% endif %}
+                        </p>
+                    {% endif %}
+
+                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline">
                         {% csrf_token %}
                         <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <input type="number" name="quantity" value="1" min="1">
-                        <button type="submit">Add to Cart</button>
+                        <div class="form-group">
+                            <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
                     </form>
+
+                    {% if user.is_admin %}
+                        <div class="admin-actions">
+                            <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                <button type="submit" class="btn btn-warning">Archive Item</button>
+                            </form>
+
+                            <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
+                                <button type="submit" class="btn btn-info">Edit Item</button>
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
             </li>
         {% endfor %}
