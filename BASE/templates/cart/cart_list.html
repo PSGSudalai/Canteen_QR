@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
             margin: 0;
             padding: 20px;
         }
@@ -19,9 +19,11 @@
             margin-bottom: 20px;
         }
         .cart-class {
+            background-color: white;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            flex-wrap: wrap;
         }
         .cart-left {
             width: 350px;
@@ -88,6 +90,7 @@
             justify-content: flex-end;
             align-items: center;
             margin-top: 20px;
+            flex-wrap: wrap; /* Ensure it wraps on smaller screens */
         }
         .clear-cart-button {
             background-color: #aeaeae;
@@ -138,12 +141,23 @@
                 align-items: center;
             }
             .cart-left {
-                margin-right: 0;
+                margin-left: 0;
                 margin-bottom: 20px;
+            }
+            .cart-item-list-right {
+                max-width: 100%;
             }
             .buttons-container {
                 flex-direction: column;
                 align-items: flex-end;
+            }
+            .clear-cart-button, .payment-button, .back-link {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            .total-cost-label {
+                text-align: center;
+                width: 100%;
             }
         }
     </style>
@@ -160,7 +174,7 @@
                 <ul>
                     {% for item in cart_items %}
                         <li>
-                            <img class="item-image" src="{{ item.item.image.url }}" alt="Item Image">
+                            <img class="item-image" src="{{ item.item.itemImage.image.url }}" alt="Item Image">
                             <div class="item-details">
                                 <p>{{ item.item.identity }}</p>
                                 <p>Quantity: {{ item.quantity }} | Rs. {{ item.item.price }}</p>
@@ -193,7 +207,6 @@
             </div>
         </div>
     </div>
-
     <script>
         function openQRScanner() {
             window.location.href = "{% url 'qr_scan_payment' %}";
