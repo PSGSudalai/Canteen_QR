@@ -25,7 +25,8 @@
             width: 100%;
         }
         .registration-form {
-            margin: 50px;
+            padding: 20px;
+            margin-right: 20px;
             width: 50%;
             box-sizing: border-box;
         }
@@ -51,18 +52,46 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        button {
-            width: 100%;
-            background: #333;
-            color: #fff;
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        button,
+        .button-right {
+            width: 48%;
             padding: 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            text-align: center;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        button {
+            background: #333;
+            color: #fff;
         }
         button:hover {
             background: #555;
+        }
+        .button-right {
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+        }
+        .button-right:hover {
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+        }
+        .button-right:active,
+        .button-right:focus,
+        .button-right:visited {
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
         }
         .image-container {
             width: 50%;
@@ -80,6 +109,15 @@
             .registration-form,
             .image-container {
                 width: 100%;
+            }
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            button,
+            .button-right {
+                width: 100%;
+                margin-top: 10px;
             }
         }
     </style>
@@ -111,7 +149,10 @@
                     <label for="password1">Password:</label>
                     <input type="password" id="password1" name="password1" required>
                 </div>
-                <button type="submit">Register</button>
+                <div class="button-container">
+                    <button type="submit">Register</button>
+                    <a class="button-right" href="{% url 'canteen_item_list' %}">Back</a>
+                </div>
             </form>
         </div>
         <div class="image-container">
