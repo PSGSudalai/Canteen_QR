@@ -76,7 +76,7 @@ def recharge_transaction(request, uuid):
         # send_email("Recharge", amount, student.email)
 
         return redirect(
-            "transaction_list"
+            "canteen_item_list"
         )  # Redirect to transaction list or any other appropriate page
 
     elif request.method == "GET":
@@ -94,8 +94,25 @@ def recharge_transaction(request, uuid):
         return render(request, "website/recharge_form.html", context)
 
 
+@login_required
 def payment_transaction(request, uuid):
+    try:
+        student = CustomUser.objects.get(uuid=uuid)
+    except CustomUser.DoesNotExist:
+        return HttpResponseBadRequest("Student not found")
+
+    cartItems = Cart.objects.filter(is_sold=False)
+    total_amount = calculating_total_cost(cartItems)
+
     if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "recharge":
+            return redirect("recharge_page_url")  # Replace with your recharge page URL
+
+        if action == "cancel":
+            return redirect("cart_page_url")  # Replace with your cart page URL
+
         payment_method = request.POST.get("payment_method", "cash")
         staff = request.user
 
@@ -103,22 +120,19 @@ def payment_transaction(request, uuid):
             return HttpResponseBadRequest("Permission denied")
 
         try:
-            student = CustomUser.objects.get(uuid=uuid)
-        except CustomUser.DoesNotExist:
-            return HttpResponseBadRequest("Student not found")
-
-        cartItems = Cart.objects.filter(is_sold=False)
-        amount = calculating_total_cost(cartItems)
-
-        try:
-            amount = int(amount)
+            amount = int(total_amount)
             if student.balance < amount:
-                return HttpResponseBadRequest("Insufficient balance")
+                return render(
+                    request,
+                    "website/insufficient_balance.html",
+                    {"student": student, "total_amount": total_amount},
+                )
             student.balance -= amount
             student.save()
         except ValueError:
             return HttpResponseBadRequest("Invalid amount")
 
+        # Record the transaction
         transaction = Transaction.objects.create(
             student=student,
             amount=amount,
@@ -127,6 +141,7 @@ def payment_transaction(request, uuid):
             payment_method=payment_method,
         )
 
+        # Store previous orders
         for cartItem in cartItems:
             PreviousOrders.objects.create(
                 student=student,
@@ -139,12 +154,15 @@ def payment_transaction(request, uuid):
         cartItems.update(is_sold=True)
         # send_email("Payment", amount, student.email)
         return redirect(
-            "transaction_list"
+            "canteen_item_list"
         )  # Redirect to transaction list or any other appropriate page
 
     elif request.method == "GET":
-        # Render the form for GET requests
-        return render(request, "website/payment_form.html", {"uuid": uuid})
+        return render(
+            request,
+            "website/payment_form.html",
+            {"student": student, "total_amount": total_amount},
+        )
 
     else:
         return HttpResponseBadRequest("Method not allowed")

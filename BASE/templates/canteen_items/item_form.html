@@ -81,7 +81,7 @@
 </head>
 <body>
     <div class="add">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
 
             {% csrf_token %}
@@ -100,10 +100,17 @@
             <p>
                 <label for="category">Category:</label>
                 <select name="category" id="category" required>
-                    <option value="snack" {% if form_data.category == "snack" %}selected{% endif %}>Snack</option>
+                    <option value="Snacks" {% if form_data.category == "Snacks" %}selected{% endif %}>Snacks</option>
                     <option value="Beverage" {% if form_data.category == "Beverage" %}selected{% endif %}>Beverage</option>
                     <option value="Food" {% if form_data.category == "Food" %}selected{% endif %}>Food</option>
                 </select>
+            </p>
+            <p>
+                <label for="image">Image:</label>
+                <input type="file" name="image" id="image">
+                {% if form_data.image %}
+                    <img src="{{ form_data.image }}" alt="{{ form_data.identity }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}
             </p>
 
             <div>

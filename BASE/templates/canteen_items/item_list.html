@@ -12,6 +12,37 @@
             margin: 0;
             padding: 20px;
         }
+
+        .navigation {
+            text-align: right;
+            background-color: #ebe8e8;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .navigation ul {
+            list-style-type: none; /* Remove bullets */
+            margin: 0;
+            padding: 0;
+            display: flex; /* Display list items in a row */
+            justify-content: flex-end; /* Align items to the right */
+        }
+
+        .navigation ul li {
+            margin-left: 20px; /* Space between items */
+        }
+
+        .navigation ul li a {
+            text-decoration: none; /* Remove underline from links */
+            color: inherit; /* Inherit text color */
+        }
+
+        .navigation ul li a:hover {
+            text-decoration: underline; /* Add underline on hover */
+        }
+
+
         h1 {
             color: #333;
             text-align: center;
@@ -48,19 +79,6 @@
             background-color: #c82333;
         }
 
-        /* Style for the h1 */
-
-
-        /* Style for the navigation */
-        .navigation {
-            text-align: right;
-            background-color: #ebe8e8;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-
-        /* Style for the search section */
         .search {
             display: flex;
             justify-content: center;
@@ -78,10 +96,10 @@
         }
 
         .search input[type="text"], .search input[type="number"], .search select, .search button {
-            flex: 1; /* Make all elements take equal width */
-            min-width: 120px; /* Set a minimum width for all elements */
-            padding: 10px; /* Add padding for a consistent height */
-            margin-bottom: 0; /* Remove margin bottom */
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            margin-bottom: 0;
         }
 
         .search button {
@@ -96,8 +114,7 @@
             background-color: #0056b3;
         }
 
-        /* Style for the list */
-        ul {
+        ul.item {
             list-style-type: none;
             padding: 0;
             display: flex;
@@ -109,31 +126,31 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: calc(25% - 40px); /* 25% width minus the gaps */
+            width: calc(25% - 40px);
             box-sizing: border-box;
             margin-bottom: 20px;
-            min-width: 220px; /* Minimum width */
-            max-width:250px;
+            min-width: 220px;
+            max-width: 250px;
         }
 
         .item-image-container {
-            height: 160px; /* Height for image container */
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border-radius: 8px 8px 0 0; /* Rounded corners on top */
+            border-radius: 8px 8px 0 0;
         }
 
         .item-image {
             max-width: 100%;
             max-height: 100%;
-            object-fit: cover; /* Maintain aspect ratio */
+            object-fit: cover;
         }
 
         .item-details {
             padding: 10px;
-            text-align: left; /* Align text to the left */
+            text-align: left;
         }
 
         .item-identity {
@@ -149,19 +166,18 @@
 
         form {
             display: flex;
-            align-items: center; /* Center items vertically */
+            align-items: center;
             margin-top: 10px;
         }
 
         input[type="number"] {
-            width: 50px; /* Smaller width for input */
+            width: 50px;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
         }
 
         button[type="submit"] {
-
             color: white;
             border: none;
             padding: 8px 12px;
@@ -176,35 +192,46 @@
 
         .admin-actions {
             display: flex;
-            gap: 10px; /* Adjust the gap between buttons */
+            gap: 10px;
         }
 
         .admin-actions form {
-            flex: 1; /* Each form takes equal space */
+            flex: 1;
         }
 
-        /* .btn-warning {
-            background-color: #ffc107;
-            border-color: #ffc107;
-        } */
-
-        /* .btn-info {
-            background-color: #007bff;
-            border-color: #007bff;
-        } */
-
-        .quantity-control{
+        .quantity-control {
             height: 36px;
             width: 75px;
         }
 
-        .form-group{
+        .form-group {
             height: 36px;
             padding: 0px 5px;
         }
 
         iframe {
-            display: none; /* Hide the iframe */
+            display: none;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .pagination .active span {
+            font-weight: bold;
+            color: #000;
         }
     </style>
 </head>
@@ -223,7 +250,7 @@
             {% if user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
                 <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
-                <li><a href="{% url 'qr_scan' %}" class="transaction-history-button">Recharge</a></li>
+                <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'staff_list' %}" class="staff-list-button">Staff List</a></li>
                 <li><a href="{% url 'student_list' %}" class="non-staff-list-button">Student List</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
@@ -231,7 +258,7 @@
             {% elif user.is_staff %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
                 <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
-                <li><a href="{% url 'qr_scan' %}" class="transaction-history-button">Recharge</a></li>
+                <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
             {% else %}
                 <li><a href="{% url 'qr_image' %}" class="add-item-button">Show QR</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
@@ -247,12 +274,11 @@
             <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
             <select id="category" name="category" class="form-control">
                 <option value="">All Categories</option>
-                <!-- Replace with dynamic options based on your categories -->
                 <option value="Food">Food</option>
-                <option value="SNACK">Snacks</option>
+                <option value="Snacks">Snackss</option>
                 <option value="Beverage">Beverage</option>
             </select>
-            <button type="submit" style=" background-color: #007bff;">Search</button>
+            <button type="submit" style="background-color: #007bff;">Search</button>
         </form>
     </div>
 
@@ -260,7 +286,7 @@
         {% for item in items %}
             <li class="item-card">
                 <div class="item-image-container">
-                    <img class="item-image" src="{{ item.image.url }}" alt="{{ item.identity }}">
+                    <img class="item-image" src="{{ item.itemImage.image.url }}" alt="{{ item.identity }}">
                 </div>
                 <div class="item-details">
                     <p class="item-identity">{{ item.identity }}</p>
@@ -307,17 +333,28 @@
             </li>
         {% endfor %}
     </ul>
-    <script>
-        // Show alert if message is present
-        document.addEventListener('DOMContentLoaded', function() {
-            var alertContainer = document.getElementById('alert-container');
-            if (alertContainer) {
-                alertContainer.style.display = 'block';
-                setTimeout(function() {
-                    alertContainer.style.display = 'none';
-                }, 3000);  // Hide after 3 seconds
-            }
-        });
-    </script>
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo; first</span></li>
+                <li class="disabled"><span>previous</span></li>
+            {% endif %}
+
+            <li class="active"><span>{{ page_obj.number }}</span></li>
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>next</span></li>
+                <li class="disabled"><span>last &raquo;</span></li>
+            {% endif %}
+        </ul>
+    </div>
 </body>
 </html>

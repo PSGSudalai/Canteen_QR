@@ -1,7 +1,7 @@
 CATEGORY_CHOICES = {
     ("Food", "Food"),
     ("Beverage", "Beverage"),
-    ("Snack", "Snack"),
+    ("Snacks", "Snacks"),
 }
 
 PAYMENT_TYPE = {("Recharge", "Recharge"), ("Payment", "Payment")}

@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Cart</title>
     <style>
-        /* Style for the body */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -16,20 +14,19 @@
             padding: 20px;
         }
 
-        /* Style for the h1 */
         h1 {
             color: #333;
             text-align: center;
         }
 
-        /* Style for the list */
         ul {
             list-style-type: none;
             padding: 0;
             margin-top: 20px;
+            max-height: 500px; /* Adjust height as needed */
+            overflow-y: auto; /* Enable vertical scroll */
         }
 
-        /* Style for list items */
         li {
             background-color: #fff;
             padding: 10px;
@@ -37,27 +34,24 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
-            align-items: center; /* Center items vertically */
+            align-items: center;
         }
 
-        /* Style for item image */
         .item-image {
-            max-width: 80px; /* Adjust image size as needed */
-            max-height: 80px; /* Adjust image size as needed */
+            max-width: 80px;
+            max-height: 80px;
             border-radius: 5px;
-            margin-right: 10px; /* Space between image and details */
+            margin-right: 10px;
         }
 
-        /* Style for item details */
         .item-details {
-            flex: 1; /* Take remaining space */
+            flex: 1;
         }
 
         .item-details p {
             margin: 5px 0;
         }
 
-        /* Style for delete button */
         .delete-button {
             background-color: #dc3545;
             color: white;
@@ -72,14 +66,12 @@
             background-color: #c82333;
         }
 
-        /* Style for buttons container */
         .buttons-container {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
 
-        /* Style for clear cart button */
         .clear-cart-button {
             background-color: #007bff;
             color: white;
@@ -93,7 +85,6 @@
             background-color: #0056b3;
         }
 
-        /* Style for back to canteen items button */
         .back-link {
             background-color: #6c757d;
             color: white;
@@ -109,7 +100,6 @@
             background-color: #5a6268;
         }
 
-        /* Style for payment button */
         .payment-button {
             background-color: #28a745;
             color: white;
@@ -122,49 +112,54 @@
         .payment-button:hover {
             background-color: #218838;
         }
+
+        .total-cost-label {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-    <h1> Cart</h1>
-    <ul>
-        {% for item in cart_items %}
-            <li>
-                <img class="item-image" src="{{ item.item.image.url }}" alt="Item Image">
-                <div class="item-details">
-                    <p>{{ item.item.identity }}</p>
-                    <p>Quantity: {{ item.quantity }}</p>
-                </div>
-                <div>
-
-                <form method="post" action="{% url 'update_cart_item' item.id %}">
-                    {% csrf_token %}
-                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" required>
-                    <button type="submit" class="btn btn-primary">Update Quantity</button>
-                </form>
-
-                <form method="post" action="{% url 'delete_cart_item' item.id %}">
-                    {% csrf_token %}
-                    <button class="btn btn-danger" type="submit">Delete</button>
-                </form>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-    <div class="buttons-container">
-        <a href="{% url 'canteen_item_list' %}" class="back-link">Back to Canteen Items</a>
-        <form method="post" action="{% url 'clear_cart' %}">
-            {% csrf_token %}
-            <button class="clear-cart-button" type="submit">Clear Cart</button>
-        </form>
-        <button class="payment-button"><a href="{% url 'qr_scan' %}"></a>Proceed to Payment</button>
-        <label>Total Cost: Rs.{{ total_cost }}</label>
-    </div>
+        <h1>Cart</h1>
+        <ul>
+            {% for item in cart_items %}
+                <li>
+                    <img class="item-image" src="{{ item.item.image.url }}" alt="Item Image">
+                    <div class="item-details">
+                        <p>{{ item.item.identity }}</p>
+                        <p>Quantity: {{ item.quantity }}</p>
+                    </div>
+                    <div>
+                        <form method="post" action="{% url 'update_cart_item' item.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" required>
+                            <button type="submit" class="btn btn-primary">Update Quantity</button>
+                        </form>
+                        <form method="post" action="{% url 'delete_cart_item' item.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="buttons-container">
+            <a href="{% url 'canteen_item_list' %}" class="back-link">Back to Canteen Items</a>
+            <form method="post" action="{% url 'clear_cart' %}">
+                {% csrf_token %}
+                <button class="clear-cart-button" type="submit">Clear Cart</button>
+            </form>
+            <form method="get" action="{% url 'qr_scan_payment' %}">
+                <button class="payment-button" type="submit">Proceed to Payment</button>
+            </form>
+            <label class="total-cost-label">Total Cost: Rs. {{ total_cost }}</label>
+        </div>
     </div>
 
     <script>
         function openQRScanner() {
-            window.location.href = "{% url 'qr_scan' %}"; // Replace 'qr_scan_page' with the actual URL name for your QR scan page
+            window.location.href = "{% url 'qr_scan_payment' %}";
         }
     </script>
 </body>

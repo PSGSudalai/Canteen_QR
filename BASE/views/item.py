@@ -2,9 +2,10 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from BASE.models import CanteenItems
+from BASE.models import CanteenItems, ItemImage
 from BASE.forms import CanteenItemForm
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required
@@ -33,10 +34,21 @@ def canteen_item_list(request):
             Q(identity__icontains=query) | Q(price__icontains=query)
         ).distinct()
 
+    paginator = Paginator(items, 12)  # Show 12 items per page
+    page = request.GET.get("page")
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
     context = {
-        "items": items,
+        "items": page_obj,
         "is_admin": request.user.is_admin,
         "is_staff": request.user.is_staff,
+        "page_obj": page_obj,
     }
 
     return render(request, "canteen_items/item_list.html", context)
@@ -52,6 +64,7 @@ def canteen_item_create(request):
         price = request.POST.get("price")
         availability = request.POST.get("availability") == "on"
         category = request.POST.get("category")
+        image = request.FILES.get("image")
 
         if identity and price and category:
             canteen_item = CanteenItems(
@@ -61,7 +74,15 @@ def canteen_item_create(request):
                 category=category,
             )
             canteen_item.save()
+
+            if image:
+                item_image = ItemImage(canteen_item=canteen_item, image=image)
+                item_image.save()
+                canteen_item.itemImage = item_image
+                canteen_item.save()
+
             return redirect("canteen_item_list")
+
     return render(request, "canteen_items/item_form.html")
 
 
@@ -77,6 +98,7 @@ def canteen_item_edit(request, item_id):
         price = request.POST.get("price")
         availability = request.POST.get("availability") == "on"
         category = request.POST.get("category")
+        image = request.FILES.get("image")
 
         if identity and price and category:
             item.identity = identity
@@ -84,6 +106,17 @@ def canteen_item_edit(request, item_id):
             item.availability = availability
             item.category = category
             item.save()
+
+            if image:
+                if item.itemImage:
+                    item.itemImage.image = image
+                    item.itemImage.save()
+                else:
+                    item_image = ItemImage(canteen_item=item, image=image)
+                    item_image.save()
+                    item.itemImage = item_image
+                    item.save()
+
             return redirect("canteen_item_list")
 
     context = {
@@ -93,6 +126,7 @@ def canteen_item_edit(request, item_id):
             "price": item.price,
             "availability": item.availability,
             "category": item.category,
+            "image": item.itemImage.image.url if item.itemImage else None,
         },
     }
     return render(request, "canteen_items/item_form.html", context)

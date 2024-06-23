@@ -3,17 +3,33 @@ from BASE.models import BaseModels
 from BASE.choices import CATEGORY_CHOICES, PAYMENT_METHOD, PAYMENT_TYPE
 
 
-class CanteenItems(BaseModels):
+class CanteenItems(models.Model):
     identity = models.CharField(max_length=100)
     price = models.IntegerField()
     availability = models.BooleanField(default=True)
     category = models.CharField(
-        max_length=20, choices=CATEGORY_CHOICES, default="snack"
+        max_length=20, choices=CATEGORY_CHOICES, default="Snacks"
     )
-    # image = models.ImageField(upload_to='canteen_items/', blank=True, null=True)
+    itemImage = models.ForeignKey(
+        "ItemImage",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="canteen_items",
+    )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.identity
+
+
+class ItemImage(models.Model):
+    canteen_item = models.OneToOneField(
+        CanteenItems, on_delete=models.CASCADE, related_name="item_image"
+    )
+    image = models.ImageField(upload_to="canteen_items/")
+
+    def __str__(self):
+        return f"Image for {self.canteen_item.identity}"
 
 
 class Transaction(BaseModels):
