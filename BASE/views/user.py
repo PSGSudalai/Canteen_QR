@@ -103,3 +103,15 @@ def qr_image_view(request):
     user.save()
 
     return render(request, "qr_image.html", {"user": user})
+
+
+@login_required
+def balance_check_view(request):
+    # Assuming user's balance is retrieved from the user object
+    user_balance = request.user.balance  # Replace with actual logic to retrieve balance
+
+    return render(
+        request,
+        "website/balance_check_template.html",
+        {"user": request.user, "user_balance": user_balance},
+    )

@@ -1,4 +1,10 @@
-from .user import login_view, signup_view, logout_view, qr_image_view
+from .user import (
+    login_view,
+    signup_view,
+    logout_view,
+    qr_image_view,
+    balance_check_view,
+)
 from .item import (
     canteen_item_create,
     canteen_item_list,
