@@ -1,7 +1,23 @@
 import requests
-from twilio.rest import Client
-from django.conf import settings
+from Canteen_QR import settings
 from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import HttpResponse
+
+
+def send_email(type, amount, email):
+    EMAIL_HOST_USER = "mforspamers@gmail.com"
+    message = "This is a test email sent from a Django application."
+    recipient_list = [email]
+    if type == "recharge":
+        subject = f"Your recharge of {amount} was successful"
+    elif type == "payment":
+        subject = f"Your payment of {amount} was successful"
+    else:
+        subject = "Welcome!"
+
+    send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
 
 TEXTLOCAL_API_KEY = "NDczNzU3NDU1MjZiNTY0NDcyNjg1MTUwNzg1MzUwNTQ="

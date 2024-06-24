@@ -14,7 +14,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height:100vh;
+            height: 100vh;
         }
 
         h1 {
@@ -25,11 +25,16 @@
         .table-container {
             width: 100%;
             max-width: 1200px;
-            overflow-x: auto;
             background-color: white;
             border-radius: 5px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            max-height: 500px; /* Set the maximum height for scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
         }
 
         table {
@@ -54,7 +59,7 @@
         }
 
         tr:hover {
-            background-color: #d6d6d6; /* Slightly darker shade */
+            background-color: #d6d6d6;
         }
 
         .back-link {
@@ -120,34 +125,36 @@
     </div>
 
     <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    {% if user.is_staff or user.is_admin %}
-                        <th>Staff</th>
-                    {% endif %}
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in object_list %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ order.student }}</td>
+                        <th>Student</th>
                         {% if user.is_staff or user.is_admin %}
-                            <td>{{ order.staff }}</td>
+                            <th>Staff</th>
                         {% endif %}
-                        <td>{{ order.item }}</td>
-                        <td>{{ order.quantity }}</td>
-                        <td>{{ order.total }}</td>
-                        <td>{{ order.created_at|date:"Y-m-d" }}</td
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Date</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for order in object_list %}
+                        <tr>
+                            <td>{{ order.student }}</td>
+                            {% if user.is_staff or user.is_admin %}
+                                <td>{{ order.staff }}</td>
+                            {% endif %}
+                            <td>{{ order.item }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.total }}</td>
+                            <td>{{ order.created_at|date:"Y-m-d" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div style="text-align: right; width: 100%; max-width: 1200px; margin-top: 20px;">

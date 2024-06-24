@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db.models import Q
 from django.utils.dateparse import parse_date
+from BASE.helpers import send_email
 
 
 @method_decorator(login_required, name="dispatch")
@@ -92,6 +93,7 @@ def recharge_transaction(request, uuid):
             payment_type="Recharge",
             payment_method=payment_method,
         )
+        send_email("recharge", amount, student.email)
         # Optionally send email notification
         # send_email("Recharge", amount, student.email)
 
@@ -170,6 +172,7 @@ def payment_transaction(request, uuid):
                 quantity=cartItem.quantity,
                 total=cartItem.quantity * cartItem.item.price,
             )
+        send_email("payment", amount, student.email)
 
         cartItems.update(is_sold=True)
         # send_email("Payment", amount, student.email)

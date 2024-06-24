@@ -60,7 +60,7 @@
 <body>
     <div class="container">
         <h1>QR Code</h1>
-        <h1>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h1>
+        <h4>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h4>
         <img id="qrCodeImage" src="{{ user.qr_code.url }}" alt="QR Code">
         <div>
             <a href="{% url 'canteen_item_list' %}" class="btn btn-back">Back to Canteen Items</a>
