@@ -12,6 +12,7 @@
             background: linear-gradient(135deg, #4c83ff, #72e2ff);
             margin: 0;
             padding: 20px;
+            height: 100vh;
         }
         h1 {
             color: #ffffff;
@@ -27,21 +28,24 @@
         }
         .cart-left {
             width: 350px;
-            height: 450px;
+            height: 750px;
             margin-left: 70px;
             margin-bottom: 20px;
         }
         .cart-left img {
-            width: 100%;
-            height: 100%;
+            width: 300px;
+            height: 500px;
             object-fit: cover;
         }
         .cart-item-list-right {
             flex: 1;
             max-width: calc(100% - 550px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .items-list {
-            max-height: 400px;
+            flex: 1;
             overflow-y: auto;
             background-color: #fff;
             border: 1px solid #ddd;
@@ -89,8 +93,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            margin-top: 20px;
-            flex-wrap: wrap; /* Ensure it wraps on smaller screens */
+            flex-wrap: wrap;
         }
         .clear-cart-button {
             background-color: #aeaeae;
@@ -134,6 +137,7 @@
             font-weight: bold;
             text-align: right;
             margin-top: 20px;
+            margin-right: 10px;
         }
         @media (max-width: 768px) {
             .cart-class {
@@ -207,10 +211,5 @@
             </div>
         </div>
     </div>
-    <script>
-        function openQRScanner() {
-            window.location.href = "{% url 'qr_scan_payment' %}";
-        }
-    </script>
 </body>
 </html>
