@@ -7,14 +7,30 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 20px;
+            background: linear-gradient(to right, #1e3c72, #2a5298); /* Blue gradient */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
-            color: #333;
+            color: #fff;
             text-align: center;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            overflow-x: auto;
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            max-height: 400px; /* Limiting max height for scroll */
         }
 
         table {
@@ -27,13 +43,22 @@
             padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
+            color: black;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #343a40;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
 
-        .back-button {
+        tr:hover {
+            background-color: #d6d6d6; /* Slightly darker shade */
+        }
+
+        .back-link {
             background-color: #6c757d;
             color: white;
             border: none;
@@ -41,34 +66,32 @@
             cursor: pointer;
             border-radius: 3px;
             text-decoration: none;
-        }
-
-        .edit-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 3px;
-            text-decoration: none;
-        }
-
-        .search-form {
+            display: block;
+            margin-top: 20px;
             text-align: center;
-            margin-bottom: 20px;
         }
 
-        .search-input {
-            padding: 10px;
-            font-size: 16px;
-            width: 300px;
+        .filter-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-form form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-input {
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 3px;
+            color: black;
         }
 
-        .search-button {
-            padding: 10px 20px;
-            font-size: 16px;
+        .filter-button {
+            padding: 8px 16px;
             background-color: #007bff;
             color: white;
             border: none;
@@ -76,43 +99,49 @@
             cursor: pointer;
         }
 
-        .search-button:hover {
+        .filter-button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <h1>Staff List</h1>
-    <div class="search-form">
+    <div class="filter-form">
         <form method="GET" action="{% url 'staff_list' %}">
-            <input type="text" name="q" class="search-input" placeholder="Search ..." value="{{ query }}">
-            <button type="submit" class="search-button">Search</button>
+            <input type="text" name="q" class="filter-input" placeholder="Search ..." value="{{ query }}">
+            <input type="date" name="start_date" class="filter-input" placeholder="Start Date" value="{{ start_date }}">
+            <input type="date" name="end_date" class="filter-input" placeholder="End Date" value="{{ end_date }}">
+            <button type="submit" class="filter-button">Filter</button>
         </form>
     </div>
-    <a href="{% url 'canteen_item_list' %}" class="back-button">Back</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone Number</th>
-                <th>Balance</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.first_name }}</td>
-                    <td>{{ user.last_name }}</td>
-                    <td>{{ user.phone_number }}</td>
-                    <td>{{ user.balance }}</td>
-                    <td><a href="{% url 'edit_user' user.id %}" class="edit-button">Edit</a></td>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone Number</th>
+                    <th>Balance</th>
+                    <th>Date Joined</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.phone_number }}</td>
+                        <td>{{ user.balance }}</td>
+                        <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+                        <td><a href="{% url 'edit_user' user.id %}" class="edit-button">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
 </body>
 </html>

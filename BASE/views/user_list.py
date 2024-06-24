@@ -2,11 +2,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from BASE.models import CustomUser
 from django.db.models import Q
+from django.utils.dateparse import parse_date
 
 
 @login_required
 def staff_list(request):
     query = request.GET.get("q", "")
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
     if request.user.is_admin:
         users = CustomUser.objects.filter(is_staff=True).filter(
             Q(email__icontains=query)
@@ -14,15 +18,31 @@ def staff_list(request):
             | Q(last_name__icontains=query)
             | Q(phone_number__icontains=query)
         )
+        if start_date:
+            users = users.filter(date_joined__date__gte=parse_date(start_date))
+        if end_date:
+            users = users.filter(date_joined__date__lte=parse_date(end_date))
     else:
         users = CustomUser.objects.none()
 
-    return render(request, "website/staff_list.html", {"users": users, "query": query})
+    return render(
+        request,
+        "website/staff_list.html",
+        {
+            "users": users,
+            "query": query,
+            "start_date": start_date,
+            "end_date": end_date,
+        },
+    )
 
 
 @login_required
 def student_list(request):
     query = request.GET.get("q", "")
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
     if request.user.is_admin:
         users = CustomUser.objects.filter(is_staff=False).filter(
             Q(email__icontains=query)
@@ -30,11 +50,22 @@ def student_list(request):
             | Q(last_name__icontains=query)
             | Q(phone_number__icontains=query)
         )
+        if start_date:
+            users = users.filter(date_joined__date__gte=parse_date(start_date))
+        if end_date:
+            users = users.filter(date_joined__date__lte=parse_date(end_date))
     else:
         users = CustomUser.objects.none()
 
     return render(
-        request, "website/student_list.html", {"users": users, "query": query}
+        request,
+        "website/student_list.html",
+        {
+            "users": users,
+            "query": query,
+            "start_date": start_date,
+            "end_date": end_date,
+        },
     )
 
 
