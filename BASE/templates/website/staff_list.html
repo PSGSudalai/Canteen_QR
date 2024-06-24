@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Staff List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(to right, #1e3c72, #2a5298); /* Blue gradient */
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
+            height:100vh;
         }
 
         h1 {
@@ -23,6 +26,7 @@
 
         .table-container {
             width: 100%;
+            
             max-width: 1200px;
             overflow-x: auto;
             background-color: white;
@@ -32,7 +36,7 @@
             margin-top: 20px;
             max-height: 400px; /* Limiting max height for scroll */
         }
-
+      
         table {
             width: 100%;
             border-collapse: collapse;
@@ -57,6 +61,18 @@
         tr:hover {
             background-color: #d6d6d6; /* Slightly darker shade */
         }
+        /* .edit_link{
+            background-color: #ec0c0c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        } */
 
         .back-link {
             background-color: #6c757d;
@@ -136,7 +152,7 @@
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.date_joined|date:"Y-m-d" }}</td>
-                        <td><a href="{% url 'edit_user' user.id %}" class="edit-button">Edit</a></td>
+                        <td><button class="btn btn-danger"><a href="{% url 'edit_user' user.id %}">Edit</a></button></td>
                     </tr>
                 {% endfor %}
             </tbody>
