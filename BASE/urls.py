@@ -16,7 +16,8 @@ from BASE.views import (
     delete_cart_item,
     CartListView,
     qr_image_view,
-    qr_scan_view,
+    qr_scan_recharge_view,
+    qr_scan_payment_view,
     PreviousOrdersListView,
     TransactionListView,
     student_list,
@@ -44,7 +45,8 @@ urlpatterns = [
     path("clear_cart/", clear_cart_items, name="clear_cart"),
     path("delete_cart_item/<int:item_id>/", delete_cart_item, name="delete_cart_item"),
     path("cart/", CartListView.as_view(), name="cart_list"),
-    path("canteen/qr_scan/", qr_scan_view, name="qr_scan"),
+    path("canteen/qr_scan_recharge/", qr_scan_recharge_view, name="qr_scan_recharge"),
+    path("canteen/qr_scan_payment/", qr_scan_payment_view, name="qr_scan_payment"),
     path(
         "previous-orders/",
         PreviousOrdersListView.as_view(),
@@ -56,4 +58,7 @@ urlpatterns = [
     path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
     path("recharge/<uuid>/", recharge_transaction, name="recharge_transaction"),
     path("payment/<uuid>/", payment_transaction, name="payment_transaction"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

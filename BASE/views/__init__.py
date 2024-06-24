@@ -12,7 +12,7 @@ from .add_cart import (
     delete_cart_item,
     update_cart_item,
 )
-from .qr_scan import qr_scan_view
+from .qr_scan import qr_scan_recharge_view, qr_scan_payment_view
 from .previous_order import PreviousOrdersListView
 from .transaction import TransactionListView, recharge_transaction, payment_transaction
 from .user_list import staff_list, student_list, edit_user

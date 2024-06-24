@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,9 +27,6 @@ SECRET_KEY = "django-insecure-)@!o47gbyj#gb=9rf472&iy@^jktlqo(6*9r15ok16nkfma&8v
 DEBUG = True
 
 ALLOWED_HOSTS = []
-# settings.py
-
-AUTH_USER_MODEL = "BASE.CustomUser"
 
 
 # Application definition
@@ -40,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "BASE",
+    "BASE",  # Your custom app
 ]
 
 MIDDLEWARE = [
@@ -55,16 +53,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "Canteen_QR.urls"
 
-# settings.py
-
-import os
-
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "BASE", "templates")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "BASE", "templates")
+        ],  # Adjust as per your project structure
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -76,7 +70,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = "Canteen_QR.wsgi.application"
 
@@ -120,17 +113,29 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Media files (Uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Your custom user model
+AUTH_USER_MODEL = "BASE.CustomUser"

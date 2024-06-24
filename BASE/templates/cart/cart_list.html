@@ -3,61 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Cart</title>
     <style>
-        /* Style for the body */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
             margin: 0;
             padding: 20px;
         }
-
-        /* Style for the h1 */
         h1 {
-            color: #333;
+            color: #ffffff;
             text-align: center;
+            margin-bottom: 20px;
         }
-
-        /* Style for the list */
+        .cart-class {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .cart-left {
+            width: 350px;
+            height: 450px;
+            margin-left: 70px;
+            margin-bottom: 20px;
+        }
+        .cart-left img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .cart-item-list-right {
+            flex: 1;
+            max-width: calc(100% - 550px);
+        }
+        .items-list {
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
         ul {
             list-style-type: none;
             padding: 0;
-            margin-top: 20px;
+            margin: 0;
         }
-
-        /* Style for list items */
         li {
             background-color: #fff;
             padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
             display: flex;
-            align-items: center; /* Center items vertically */
+            align-items: center;
         }
-
-        /* Style for item image */
         .item-image {
-            max-width: 80px; /* Adjust image size as needed */
-            max-height: 80px; /* Adjust image size as needed */
+            max-width: 80px;
+            max-height: 80px;
             border-radius: 5px;
-            margin-right: 10px; /* Space between image and details */
+            margin-right: 10px;
         }
-
-        /* Style for item details */
         .item-details {
-            flex: 1; /* Take remaining space */
+            flex: 1;
         }
-
         .item-details p {
             margin: 5px 0;
         }
-
-        /* Style for delete button */
         .delete-button {
             background-color: #dc3545;
             color: white;
@@ -67,104 +82,134 @@
             border-radius: 3px;
             margin-left: 10px;
         }
-
         .delete-button:hover {
             background-color: #c82333;
         }
-
-        /* Style for buttons container */
         .buttons-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
+            align-items: center;
             margin-top: 20px;
+            flex-wrap: wrap; /* Ensure it wraps on smaller screens */
         }
-
-        /* Style for clear cart button */
         .clear-cart-button {
+            background-color: #aeaeae;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .payment-button,
+        .back-link {
             background-color: #007bff;
             color: white;
             border: none;
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 3px;
-        }
-
-        .clear-cart-button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Style for back to canteen items button */
-        .back-link {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 3px;
+            margin-left: 10px;
             text-decoration: none;
             display: inline-block;
         }
-
-        .back-link:hover {
-            background-color: #5a6268;
+        .clear-cart-button:hover {
+            background-color: #5f5f60;
         }
-
-        /* Style for payment button */
+        .back-link:hover {
+            background-color: #1c67b7;
+            color: white;
+            font-style: normal;
+        }
         .payment-button {
             background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 3px;
         }
-
         .payment-button:hover {
             background-color: #218838;
+        }
+        .total-cost-label {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .cart-class {
+                flex-direction: column;
+                align-items: center;
+            }
+            .cart-left {
+                margin-left: 0;
+                margin-bottom: 20px;
+            }
+            .cart-item-list-right {
+                max-width: 100%;
+            }
+            .buttons-container {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            .clear-cart-button, .payment-button, .back-link {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            .total-cost-label {
+                text-align: center;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-    <h1> Cart</h1>
-    <ul>
-        {% for item in cart_items %}
-            <li>
-                <img class="item-image" src="{{ item.item.image.url }}" alt="Item Image">
-                <div class="item-details">
-                    <p>{{ item.item.identity }}</p>
-                    <p>Quantity: {{ item.quantity }}</p>
-                </div>
-                <div>
-
-                <form method="post" action="{% url 'update_cart_item' item.id %}">
+    <h1>Cart</h1>
+    <div class="cart-class">
+        <div class="cart-left">
+            {% load static %}
+            <img src="{% static 'illustrations/Add_to_Cart_Illustraions.png' %}" alt="Add to Cart Illustration">
+        </div>
+        <div class="cart-item-list-right">
+            <div class="items-list">
+                <ul>
+                    {% for item in cart_items %}
+                        <li>
+                            <img class="item-image" src="{{ item.item.itemImage.image.url }}" alt="Item Image">
+                            <div class="item-details">
+                                <p>{{ item.item.identity }}</p>
+                                <p>Quantity: {{ item.quantity }} | Rs. {{ item.item.price }}</p>
+                            </div>
+                            <div>
+                                <form method="post" action="{% url 'update_cart_item' item.id %}">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" required>
+                                    <button type="submit" class="btn btn-primary">Update Quantity</button>
+                                </form>
+                                <form method="post" action="{% url 'delete_cart_item' item.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger delete-button" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="buttons-container">
+                <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+                <form method="post" action="{% url 'clear_cart' %}">
                     {% csrf_token %}
-                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" required>
-                    <button type="submit" class="btn btn-primary">Update Quantity</button>
+                    <button class="clear-cart-button" type="submit">Clear</button>
                 </form>
-
-                <form method="post" action="{% url 'delete_cart_item' item.id %}">
-                    {% csrf_token %}
-                    <button class="btn btn-danger" type="submit">Delete</button>
+                <form method="get" action="{% url 'qr_scan_payment' %}">
+                    <button class="payment-button" type="submit">Payment</button>
                 </form>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-    <div class="buttons-container">
-        <a href="{% url 'canteen_item_list' %}" class="back-link">Back to Canteen Items</a>
-        <form method="post" action="{% url 'clear_cart' %}">
-            {% csrf_token %}
-            <button class="clear-cart-button" type="submit">Clear Cart</button>
-        </form>
-        <button class="payment-button"><a href="{% url 'qr_scan' %}"></a>Proceed to Payment</button>
-        <label>Total Cost: Rs.{{ total_cost }}</label>
+                <label class="total-cost-label">Total Cost: Rs. {{ total_cost }}</label>
+            </div>
+        </div>
     </div>
-    </div>
-
     <script>
         function openQRScanner() {
-            window.location.href = "{% url 'qr_scan' %}"; // Replace 'qr_scan_page' with the actual URL name for your QR scan page
+            window.location.href = "{% url 'qr_scan_payment' %}";
         }
     </script>
 </body>

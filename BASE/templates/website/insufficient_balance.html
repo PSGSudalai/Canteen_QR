@@ -1,0 +1,19 @@
+<!-- website/insufficient_balance.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insufficient Balance</title>
+</head>
+<body>
+    <h1>Insufficient Balance</h1>
+    <p>Your current balance is insufficient to complete the transaction.</p>
+    <p>Would you like to recharge your account or cancel the transaction?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="recharge">Recharge</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+    </form>
+</body>
+</html>

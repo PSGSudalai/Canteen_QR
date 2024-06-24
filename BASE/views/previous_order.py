@@ -2,6 +2,7 @@ from django.views.generic import ListView
 from BASE.models import PreviousOrders
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.utils.dateparse import parse_date
 
 
 class PreviousOrdersListView(LoginRequiredMixin, ListView):
@@ -15,18 +16,22 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
             else PreviousOrders.objects.filter(student=self.request.user)
         )
 
-        min_amount = self.request.GET.get("min_amount")
-        max_amount = self.request.GET.get("max_amount")
+        min_total = self.request.GET.get("min_total")
+        max_total = self.request.GET.get("max_total")
         user_email = self.request.GET.get("user_email")
+        start_date = self.request.GET.get("start_date")
+        end_date = self.request.GET.get("end_date")
 
-        if min_amount:
-            queryset = queryset.filter(amount__gte=min_amount)
-        if max_amount:
-            queryset = queryset.filter(amount__lte=max_amount)
+        if min_total:
+            queryset = queryset.filter(total__gte=min_total)
+        if max_total:
+            queryset = queryset.filter(total__lte=max_total)
         if user_email and (self.request.user.is_admin or self.request.user.is_staff):
             queryset = queryset.filter(student__email__icontains=user_email)
-
-        return queryset
+        if start_date:
+            queryset = queryset.filter(created_at__date__gte=parse_date(start_date))
+        if end_date:
+            queryset = queryset.filter(created_at__date__lte=parse_date(end_date))
 
         return queryset
 
@@ -36,4 +41,6 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
         context["min_total"] = self.request.GET.get("min_total", "")
         context["max_total"] = self.request.GET.get("max_total", "")
         context["user_email"] = self.request.GET.get("user_email", "")
+        context["start_date"] = self.request.GET.get("start_date", "")
+        context["end_date"] = self.request.GET.get("end_date", "")
         return context
