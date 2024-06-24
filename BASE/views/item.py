@@ -11,9 +11,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 def canteen_item_list(request):
     if request.user.is_admin:
-        items = CanteenItems.objects.all()
+        items = CanteenItems.objects.filter(is_archieved=False)
     else:
-        items = CanteenItems.objects.filter(availability=True)
+        items = CanteenItems.objects.filter(availability=True, is_archieved=False)
 
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
@@ -76,7 +76,7 @@ def canteen_item_create(request):
             canteen_item.save()
 
             if image:
-                item_image = ItemImage(canteen_item=canteen_item, image=image)
+                item_image = ItemImage(image=image)
                 item_image.save()
                 canteen_item.itemImage = item_image
                 canteen_item.save()
@@ -134,6 +134,6 @@ def canteen_item_edit(request, item_id):
 
 def canteen_item_archive(request, item_id):
     item = get_object_or_404(CanteenItems, pk=item_id)
-    item.is_archive = True
+    item.is_archieved = True
     item.save()
     return redirect("canteen_item_list")
