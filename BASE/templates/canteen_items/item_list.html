@@ -22,26 +22,25 @@
         }
 
         .navigation ul {
-            list-style-type: none; /* Remove bullets */
+            list-style-type: none;
             margin: 0;
             padding: 0;
-            display: flex; /* Display list items in a row */
-            justify-content: flex-end; /* Align items to the right */
+            display: flex;
+            justify-content: flex-end;
         }
 
         .navigation ul li {
-            margin-left: 20px; /* Space between items */
+            margin-left: 20px;
         }
 
         .navigation ul li a {
-            text-decoration: none; /* Remove underline from links */
-            color: inherit; /* Inherit text color */
+            text-decoration: none;
+            color: inherit;
         }
 
         .navigation ul li a:hover {
-            text-decoration: underline; /* Add underline on hover */
+            text-decoration: underline;
         }
-
 
         h1 {
             color: #333;
@@ -233,6 +232,31 @@
             font-weight: bold;
             color: #000;
         }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -249,18 +273,19 @@
         <ul>
             {% if user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
-                <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'staff_list' %}" class="staff-list-button">Staff List</a></li>
                 <li><a href="{% url 'student_list' %}" class="non-staff-list-button">Student List</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
+                <button><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></button>
             {% elif user.is_staff %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
-                <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
+                <button><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></button>
             {% else %}
                 <li><a href="{% url 'qr_image' %}" class="add-item-button">Show QR</a></li>
+                <li><a href="#" class="balance-link">Balance</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
             {% endif %}
@@ -272,89 +297,114 @@
             <input type="text" name="q" placeholder="Search..." class="form-control">
             <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price.">
             <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
-            <select id="category" name="category" class="form-control">
-                <option value="">All Categories</option>
-                <option value="Food">Food</option>
-                <option value="Snacks">Snackss</option>
-                <option value="Beverage">Beverage</option>
-            </select>
-            <button type="submit" style="background-color: #007bff;">Search</button>
-        </form>
-    </div>
+                            <select id="category" name="category" class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Beverage">Beverage</option>
+                </select>
+                <button type="submit" style="background-color: #007bff;">Search</button>
+            </form>
+        </div>
 
-    <ul class="item">
-        {% for item in items %}
-            <li class="item-card">
-                <div class="item-image-container">
-                    <img class="item-image" src="{{ item.itemImage.image.url }}" alt="{{ item.identity }}">
-                </div>
-                <div class="item-details">
-                    <p class="item-identity">{{ item.identity }}</p>
-                    <p class="item-price">Rs.{{ item.price }}</p>
-                    {% if user.is_admin %}
-                        <p class="item-availability">
-                            {% if item.availability %}
-                                Available
-                            {% else %}
-                                Unavailable
-                            {% endif %}
-                        </p>
-                    {% endif %}
-                    {% if user.is_admin or user.is_staff %}
-                    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+        <ul class="item">
+            {% for item in items %}
+                <li class="item-card">
+                    <div class="item-image-container">
+                        <img class="item-image" src="{{ item.itemImage.image.url }}" alt="{{ item.identity }}">
+                    </div>
+                    <div class="item-details">
+                        <p class="item-identity">{{ item.identity }}</p>
+                        <p class="item-price">Rs.{{ item.price }}</p>
+                        {% if user.is_admin %}
+                            <p class="item-availability">
+                                {% if item.availability %}
+                                    Available
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </p>
+                        {% endif %}
+                        {% if user.is_admin or user.is_staff %}
+                        <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
-                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <div class="form-group">
-                            <input type="number" name="quantity" value="1" min="1" class="quantity-control">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" style="background-color: #007bff;">Add to Cart</button>
-                        </div>
-                    </form>
+                        <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <div class="form-group">
+                                <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" style="background-color: #007bff;">Add to Cart</button>
+                            </div>
+                        </form>
 
-                    {% endif %}
+                        {% endif %}
 
-                    {% if user.is_admin %}
-                        <div class="admin-actions">
-                            <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ item.id }}">
-                                <button type="submit" class="btn btn-warning">Archive Item</button>
-                            </form>
+                        {% if user.is_admin %}
+                            <div class="admin-actions">
+                                <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <button type="submit" class="btn btn-warning">Archive Item</button>
+                                </form>
 
-                            <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
-                                <button type="submit" class="btn btn-info">Edit Item</button>
-                            </form>
-                        </div>
-                    {% endif %}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <!-- Pagination controls -->
-    <div class="pagination">
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-                <li><a href="?page=1">&laquo; first</a></li>
-                <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
-            {% else %}
-                <li class="disabled"><span>&laquo; first</span></li>
-                <li class="disabled"><span>previous</span></li>
-            {% endif %}
-
-            <li class="active"><span>{{ page_obj.number }}</span></li>
-
-            {% if page_obj.has_next %}
-                <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
-                <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>next</span></li>
-                <li class="disabled"><span>last &raquo;</span></li>
-            {% endif %}
+                                <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
+                                    <button type="submit" class="btn btn-info">Edit Item</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
         </ul>
-    </div>
-</body>
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="?page=1">&laquo; first</a></li>
+                    <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo; first</span></li>
+                    <li class="disabled"><span>previous</span></li>
+                {% endif %}
+
+                <li class="active"><span>{{ page_obj.number }}</span></li>
+
+                {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                    <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>next</span></li>
+                    <li class="disabled"><span>last &raquo;</span></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Popup for balance -->
+        <div class="popup" id="balance-popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="togglePopup()">&times;</span>
+                <h2>Your Balance</h2>
+                <p>Balance: Rs. {{ user.balance }}</p>
+            </div>
+        </div>
+
+        <script>
+            function togglePopup() {
+                var popup = document.getElementById('balance-popup');
+                if (popup.style.display === 'none' || popup.style.display === '') {
+                    popup.style.display = 'block';
+                } else {
+                    popup.style.display = 'none';
+                }
+            }
+
+            document.querySelector('.balance-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                togglePopup();
+            });
+        </script>
+    </body>
 </html>

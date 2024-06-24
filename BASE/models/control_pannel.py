@@ -3,7 +3,7 @@ from BASE.models import BaseModels
 from BASE.choices import CATEGORY_CHOICES, PAYMENT_METHOD, PAYMENT_TYPE
 
 
-class CanteenItems(models.Model):
+class CanteenItems(BaseModels):
     identity = models.CharField(max_length=100)
     price = models.IntegerField()
     availability = models.BooleanField(default=True)
@@ -22,14 +22,8 @@ class CanteenItems(models.Model):
         return self.identity
 
 
-class ItemImage(models.Model):
-    canteen_item = models.OneToOneField(
-        CanteenItems, on_delete=models.CASCADE, related_name="item_image"
-    )
+class ItemImage(BaseModels):
     image = models.ImageField(upload_to="canteen_items/")
-
-    def __str__(self):
-        return f"Image for {self.canteen_item.identity}"
 
 
 class Transaction(BaseModels):

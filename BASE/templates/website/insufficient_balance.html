@@ -1,19 +1,70 @@
-<!-- website/insufficient_balance.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insufficient Balance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .view-cart-button,
+        .transaction-history-button {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .view-cart-button:hover,
+        .transaction-history-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Insufficient Balance</h1>
-    <p>Your current balance is insufficient to complete the transaction.</p>
-    <p>Would you like to recharge your account or cancel the transaction?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="action" value="recharge">Recharge</button>
-        <button type="submit" name="action" value="cancel">Cancel</button>
-    </form>
+    <div class="container">
+        <h1>Insufficient Balance</h1>
+        <p>Your current balance is insufficient to complete the transaction.</p>
+        <p>Would you like to recharge your account or cancel the transaction?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="button-container">
+                <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
+                <a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
