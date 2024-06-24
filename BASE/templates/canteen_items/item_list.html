@@ -4,29 +4,53 @@
     <title>Canteen Items</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         /* Style for the body */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
-            font-family: Arial, sans-serif;
+            
             background-color: #f0f0f0;
             margin: 0;
             padding: 20px;
         }
 
         .navigation {
+            background: rgb(26,83,201);
+background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37%, rgba(36,97,223,1) 61%, rgba(29,82,193,1) 100%, rgba(0,212,255,1) 100%);
+            text-align: center;
             text-align: right;
-            background-color: #ebe8e8;
             padding: 10px 20px;
             margin-bottom: 20px;
             font-size: 15px;
+            color: #fff;
         }
 
         .navigation ul {
+
             list-style-type: none;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            text-align: center;
+            
+        }
+        .navigation  .view-cart-button{
+            background-color: #fff;
+            color: #333;
+            border: none;
+            padding: 5px 10px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+        .navigation  .view-cart-button:hover{
+            background-color: rgb(96, 223, 96);
+            color: #fff;
+            text-decoration: none;
+
         }
 
         .navigation ul li {
@@ -262,7 +286,8 @@
 <body>
     <div class="header">
         <div>
-            <span class="glyphicon glyphicon-user"></span>
+            <!-- <span class="glyphicon glyphicon-user"></span> -->
+            <i class='bx bxs-user-circle' style="font-size:xx-large;"></i>
             <span>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
         </div>
         <h1>Canteen Items</h1>
@@ -273,16 +298,21 @@
         <ul>
             {% if user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
+                <li><a href="{% url 'signup' %}" class="add-item-admin-button">New User</a></li>
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'staff_list' %}" class="staff-list-button">Staff List</a></li>
                 <li><a href="{% url 'student_list' %}" class="non-staff-list-button">Student List</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
-                <button><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></button>
+                <span>
+                <a href="{% url 'cart_list' %}" class="view-cart-button"  >Cart
+                    <i class='bx bx-cart' ></i>
+                </a>
+            </span>
             {% elif user.is_staff %}
-                <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
+                <li><a href="{% url 'signup' %}" class="add-item-admin-button">New User</a></li>
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
-                <button><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></button>
+                <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
             {% else %}
                 <li><a href="{% url 'qr_image' %}" class="add-item-button">Show QR</a></li>
                 <li><a href="#" class="balance-link">Balance</a></li>
