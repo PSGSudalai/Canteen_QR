@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Student List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(to right, #1e3c72, #2a5298); /* Blue gradient */
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
+            height:100vh;
+        }     
+
 
         h1 {
             color: #fff;
@@ -136,7 +140,8 @@
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.date_joined|date:"Y-m-d" }}</td>
-                        <td><a href="{% url 'edit_user' user.id %}" class="edit-button">Edit</a></td>
+                        <td><button class="btn btn-danger"><a href="{% url 'edit_user' user.id %}">Edit</a></button></td>
+
                     </tr>
                 {% endfor %}
             </tbody>
