@@ -2,11 +2,13 @@
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseBadRequest
+from BASE.choices import PAYMENT_TYPE, PAYMENT_METHOD
 from BASE.models import Transaction, CustomUser, Cart, PreviousOrders
 from BASE.helpers import calculating_total_cost
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db.models import Q
+from django.utils.dateparse import parse_date
 
 
 @method_decorator(login_required, name="dispatch")
@@ -24,6 +26,10 @@ class TransactionListView(ListView):
         min_amount = self.request.GET.get("min_amount")
         max_amount = self.request.GET.get("max_amount")
         user_email = self.request.GET.get("user_email")
+        start_date = self.request.GET.get("start_date")
+        end_date = self.request.GET.get("end_date")
+        payment_type = self.request.GET.get("payment_type")
+        payment_method = self.request.GET.get("payment_method")
 
         if min_amount:
             queryset = queryset.filter(amount__gte=min_amount)
@@ -31,6 +37,14 @@ class TransactionListView(ListView):
             queryset = queryset.filter(amount__lte=max_amount)
         if user_email and (self.request.user.is_admin or self.request.user.is_staff):
             queryset = queryset.filter(student__email__icontains=user_email)
+        if start_date:
+            queryset = queryset.filter(created_at__date__gte=parse_date(start_date))
+        if end_date:
+            queryset = queryset.filter(created_at__date__lte=parse_date(end_date))
+        if payment_type:
+            queryset = queryset.filter(payment_type=payment_type)
+        if payment_method:
+            queryset = queryset.filter(payment_method=payment_method)
 
         return queryset
 
@@ -40,6 +54,12 @@ class TransactionListView(ListView):
         context["min_amount"] = self.request.GET.get("min_amount", "")
         context["max_amount"] = self.request.GET.get("max_amount", "")
         context["user_email"] = self.request.GET.get("user_email", "")
+        context["start_date"] = self.request.GET.get("start_date", "")
+        context["end_date"] = self.request.GET.get("end_date", "")
+        context["payment_type"] = self.request.GET.get("payment_type", "")
+        context["payment_method"] = self.request.GET.get("payment_method", "")
+        context["payment_types"] = PAYMENT_TYPE
+        context["payment_methods"] = PAYMENT_METHOD
         return context
 
 
