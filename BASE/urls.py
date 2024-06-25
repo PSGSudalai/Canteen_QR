@@ -26,6 +26,10 @@ from BASE.views import (
     edit_user,
     recharge_transaction,
     payment_transaction,
+    archive_user,
+    archived_student_list,
+    unarchive_user,
+    archived_items_list_view,
 )
 
 urlpatterns = [
@@ -33,6 +37,9 @@ urlpatterns = [
     path("qr_image/", qr_image_view, name="qr_image"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
+    path("students/archive/<int:id>/", archive_user, name="archive_user"),
+    path("students/unarchive/<int:id>/", unarchive_user, name="unarchive_user"),
+    path("students/archived/", archived_student_list, name="archived_student_list"),
     path("canteen/items/", canteen_item_list, name="canteen_item_list"),
     path("canteen/items/create/", canteen_item_create, name="canteen_item_create"),
     path("items/edit/<int:item_id>/", canteen_item_edit, name="canteen_item_edit"),
@@ -60,6 +67,7 @@ urlpatterns = [
     path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
     path("recharge/<uuid>/", recharge_transaction, name="recharge_transaction"),
     path("payment/<uuid>/", payment_transaction, name="payment_transaction"),
+    path("archived-items/", archived_items_list_view, name="archived_items_list"),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

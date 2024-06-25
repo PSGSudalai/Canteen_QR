@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db.models import Q
 from django.utils.dateparse import parse_date
+from BASE.helpers import send_email
 
 
 @method_decorator(login_required, name="dispatch")
@@ -73,7 +74,7 @@ def recharge_transaction(request, uuid):
             return HttpResponseBadRequest("Permission denied")
 
         try:
-            student = CustomUser.objects.get(uuid=uuid)
+            student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
             return HttpResponseBadRequest("Student not found")
 
@@ -92,6 +93,7 @@ def recharge_transaction(request, uuid):
             payment_type="Recharge",
             payment_method=payment_method,
         )
+        send_email("recharge", amount, student.email)
         # Optionally send email notification
         # send_email("Recharge", amount, student.email)
 
@@ -102,7 +104,7 @@ def recharge_transaction(request, uuid):
     elif request.method == "GET":
         # Fetch the student object
         try:
-            student = CustomUser.objects.get(uuid=uuid)
+            student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
             return HttpResponseBadRequest("Student not found")
 
@@ -117,7 +119,7 @@ def recharge_transaction(request, uuid):
 @login_required
 def payment_transaction(request, uuid):
     try:
-        student = CustomUser.objects.get(uuid=uuid)
+        student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
     except CustomUser.DoesNotExist:
         return HttpResponseBadRequest("Student not found")
 
@@ -170,6 +172,7 @@ def payment_transaction(request, uuid):
                 quantity=cartItem.quantity,
                 total=cartItem.quantity * cartItem.item.price,
             )
+        send_email("payment", amount, student.email)
 
         cartItems.update(is_sold=True)
         # send_email("Payment", amount, student.email)

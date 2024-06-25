@@ -1,6 +1,6 @@
 # BASE/views.py
 
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -115,3 +115,25 @@ def balance_check_view(request):
         "website/balance_check_template.html",
         {"user": request.user, "user_balance": user_balance},
     )
+
+
+@login_required
+def archive_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    user.is_archieved = True
+    user.save()
+    return redirect("student_list")
+
+
+@login_required
+def unarchive_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    user.is_archieved = False
+    user.save()
+    return redirect("archived_student_list")
+
+
+@login_required
+def archived_student_list(request):
+    users = CustomUser.objects.filter(is_archieved=True)
+    return render(request, "website/archived_student_list.html", {"users": users})

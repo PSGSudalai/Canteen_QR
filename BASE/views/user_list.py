@@ -44,7 +44,7 @@ def student_list(request):
     end_date = request.GET.get("end_date")
 
     if request.user.is_admin:
-        users = CustomUser.objects.filter(is_staff=False).filter(
+        users = CustomUser.objects.filter(is_staff=False, is_archieved=False).filter(
             Q(email__icontains=query)
             | Q(first_name__icontains=query)
             | Q(last_name__icontains=query)

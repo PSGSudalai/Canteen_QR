@@ -6,4 +6,4 @@ CATEGORY_CHOICES = {
 
 PAYMENT_TYPE = {("Recharge", "Recharge"), ("Payment", "Payment")}
 
-PAYMENT_METHOD = {("Cash", "Cash"), ("Upi", "Upi")}
+PAYMENT_METHOD = {("Cash", "Cash"), ("Upi", "Upi"), ("QR", "QR")}
