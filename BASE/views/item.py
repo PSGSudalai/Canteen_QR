@@ -71,7 +71,7 @@ def archived_items_list_view(request):
 
     return render(
         request,
-        "archived_items_list.html",
+        "canteen_items/archived_items_list.html",
         {
             "items": archived_items,
             "query": query,
@@ -162,5 +162,12 @@ def canteen_item_edit(request, item_id):
 def canteen_item_archive(request, item_id):
     item = get_object_or_404(CanteenItems, pk=item_id)
     item.is_archieved = True
+    item.save()
+    return redirect("canteen_item_list")
+
+
+def canteen_item_unarchive(request, item_id):
+    item = get_object_or_404(CanteenItems, pk=item_id)
+    item.is_archieved = False
     item.save()
     return redirect("canteen_item_list")
