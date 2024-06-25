@@ -44,29 +44,26 @@ def signup_view(request):
             # Generate QR code image
             qr_img = qr.make_image(fill_color="black", back_color="white")
 
-            # Save QR code image to user model
             qr_img_buffer = BytesIO()
             qr_img.save(qr_img_buffer, format="PNG")
-            filename = f"qr_code_{user.id}.png"  # Unique filename for each user
+            filename = f"qr_code_{user.id}.png"
             user.qr_code.save(filename, ContentFile(qr_img_buffer.getvalue()))
             user.save()
 
-            # Prepare the attachment
             attachment = {
                 "filename": filename,
                 "content": qr_img_buffer.getvalue(),
                 "mimetype": "image/png",
             }
 
-            # Send email with QR code attachment
-            send_welcome_email(
-                subject="Welcome to Our Service",
-                message="Thank you for signing up. Please find your QR code attached.",
-                email=user.email,
-                attachment=attachment,
-            )
+            # send_welcome_email(
+            #     subject="Welcome to Our Service",
+            #     message="Thank you for signing up. Please find your QR code attached.",
+            #     email=user.email,
+            #     attachment=attachment,
+            # )
 
-            return redirect("qr_image", user_id=user.id)  # Redirect to the QR code view
+            return redirect("qr_image", user_id=user.id)
 
     return render(request, "registration/signup.html")
 

@@ -14,6 +14,7 @@ from .item import (
     canteen_item_edit,
     canteen_item_archive,
     archived_items_list_view,
+    canteen_item_unarchive,
 )
 from .add_cart import (
     add_to_cart,
@@ -24,5 +25,10 @@ from .add_cart import (
 )
 from .qr_scan import qr_scan_recharge_view, qr_scan_payment_view
 from .previous_order import PreviousOrdersListView
-from .transaction import TransactionListView, recharge_transaction, payment_transaction
+from .transaction import (
+    TransactionListView,
+    recharge_transaction,
+    payment_transaction,
+    generate_report,
+)
 from .user_list import staff_list, student_list, edit_user

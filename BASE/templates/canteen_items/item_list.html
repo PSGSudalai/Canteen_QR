@@ -9,7 +9,7 @@
         /* Style for the body */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
-            
+
             background-color: #f0f0f0;
             margin: 0;
             padding: 20px;
@@ -34,7 +34,7 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgb(45, 99, 216) 37%, 
             display: flex;
             justify-content:space-around;
             text-align: center;
-            
+
         }
         .navigation  .view-cart-button{
             background-color: #fff;
@@ -157,8 +157,8 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgb(45, 99, 216) 37%, 
             width: calc(25% - 40px);
             box-sizing: border-box;
             margin-bottom: 20px;
-            
-           
+
+
         }
 
         .item-image-container {
@@ -256,20 +256,20 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgb(45, 99, 216) 37%, 
     color: #007bff;
     text-decoration: none;
     padding: 10px 15px;
-    border-radius: 5px; 
-    transition: background-color 0.3s ease, color 0.3s ease; 
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .pagination a:hover, .pagination span:hover {
-    background-color: #007bff; 
+    background-color: #007bff;
     color: #fff;
 }
 
 .pagination .active span {
     font-weight: bold;
     color: #000;
-    background-color: #e9ecef; 
-    border-radius: 5px; 
+    background-color: #e9ecef;
+    border-radius: 5px;
 }
 
 
@@ -332,6 +332,7 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgb(45, 99, 216) 37%, 
         <ul>
             {% if user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
+                <li><a href="{% url 'archived_items_list' %}" class="add-item-admin-button">Archived Items</a></li>
                 <li><a href="{% url 'signup' %}" class="add-item-admin-button">New User</a></li>
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'staff_list' %}" class="staff-list-button">Staff List</a></li>
