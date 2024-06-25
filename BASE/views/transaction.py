@@ -2,7 +2,7 @@
 from django.urls import reverse
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from BASE.choices import PAYMENT_TYPE, PAYMENT_METHOD
 from BASE.models import Transaction, CustomUser, Cart, PreviousOrders
 from BASE.helpers import calculating_total_cost
@@ -65,6 +65,7 @@ class TransactionListView(ListView):
         return context
 
 
+@login_required
 def recharge_transaction(request, uuid):
     if request.method == "POST":
         amount = request.POST.get("amount")
@@ -83,7 +84,6 @@ def recharge_transaction(request, uuid):
             amount = int(amount)
             student.balance += amount
             student.save()
-
         except ValueError:
             return HttpResponseBadRequest("Invalid amount")
 
@@ -95,24 +95,19 @@ def recharge_transaction(request, uuid):
             payment_method=payment_method,
         )
         send_email("recharge", amount, student.email)
-        # Optionally send email notification
-        # send_email("Recharge", amount, student.email)
 
-        return redirect(
-            "canteen_item_list"
-        )  # Redirect to transaction list or any other appropriate page
+        next_url = request.GET.get("next", reverse("canteen_item_list"))
+        return HttpResponseRedirect(next_url)
 
     elif request.method == "GET":
-        # Fetch the student object
         try:
             student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
             return HttpResponseBadRequest("Student not found")
 
-        # Render the form with student's first name and last name separately
         context = {
             "uuid": uuid,
-            "student": student,  # Pass the student object itself to access first_name and last_name in the template
+            "student": student,
         }
         return render(request, "website/recharge_form.html", context)
 
@@ -131,12 +126,13 @@ def payment_transaction(request, uuid):
         action = request.POST.get("action")
 
         if action == "recharge":
+            next_url = reverse("payment_transaction", kwargs={"uuid": student.uuid})
             return redirect(
-                reverse("recharge_transaction", kwargs={"uuid": student.uuid})
+                f"{reverse('recharge_transaction', kwargs={'uuid': student.uuid})}?next={next_url}"
             )
 
         if action == "cancel":
-            return redirect("cart_list")  # Ensure this matches your URL name
+            return redirect("cart_list")
 
         payment_method = request.POST.get("payment_method", "cash")
         staff = request.user
@@ -157,7 +153,6 @@ def payment_transaction(request, uuid):
         except ValueError:
             return HttpResponseBadRequest("Invalid amount")
 
-        # Record the transaction
         transaction = Transaction.objects.create(
             student=student,
             amount=amount,
@@ -166,7 +161,6 @@ def payment_transaction(request, uuid):
             payment_method=payment_method,
         )
 
-        # Store previous orders
         for cartItem in cartItems:
             PreviousOrders.objects.create(
                 student=student,
@@ -178,9 +172,7 @@ def payment_transaction(request, uuid):
         send_email("payment", amount, student.email)
 
         cartItems.update(is_sold=True)
-        return redirect(
-            "canteen_item_list"
-        )  # Redirect to transaction list or any other appropriate page
+        return redirect("canteen_item_list")
 
     elif request.method == "GET":
         return render(
