@@ -54,8 +54,6 @@ def signup_view(request):
             user.qr_code.save(filename, ContentFile(qr_img_buffer.getvalue()))
             user.save()
 
-            # Login user
-            login(request, user)
             return redirect("qr_image")
 
     return render(request, "registration/signup.html")
