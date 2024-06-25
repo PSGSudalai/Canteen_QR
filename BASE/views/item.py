@@ -55,6 +55,33 @@ def canteen_item_list(request):
 
 
 @login_required
+def archived_items_list_view(request):
+    query = request.GET.get("q", "")
+    start_date = request.GET.get("start_date", "")
+    end_date = request.GET.get("end_date", "")
+
+    archived_items = CanteenItems.objects.filter(is_archieved=True)
+
+    if query:
+        archived_items = archived_items.filter(identity__icontains=query)
+    if start_date:
+        archived_items = archived_items.filter(modified_at__date__gte=start_date)
+    if end_date:
+        archived_items = archived_items.filter(modified_at__date__lte=end_date)
+
+    return render(
+        request,
+        "archived_items_list.html",
+        {
+            "items": archived_items,
+            "query": query,
+            "start_date": start_date,
+            "end_date": end_date,
+        },
+    )
+
+
+@login_required
 def canteen_item_create(request):
     if not request.user.is_admin:
         return redirect("canteen_item_list")

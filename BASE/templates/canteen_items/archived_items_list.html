@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>Student List</title>
+    <title>Archived Items List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         h1 {
@@ -61,7 +61,7 @@
             background-color: #d6d6d6;
         }
 
-        .back-link, .archive-link {
+        .back-link {
             background-color: #6c757d;
             color: white;
             border: none;
@@ -72,7 +72,6 @@
             display: block;
             margin-top: 20px;
             text-align: center;
-            margin-right: 10px;
         }
 
         .filter-form {
@@ -110,18 +109,12 @@
         .btn-custom {
             margin-right: 5px;
         }
-
-        .link-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
     </style>
 </head>
 <body>
-    <h1>Student List</h1>
+    <h1>Archived Items List</h1>
     <div class="filter-form">
-        <form method="GET" action="{% url 'student_list' %}">
+        <form method="GET" action="{% url 'archived_items_list' %}">
             <input type="text" name="q" class="filter-input" placeholder="Search ..." value="{{ query }}">
             <input type="date" name="start_date" class="filter-input" placeholder="Start Date" value="{{ start_date }}">
             <input type="date" name="end_date" class="filter-input" placeholder="End Date" value="{{ end_date }}">
@@ -132,33 +125,27 @@
         <table>
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone Number</th>
-                    <th>Balance</th>
-                    <th>Date Joined</th>
+                    <th>Identity</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Category</th>
+                    <th>Archived Date</th>
+                    <th>Modified Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for user in users %}
+                {% for item in items %}
                     <tr>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.first_name }}</td>
-                        <td>{{ user.last_name }}</td>
-                        <td>{{ user.phone_number }}</td>
-                        <td>{{ user.balance }}</td>
-                        <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+                        <td>{{ item.identity }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.availability }}</td>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.modified_at|date:"Y-m-d" }}</td>
+                        <td>{{ item.modified_at|date:"Y-m-d H:i" }}</td>
                         <td>
-                            <button class="btn btn-primary btn-custom">
-                                <a href="{% url 'edit_user' user.id %}" style="color: white;">Edit</a>
-                            </button>
-                            <button class="btn btn-warning btn-custom">
-                                <a href="{% url 'archive_user' user.id %}" style="color: white;">Archive</a>
-                            </button>
-                            <button class="btn btn-info btn-custom">
-                                <a href="{{ user.qr_code.url }}" style="color: white;">QR Code</a>
+                            <button class="btn btn-success btn-custom">
+                                <a href="{% url 'unarchive_item' item.id %}" style="color: white;">Unarchive</a>
                             </button>
                         </td>
                     </tr>
@@ -166,9 +153,6 @@
             </tbody>
         </table>
     </div>
-    <div class="link-container">
-        <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
-        <a href="{% url 'archived_student_list' %}" class="archive-link">Archived Students</a>
-    </div>
+    <a href="{% url 'item_list' %}" class="back-link">Back</a>
 </body>
 </html>

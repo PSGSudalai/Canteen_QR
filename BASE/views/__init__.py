@@ -4,12 +4,16 @@ from .user import (
     logout_view,
     qr_image_view,
     balance_check_view,
+    archive_user,
+    unarchive_user,
+    archived_student_list,
 )
 from .item import (
     canteen_item_create,
     canteen_item_list,
     canteen_item_edit,
     canteen_item_archive,
+    archived_items_list_view,
 )
 from .add_cart import (
     add_to_cart,

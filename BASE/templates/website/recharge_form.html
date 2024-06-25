@@ -7,14 +7,20 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end; /* This will align the .tran div to the right */
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+            background: url('/static/illustrations/recharge.jpg') no-repeat center center fixed;
+            background-size: cover;
         }
         .tran {
             text-align: center;
+            margin-left: 80%;
+            margin-right: 15%;
+        }
+        h2 {
+            color: white; /* Changes the color of the Transaction text to white */
         }
         form {
             background-color: #fff;
@@ -35,6 +41,9 @@
             border: none;
             cursor: pointer;
         }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -50,9 +59,8 @@
             <br>
             <label for="payment_method">Payment Method:</label>
             <select id="payment_method" name="payment_method">
-                <option value="cash">Cash</option>
-                <option value="upi">UPI</option>
-                <!-- Add more options as needed -->
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
             </select>
             <br>
             <button type="submit">Recharge</button>

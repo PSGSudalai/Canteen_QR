@@ -74,7 +74,7 @@ def recharge_transaction(request, uuid):
             return HttpResponseBadRequest("Permission denied")
 
         try:
-            student = CustomUser.objects.get(uuid=uuid)
+            student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
             return HttpResponseBadRequest("Student not found")
 
@@ -104,7 +104,7 @@ def recharge_transaction(request, uuid):
     elif request.method == "GET":
         # Fetch the student object
         try:
-            student = CustomUser.objects.get(uuid=uuid)
+            student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
             return HttpResponseBadRequest("Student not found")
 
@@ -119,7 +119,7 @@ def recharge_transaction(request, uuid):
 @login_required
 def payment_transaction(request, uuid):
     try:
-        student = CustomUser.objects.get(uuid=uuid)
+        student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
     except CustomUser.DoesNotExist:
         return HttpResponseBadRequest("Student not found")
 
