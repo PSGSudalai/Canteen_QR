@@ -149,7 +149,7 @@
                         <td>{{ user.last_name }}</td>
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
-                        <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+                        <td>{{ user.created_at|date:"Y-m-d" }}</td>
                         <td>
                             <button class="btn btn-primary btn-custom">
                                 <a href="{% url 'edit_user' user.id %}" style="color: white;">Edit</a>
