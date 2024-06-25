@@ -56,13 +56,15 @@
 <body>
     <div class="container">
         <h1>Insufficient Balance</h1>
-        <p>Your current balance is insufficient to complete the transaction.</p>
+        <p>Your current balance is {{ user.balance }}</p>
+        <p>Total amount needed: {{ total_amount }}</p>
         <p>Would you like to recharge your account or cancel the transaction?</p>
         <form method="post">
             {% csrf_token %}
             <div class="button-container">
-                <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
-                <a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a>
+                <a href="{% url 'cart_list' %}" class="view-cart-button">View Cart</a>
+                <button type="submit" name="action" value="recharge" class="transaction-history-button">Recharge</button>
+                <button type="submit" name="action" value="cancel" class="transaction-history-button">Cancel</button>
             </div>
         </form>
     </div>

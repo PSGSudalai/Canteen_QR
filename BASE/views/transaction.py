@@ -1,4 +1,5 @@
 # BASE/views/transaction.py
+from django.urls import reverse
 from django.views.generic import ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseBadRequest
@@ -130,10 +131,12 @@ def payment_transaction(request, uuid):
         action = request.POST.get("action")
 
         if action == "recharge":
-            return redirect("recharge_page_url")  # Replace with your recharge page URL
+            return redirect(
+                reverse("recharge_transaction", kwargs={"uuid": student.uuid})
+            )
 
         if action == "cancel":
-            return redirect("cart_page_url")  # Replace with your cart page URL
+            return redirect("cart_list")  # Ensure this matches your URL name
 
         payment_method = request.POST.get("payment_method", "cash")
         staff = request.user
@@ -147,7 +150,7 @@ def payment_transaction(request, uuid):
                 return render(
                     request,
                     "website/insufficient_balance.html",
-                    {"student": student, "total_amount": total_amount},
+                    {"user": student, "total_amount": total_amount},
                 )
             student.balance -= amount
             student.save()
@@ -175,7 +178,6 @@ def payment_transaction(request, uuid):
         send_email("payment", amount, student.email)
 
         cartItems.update(is_sold=True)
-        # send_email("Payment", amount, student.email)
         return redirect(
             "canteen_item_list"
         )  # Redirect to transaction list or any other appropriate page
