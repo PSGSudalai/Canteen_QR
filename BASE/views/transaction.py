@@ -172,6 +172,7 @@ def payment_transaction(request, uuid):
         send_email("payment", amount, student.email)
 
         cartItems.update(is_sold=True)
+        cartItems.delete()
         return redirect("canteen_item_list")
 
     elif request.method == "GET":
