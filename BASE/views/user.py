@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from BASE.models import CustomUser
-import uuid
+from BASE.helpers import send_welcome_email
 import qrcode
 from django.core.files.base import ContentFile
 from io import BytesIO
@@ -23,7 +23,6 @@ def signup_view(request):
             messages.error(
                 request, "Email address is already in use. Please use another email."
             )
-
         else:
             # Create the user
             user = CustomUser.objects.create_user(
@@ -53,6 +52,21 @@ def signup_view(request):
             filename = f"qr_code_{user.id}.png"  # Unique filename for each user
             user.qr_code.save(filename, ContentFile(qr_img_buffer.getvalue()))
             user.save()
+
+            # Prepare the attachment
+            attachment = {
+                "filename": filename,
+                "content": qr_img_buffer.getvalue(),
+                "mimetype": "image/png",
+            }
+
+            # Send email with QR code attachment
+            send_welcome_email(
+                subject="Welcome to Our Service",
+                message="Thank you for signing up. Please find your QR code attached.",
+                email=user.email,
+                attachment=attachment,
+            )
 
             return redirect("qr_image")
 

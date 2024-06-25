@@ -2,17 +2,31 @@ from Canteen_QR import settings
 from django.shortcuts import render
 from django.core.mail import send_mail
 
+from django.core.files.base import ContentFile
+from django.core.mail import EmailMessage
+
+
+def send_welcome_email(subject, message, email, attachment=None):
+    recipient_list = [email]
+    email_message = EmailMessage(
+        subject, message, settings.EMAIL_HOST_USER, recipient_list
+    )
+    if attachment:
+        email_message.attach(
+            attachment["filename"], attachment["content"], attachment["mimetype"]
+        )
+    email_message.send()
+
 
 def send_email(type, amount, email):
     # EMAIL_HOST_USER = "mforspamers@gmail.com"
-    message = "This is a test email sent from a Django application."
     recipient_list = [email]
     if type == "recharge":
-        subject = f"Your recharge of {amount} was successful"
+        subject = "Recharge Successful Email"
+        message = f"Your recharge of {amount} was successful"
     elif type == "payment":
-        subject = f"Your payment of {amount} was successful"
-    else:
-        subject = "Welcome!"
+        subject = "Payment Successful Email"
+        message = f"Your payment of {amount} was successful"
 
     send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
