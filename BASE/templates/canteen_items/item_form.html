@@ -14,7 +14,8 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+            
+            
         }
         .new {
             text-align: center;
@@ -27,11 +28,24 @@
             text-align: center;
         }
         form {
-            background-color: #fff;
+            /* background:transparent;
+            border: 2px solid rgba(225, 225, 225, 0.1);
+            backdrop-filter: blur(40px);
             padding: 50px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Adjust width as needed */
+            width: 400px; Adjust width as needed */
+            
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  width: 400px;
+  background: linear-gradient(135deg, #4c83ff, #72e2ff);
+  
+
         }
         p {
             margin-bottom: 10px;
@@ -47,6 +61,7 @@
             margin-bottom: 10px;
             width: 100%;
             box-sizing: border-box;
+            border-radius: 50px;
         }
         .add {
             display: flex;
@@ -64,9 +79,11 @@
             border: none;
             cursor: pointer;
             margin-top: 10px;
+            border-radius: 5px;
+            white-space: nowrap;
         }
         .btn:hover {
-            background-color: #0056b3;
+            background-color: #19293a;
         }
         button a {
             color: white;
@@ -78,9 +95,32 @@
         .button-right button {
             float: right;
         }
+        .add{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins';
+            
+
+        }
+            /* Mobile devices (portrait and landscape) */
+@media only screen and (max-width: 480px) {
+  /* styles here */
+}
+
+/* Tablets (portrait and landscape) */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  /* styles here */
+}
+
+/* Desktops and laptops */
+@media only screen and (min-width: 769px) {
+  /* styles here */
+}
     </style>
 </head>
 <body>
+
     <div class="add">
         <form method="post" enctype="multipart/form-data">
             <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>

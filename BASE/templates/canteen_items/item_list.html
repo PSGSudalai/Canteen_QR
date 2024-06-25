@@ -17,7 +17,7 @@
 
         .navigation {
             background: rgb(26,83,201);
-background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37%, rgba(36,97,223,1) 61%, rgba(29,82,193,1) 100%, rgba(0,212,255,1) 100%);
+background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgb(45, 99, 216) 37%, rgba(36,97,223,1) 61%, rgba(29,82,193,1) 100%, rgba(0,212,255,1) 100%);
             text-align: center;
             text-align: right;
             padding: 10px 20px;
@@ -32,7 +32,7 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: space-between;
+            justify-content:space-around;
             text-align: center;
             
         }
@@ -83,6 +83,7 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
         }
         .header h1 {
             margin: 0;
+            font-family: 'Poppins';
         }
         .header span {
             font-size: 23px;
@@ -92,14 +93,17 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
             background-color: #dc3545;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 4px 4px;
+            font-size: medium;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 5px;
             text-decoration: none;
         }
 
         .header .logout:hover {
-            background-color: #c82333;
+            background-color: #890412;
+
+
         }
 
         .search {
@@ -143,6 +147,7 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            justify-content: space-between;
         }
 
         .item-card {
@@ -152,8 +157,8 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
             width: calc(25% - 40px);
             box-sizing: border-box;
             margin-bottom: 20px;
-            min-width: 220px;
-            max-width: 250px;
+            
+           
         }
 
         .item-image-container {
@@ -237,25 +242,36 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
         }
 
         .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
 
-        .pagination li {
-            display: inline;
-            margin: 0 5px;
-        }
+.pagination li {
+    display: inline;
+    margin: 0 5px;
+}
 
-        .pagination a, .pagination span {
-            color: #007bff;
-            text-decoration: none;
-        }
+.pagination a, .pagination span {
+    color: #007bff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
 
-        .pagination .active span {
-            font-weight: bold;
-            color: #000;
-        }
+.pagination a:hover, .pagination span:hover {
+    background-color: #007bff; 
+    color: #fff;
+}
+
+.pagination .active span {
+    font-weight: bold;
+    color: #000;
+    background-color: #e9ecef; 
+    border-radius: 5px; 
+}
+
 
         /* Popup styles */
         .popup {
@@ -281,17 +297,35 @@ background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37
             right: 10px;
             cursor: pointer;
         }
+            /* Mobile devices (portrait and landscape) */
+@media only screen and (max-width: 480px) {
+  /* styles here */
+}
+
+/* Tablets (portrait and landscape) */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  /* styles here */
+}
+
+/* Desktops and laptops */
+@media only screen and (min-width: 769px) {
+  /* styles here */
+}
     </style>
 </head>
 <body>
     <div class="header">
         <div>
             <!-- <span class="glyphicon glyphicon-user"></span> -->
-            <i class='bx bxs-user-circle' style="font-size:xx-large;"></i>
+            <i class='bx bxs-user-circle' style="font-size:x-large;"></i>
             <span>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
         </div>
         <h1>Canteen Items</h1>
-        <a href="{% url 'logout' %}" class="logout">Logout</a>
+        <span>
+        <a href="{% url 'logout' %}" class="logout">Logout
+            <i class='bx bx-log-out'></i>
+        </a>
+        </span>
     </div>
 
     <div class="navigation">
