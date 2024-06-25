@@ -7,12 +7,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Cart</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
-            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #4c83ff, #72e2ff);
             margin: 0;
             padding: 20px;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
         }
         h1 {
             color: #ffffff;
@@ -25,12 +30,16 @@
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .cart-left {
             width: 350px;
-            height: auto;
-            margin-left: 70px;
-            margin-bottom: 20px;
+            margin-right: 20px;
         }
         .cart-left img {
             width: 100%;
@@ -38,21 +47,31 @@
             object-fit: cover;
         }
         .cart-item-list-right {
-            flex: 1;
-            max-width: calc(100% - 550px);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            flex: 1;
+            padding: 20px;
+            margin-top: 50px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0.1, 0.1, 0.3, 0.1);
+
         }
         .items-list {
-            flex: 1;
+            /* padding: 10px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
-            max-height: 400px; /* Set a maximum height */
-            background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 5px;
+            flex: 1; */
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            float: left;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+
         }
         ul {
             list-style-type: none;
@@ -62,7 +81,7 @@
         li {
             background-color: #fff;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+
             display: flex;
             align-items: center;
         }
@@ -86,6 +105,7 @@
             cursor: pointer;
             border-radius: 3px;
             margin-left: 10px;
+            transition: background-color 0.3s ease;
         }
         .delete-button:hover {
             background-color: #c82333;
@@ -95,6 +115,7 @@
             justify-content: flex-end;
             align-items: center;
             flex-wrap: wrap;
+            margin-top: 20px;
         }
         .clear-cart-button {
             background-color: #aeaeae;
@@ -106,6 +127,7 @@
             margin-left: 10px;
             text-decoration: none;
             display: inline-block;
+            transition: background-color 0.3s ease;
         }
         .payment-button,
         .back-link {
@@ -118,6 +140,7 @@
             margin-left: 10px;
             text-decoration: none;
             display: inline-block;
+            transition: background-color 0.3s ease;
         }
         .clear-cart-button:hover {
             background-color: #5f5f60;
@@ -146,8 +169,7 @@
                 align-items: center;
             }
             .cart-left {
-                width: 100%;
-                margin-left: 0;
+                margin-right: 0;
                 margin-bottom: 20px;
             }
             .cart-item-list-right {
@@ -164,14 +186,6 @@
             .total-cost-label {
                 text-align: center;
                 width: 100%;
-            }
-        }
-        @media (max-width: 576px) {
-            .cart-left img {
-                height: auto;
-            }
-            .items-list {
-                max-height: 300px; /* Adjust max height for smaller screens */
             }
         }
     </style>
