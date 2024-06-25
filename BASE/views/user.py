@@ -1,11 +1,9 @@
-# BASE/views.py
-
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from BASE.models import CustomUser
-import uuid
+from BASE.helpers import send_welcome_email
 import qrcode
 from django.core.files.base import ContentFile
 from io import BytesIO
@@ -16,17 +14,18 @@ def signup_view(request):
         firstname = request.POST.get("firstname")
         lastname = request.POST.get("lastname")
         email = request.POST.get("email")
+        phone_number = request.POST.get("phone_number")
         password1 = request.POST.get("password1")
 
         if CustomUser.objects.filter(email=email).exists():
             messages.error(
                 request, "Email address is already in use. Please use another email."
             )
-
         else:
             # Create the user
             user = CustomUser.objects.create_user(
                 email=email,
+                phone_number=phone_number,
                 password=password1,
                 first_name=firstname,
                 last_name=lastname,
@@ -52,12 +51,22 @@ def signup_view(request):
             user.qr_code.save(filename, ContentFile(qr_img_buffer.getvalue()))
             user.save()
 
-            # Login user
-            login(request, user)
-            # messages.success(request, "Registration successful")
-            return redirect(
-                "qr_image"
-            )  # Redirect to a view that displays/shares the QR image
+            # Prepare the attachment
+            attachment = {
+                "filename": filename,
+                "content": qr_img_buffer.getvalue(),
+                "mimetype": "image/png",
+            }
+
+            # Send email with QR code attachment
+            send_welcome_email(
+                subject="Welcome to Our Service",
+                message="Thank you for signing up. Please find your QR code attached.",
+                email=user.email,
+                attachment=attachment,
+            )
+
+            return redirect("qr_image", user_id=user.id)  # Redirect to the QR code view
 
     return render(request, "registration/signup.html")
 
@@ -83,8 +92,8 @@ def logout_view(request):
     return redirect("login")
 
 
-def qr_image_view(request):
-    user = request.user
+def qr_image_view(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
 
     qr = qrcode.QRCode(
         version=1,
@@ -104,3 +113,36 @@ def qr_image_view(request):
     user.save()
 
     return render(request, "qr_image.html", {"user": user})
+
+
+@login_required
+def balance_check_view(request):
+    user_balance = request.user.balance
+
+    return render(
+        request,
+        "website/balance_check_template.html",
+        {"user": request.user, "user_balance": user_balance},
+    )
+
+
+@login_required
+def archive_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    user.is_archieved = True
+    user.save()
+    return redirect("student_list")
+
+
+@login_required
+def unarchive_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    user.is_archieved = False
+    user.save()
+    return redirect("archived_student_list")
+
+
+@login_required
+def archived_student_list(request):
+    users = CustomUser.objects.filter(is_archieved=True)
+    return render(request, "website/archived_student_list.html", {"users": users})

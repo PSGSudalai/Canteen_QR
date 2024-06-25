@@ -13,7 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
         }
 
         #qr-reader {
@@ -52,7 +52,6 @@
 
     // This function will be called when a QR code is scanned
     function onScanSuccess(decodedText, decodedResult) {
-        alert(`QR Code detected: ${decodedText}`);
         handleRecharge(decodedText); // Redirect to recharge page with UUID
     }
 
@@ -73,7 +72,6 @@
         let file = e.target.files[0];
         // Use the scanning library to scan the file
         Html5Qrcode.scanFile(file, /* showImage= */ true).then(decodedText => {
-            alert(`QR Code detected: ${decodedText}`);
             handleRecharge(decodedText); // Redirect to recharge page with UUID
         }).catch(err => {
             // handle the error if the QR code could not be scanned

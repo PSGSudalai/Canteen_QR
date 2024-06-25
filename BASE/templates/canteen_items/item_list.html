@@ -4,25 +4,90 @@
     <title>Canteen Items</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         /* Style for the body */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
-            font-family: Arial, sans-serif;
+            
             background-color: #f0f0f0;
             margin: 0;
             padding: 20px;
         }
 
-        /* Style for the header */
+        .navigation {
+            background: rgb(26,83,201);
+background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgba(156,188,255,1) 37%, rgba(36,97,223,1) 61%, rgba(29,82,193,1) 100%, rgba(0,212,255,1) 100%);
+            text-align: center;
+            text-align: right;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            color: #fff;
+        }
+
+        .navigation ul {
+
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            
+        }
+        .navigation  .view-cart-button{
+            background-color: #fff;
+            color: #333;
+            border: none;
+            padding: 5px 10px;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+        .navigation  .view-cart-button:hover{
+            background-color: rgb(96, 223, 96);
+            color: #fff;
+            text-decoration: none;
+
+        }
+
+        .navigation ul li {
+            margin-left: 20px;
+        }
+
+        .navigation ul li a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .navigation ul li a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ebe8e8;
-            color: black;
-            padding: 10px 20px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
-
+        .header .glyphicon {
+            font-size: 20px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .header span {
+            font-size: 23px;
+            margin-left: 6px;
+        }
         .header .logout {
             background-color: #dc3545;
             color: white;
@@ -37,21 +102,6 @@
             background-color: #c82333;
         }
 
-        /* Style for the h1 */
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-
-        /* Style for the navigation */
-        .navigation {
-            text-align: right;
-            background-color: #ebe8e8;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-        }
-
-        /* Style for the search section */
         .search {
             display: flex;
             justify-content: center;
@@ -69,14 +119,13 @@
         }
 
         .search input[type="text"], .search input[type="number"], .search select, .search button {
-            flex: 1; /* Make all elements take equal width */
-            min-width: 120px; /* Set a minimum width for all elements */
-            padding: 10px; /* Add padding for a consistent height */
-            margin-bottom: 0; /* Remove margin bottom */
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            margin-bottom: 0;
         }
 
         .search button {
-            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
@@ -88,8 +137,7 @@
             background-color: #0056b3;
         }
 
-        /* Style for the list */
-        ul {
+        ul.item {
             list-style-type: none;
             padding: 0;
             display: flex;
@@ -101,30 +149,31 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: calc(25% - 40px); /* 25% width minus the gaps */
+            width: calc(25% - 40px);
             box-sizing: border-box;
             margin-bottom: 20px;
-            min-width: 220px; /* Minimum width */
+            min-width: 220px;
+            max-width: 250px;
         }
 
         .item-image-container {
-            height: 160px; /* Height for image container */
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border-radius: 8px 8px 0 0; /* Rounded corners on top */
+            border-radius: 8px 8px 0 0;
         }
 
         .item-image {
             max-width: 100%;
             max-height: 100%;
-            object-fit: cover; /* Maintain aspect ratio */
+            object-fit: cover;
         }
 
         .item-details {
             padding: 10px;
-            text-align: left; /* Align text to the left */
+            text-align: left;
         }
 
         .item-identity {
@@ -140,19 +189,18 @@
 
         form {
             display: flex;
-            align-items: center; /* Center items vertically */
+            align-items: center;
             margin-top: 10px;
         }
 
         input[type="number"] {
-            width: 50px; /* Smaller width for input */
+            width: 50px;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
         }
 
         button[type="submit"] {
-            background-color: #007bff;
             color: white;
             border: none;
             padding: 8px 12px;
@@ -167,39 +215,81 @@
 
         .admin-actions {
             display: flex;
-            gap: 10px; /* Adjust the gap between buttons */
+            gap: 10px;
         }
 
         .admin-actions form {
-            flex: 1; /* Each form takes equal space */
+            flex: 1;
         }
 
-        .btn-warning {
-            background-color: #ffc107;
-            border-color: #ffc107;
-        }
-
-        .btn-info {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .quantity-control{
+        .quantity-control {
             height: 36px;
             width: 75px;
         }
 
-        .form-group{
+        .form-group {
             height: 36px;
             padding: 0px 5px;
         }
 
+        iframe {
+            display: none;
+        }
 
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .pagination .active span {
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="glyphicon glyphicon-user">{{ user.first_name }}</div>
+        <div>
+            <!-- <span class="glyphicon glyphicon-user"></span> -->
+            <i class='bx bxs-user-circle' style="font-size:xx-large;"></i>
+            <span>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
+        </div>
         <h1>Canteen Items</h1>
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
@@ -208,18 +298,24 @@
         <ul>
             {% if user.is_admin %}
                 <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
-                <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
-                <li><a href="{% url 'qr_scan' %}" class="transaction-history-button">Recharge</a></li>
+                <li><a href="{% url 'signup' %}" class="add-item-admin-button">New User</a></li>
+                <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'staff_list' %}" class="staff-list-button">Staff List</a></li>
                 <li><a href="{% url 'student_list' %}" class="non-staff-list-button">Student List</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
+                <span>
+                <a href="{% url 'cart_list' %}" class="view-cart-button"  >Cart
+                    <i class='bx bx-cart' ></i>
+                </a>
+            </span>
             {% elif user.is_staff %}
-                <li><a href="{% url 'canteen_item_create' %}" class="add-item-admin-button">Add Item</a></li>
-                <li><a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a></li>
-                <li><a href="{% url 'qr_scan' %}" class="transaction-history-button">Recharge</a></li>
+                <li><a href="{% url 'signup' %}" class="add-item-admin-button">New User</a></li>
+                <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
+                <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
             {% else %}
                 <li><a href="{% url 'qr_image' %}" class="add-item-button">Show QR</a></li>
+                <li><a href="#" class="balance-link">Balance</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
             {% endif %}
@@ -229,68 +325,116 @@
     <div class="search">
         <form method="GET" action="{% url 'canteen_item_list' %}">
             <input type="text" name="q" placeholder="Search..." class="form-control">
-            <label for="min_price">Min Price:</label>
-            <input type="number" id="min_price" name="min_price" min="0" class="form-control">
-            <label for="max_price">Max Price:</label>
-            <input type="number" id="max_price" name="max_price" min="0" class="form-control">
-            <label for="category">Category:</label>
-            <select id="category" name="category" class="form-control">
-                <option value="">All Categories</option>
-                <!-- Replace with dynamic options based on your categories -->
-                <option value="FOOD">Food</option>
-                <option value="SNACK">Snacks</option>
-                <option value="beverage">Beverage</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </div>
+            <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price.">
+            <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
+                            <select id="category" name="category" class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Beverage">Beverage</option>
+                </select>
+                <button type="submit" style="background-color: #007bff;">Search</button>
+            </form>
+        </div>
 
-    <ul class="item">
-        {% for item in items %}
-            <li class="item-card">
-                <div class="item-image-container">
-                    <img class="item-image" src="{{ item.image.url }}" alt="{{ item.identity }}">
-                </div>
-                <div class="item-details">
-                    <p class="item-identity">{{ item.identity }}</p>
-                    <p class="item-price">Rs.{{ item.price }}</p>
-                    {% if user.is_admin %}
-                        <p class="item-availability">
-                            {% if item.availability %}
-                                Available
-                            {% else %}
-                                Unavailable
-                            {% endif %}
-                        </p>
-                    {% endif %}
+        <ul class="item">
+            {% for item in items %}
+                <li class="item-card">
+                    <div class="item-image-container">
+                        <img class="item-image" src="{{ item.itemImage.image.url }}" alt="{{ item.identity }}">
+                    </div>
+                    <div class="item-details">
+                        <p class="item-identity">{{ item.identity }}</p>
+                        <p class="item-price">Rs.{{ item.price }}</p>
+                        {% if user.is_admin %}
+                            <p class="item-availability">
+                                {% if item.availability %}
+                                    Available
+                                {% else %}
+                                    Unavailable
+                                {% endif %}
+                            </p>
+                        {% endif %}
+                        {% if user.is_admin or user.is_staff %}
+                        <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
-                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                        <div class="form-group">
-                            <input type="number" name="quantity" value="1" min="1" class="quantity-control">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                        </div>
-                    </form>
+                        <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <div class="form-group">
+                                <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" style="background-color: #007bff;">Add to Cart</button>
+                            </div>
+                        </form>
 
-                    {% if user.is_admin %}
-                        <div class="admin-actions">
-                            <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ item.id }}">
-                                <button type="submit" class="btn btn-warning">Archive Item</button>
-                            </form>
+                        {% endif %}
 
-                            <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
-                                <button type="submit" class="btn btn-info">Edit Item</button>
-                            </form>
-                        </div>
-                    {% endif %}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
+                        {% if user.is_admin %}
+                            <div class="admin-actions">
+                                <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <button type="submit" class="btn btn-warning">Archive Item</button>
+                                </form>
+
+                                <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
+                                    <button type="submit" class="btn btn-info">Edit Item</button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="?page=1">&laquo; first</a></li>
+                    <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+                {% else %}
+                    <li class="disabled"><span>&laquo; first</span></li>
+                    <li class="disabled"><span>previous</span></li>
+                {% endif %}
+
+                <li class="active"><span>{{ page_obj.number }}</span></li>
+
+                {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                    <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+                {% else %}
+                    <li class="disabled"><span>next</span></li>
+                    <li class="disabled"><span>last &raquo;</span></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Popup for balance -->
+        <div class="popup" id="balance-popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="togglePopup()">&times;</span>
+                <h2>Your Balance</h2>
+                <p>Balance: Rs. {{ user.balance }}</p>
+            </div>
+        </div>
+
+        <script>
+            function togglePopup() {
+                var popup = document.getElementById('balance-popup');
+                if (popup.style.display === 'none' || popup.style.display === '') {
+                    popup.style.display = 'block';
+                } else {
+                    popup.style.display = 'none';
+                }
+            }
+
+            document.querySelector('.balance-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                togglePopup();
+            });
+        </script>
+    </body>
 </html>

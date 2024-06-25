@@ -6,23 +6,32 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
         }
         .new {
             text-align: center;
+            font-weight: bold;
         }
         #identity {
-            align-items: 10px;
+            margin-bottom: 10px;
         }
         h1 {
             text-align: center;
         }
         form {
-            max-width: 600px;
-            margin: 0 auto;
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Adjust width as needed */
         }
         p {
             margin-bottom: 10px;
@@ -34,14 +43,16 @@
         input[type="text"],
         input[type="number"],
         select {
-            width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 10px;
+            width: 100%;
             box-sizing: border-box;
         }
         .add {
-            padding: 20px;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         input[type="checkbox"] {
             margin-left: 0;
@@ -63,7 +74,6 @@
         }
         .button-right {
             text-align: right;
-            margin-left: 40px;
         }
         .button-right button {
             float: right;
@@ -71,41 +81,46 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
+    <div class="add">
+        <form method="post" enctype="multipart/form-data">
+            <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
 
-        <div class="add">
-            <form method="post">
-                {% csrf_token %}
-                <p>
-                    <label for="identity">Identity:</label>
-                    <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" required>
-                </p>
-                <p>
-                    <label for="price">Price:</label>
-                    <input type="number" name="price" id="price" value="{{ form_data.price }}" required>
-                </p>
-                <p>
-                    <label for="availability">Availability:</label>
-                    <input type="checkbox" name="availability" id="availability" {% if form_data.availability %}checked{% endif %}>
-                </p>
-                <p>
-                    <label for="category">Category:</label>
-                    <select name="category" id="category" required>
-                        <option value="snack" {% if form_data.category == "snack" %}selected{% endif %}>Snack</option>
-                        <option value="beverage" {% if form_data.category == "beverage" %}selected{% endif %}>Beverage</option>
-                        <option value="food" {% if form_data.category == "food" %}selected{% endif %}>Food</option>
-                    </select>
-                </p>
+            {% csrf_token %}
+            <p>
+                <label for="identity">Identity:</label>
+                <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" {% if item %}readonly{% endif %} required>
+            </p>
+            <p>
+                <label for="price">Price:</label>
+                <input type="number" name="price" id="price" value="{{ form_data.price }}" min="1" required>
+            </p>
+            <p>
+                <label for="availability">Availability:</label>
+                <input type="checkbox" name="availability" id="availability" {% if form_data.availability %}checked{% endif %}>
+            </p>
+            <p>
+                <label for="category">Category:</label>
+                <select name="category" id="category" required>
+                    <option value="Snacks" {% if form_data.category == "Snacks" %}selected{% endif %}>Snacks</option>
+                    <option value="Beverage" {% if form_data.category == "Beverage" %}selected{% endif %}>Beverage</option>
+                    <option value="Food" {% if form_data.category == "Food" %}selected{% endif %}>Food</option>
+                </select>
+            </p>
+            <p>
+                <label for="image">Image:</label>
+                <input type="file" name="image" id="image">
+                {% if form_data.image %}
+                    <img src="{{ form_data.image }}" alt="{{ form_data.identity }}" style="max-width: 100px; max-height: 100px;">
+                {% endif %}
+            </p>
 
-                <div>
-                    <button type="submit">Save</button>
-                    <button class="button-right">
-                        <a href="{% url 'canteen_item_list' %}">Back</a>
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div>
+                <button type="submit">Save</button>
+                <button class="button-right">
+                    <a href="{% url 'canteen_item_list' %}">Back</a>
+                </button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

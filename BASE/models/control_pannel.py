@@ -8,12 +8,22 @@ class CanteenItems(BaseModels):
     price = models.IntegerField()
     availability = models.BooleanField(default=True)
     category = models.CharField(
-        max_length=20, choices=CATEGORY_CHOICES, default="snack"
+        max_length=20, choices=CATEGORY_CHOICES, default="Snacks"
     )
-    # image = models.ImageField(upload_to='canteen_items/', blank=True, null=True)
+    itemImage = models.ForeignKey(
+        "ItemImage",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="canteen_items",
+    )
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.identity
+
+
+class ItemImage(BaseModels):
+    image = models.ImageField(upload_to="canteen_items/")
 
 
 class Transaction(BaseModels):
