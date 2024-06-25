@@ -28,13 +28,13 @@
         }
         .cart-left {
             width: 350px;
-            height: 750px;
+            height: auto;
             margin-left: 70px;
             margin-bottom: 20px;
         }
         .cart-left img {
-            width: 300px;
-            height: 500px;
+            width: 100%;
+            height: auto;
             object-fit: cover;
         }
         .cart-item-list-right {
@@ -47,6 +47,7 @@
         .items-list {
             flex: 1;
             overflow-y: auto;
+            max-height: 400px; /* Set a maximum height */
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -145,6 +146,7 @@
                 align-items: center;
             }
             .cart-left {
+                width: 100%;
                 margin-left: 0;
                 margin-bottom: 20px;
             }
@@ -162,6 +164,14 @@
             .total-cost-label {
                 text-align: center;
                 width: 100%;
+            }
+        }
+        @media (max-width: 576px) {
+            .cart-left img {
+                height: auto;
+            }
+            .items-list {
+                max-height: 300px; /* Adjust max height for smaller screens */
             }
         }
     </style>

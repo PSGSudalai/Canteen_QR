@@ -18,8 +18,6 @@
             text-align: center;
             margin-left: 80%;
             margin-right: 15%;
-        }
-        h2 {
             color: white; /* Changes the color of the Transaction text to white */
         }
         form {
@@ -44,6 +42,39 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        /* Loader CSS */
+        .loader {
+            display: none;
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #007bff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .status-message {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: #28a745;
+        }
+
+        .error-message {
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -63,8 +94,19 @@
                 <option value="UPI">UPI</option>
             </select>
             <br>
-            <button type="submit">Recharge</button>
+            <button type="submit" id="submit-btn">Recharge</button>
+            <div class="loader" id="loader"></div> <!-- Loader element -->
+            <div class="status-message success-message" id="success-message">Transaction successful!</div>
+            <div class="status-message error-message" id="error-message">Transaction failed. Please try again.</div>
         </form>
     </div>
+
+    <!-- JavaScript to handle form submission and show loader -->
+    <script>
+        document.getElementById('recharge-form').addEventListener('submit', function(event) {
+            document.getElementById('loader').style.display = 'inline-block';
+            document.getElementById('recharge-form').disabled = true;
+        });
+    </script>
 </body>
 </html>
