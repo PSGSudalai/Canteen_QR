@@ -26,7 +26,7 @@
 
         .table-container {
             width: 100%;
-            
+
             max-width: 1200px;
             overflow-x: auto;
             background-color: white;
@@ -36,7 +36,7 @@
             margin-top: 20px;
             max-height: 400px; /* Limiting max height for scroll */
         }
-      
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -151,7 +151,7 @@
                         <td>{{ user.last_name }}</td>
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
-                        <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+                        <td>{{ user.created_at|date:"Y-m-d" }}</td>
                         <td><button class="btn btn-danger"><a href="{% url 'edit_user' user.id %}">Edit</a></button></td>
                     </tr>
                 {% endfor %}

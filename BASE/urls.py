@@ -34,7 +34,7 @@ from BASE.views import (
 
 urlpatterns = [
     path("signup/", signup_view, name="signup"),
-    path("qr_image/", qr_image_view, name="qr_image"),
+    path("qr_image/<int:user_id>/", qr_image_view, name="qr_image"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("students/archive/<int:id>/", archive_user, name="archive_user"),
