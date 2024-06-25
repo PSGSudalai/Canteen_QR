@@ -1,5 +1,3 @@
-# BASE/views.py
-
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -68,7 +66,7 @@ def signup_view(request):
                 attachment=attachment,
             )
 
-            return redirect("qr_image")
+            return redirect("qr_image", user_id=user.id)  # Redirect to the QR code view
 
     return render(request, "registration/signup.html")
 
@@ -94,8 +92,8 @@ def logout_view(request):
     return redirect("login")
 
 
-def qr_image_view(request):
-    user = request.user
+def qr_image_view(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
 
     qr = qrcode.QRCode(
         version=1,
@@ -119,8 +117,7 @@ def qr_image_view(request):
 
 @login_required
 def balance_check_view(request):
-    # Assuming user's balance is retrieved from the user object
-    user_balance = request.user.balance  # Replace with actual logic to retrieve balance
+    user_balance = request.user.balance
 
     return render(
         request,
