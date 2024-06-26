@@ -166,7 +166,7 @@
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
-                    <th>Balance</th>
+                    <th>Balance(₹)</th>
                     <th>Date Joined</th>
                     <th>Actions</th>
                 </tr>
@@ -178,7 +178,7 @@
                         <td>{{ user.last_name|capfirst }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone_number }}</td>
-                        <td>{{ user.balance }}</td>
+                        <td>₹ {{ user.balance }}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
                         <td>
                             <button class="btn btn-primary btn-custom">
