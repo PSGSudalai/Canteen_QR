@@ -30,7 +30,6 @@
             overflow-x: auto;
             background-color: white;
             border-radius: 5px;
-            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
             max-height: 400px;
@@ -39,7 +38,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         th, td {
@@ -132,9 +131,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Email</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Email</th>
                     <th>Phone Number</th>
                     <th>Balance</th>
                     <th>Date Joined</th>
@@ -144,9 +143,9 @@
             <tbody>
                 {% for user in users %}
                     <tr>
+                        <td>{{ user.first_name|capfirst }}</td>
+                        <td>{{ user.last_name|capfirst }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.first_name }}</td>
-                        <td>{{ user.last_name }}</td>
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>

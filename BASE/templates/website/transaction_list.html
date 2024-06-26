@@ -28,14 +28,13 @@
             overflow-x: auto;
             background-color: white;
             border-radius: 5px;
-            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         th, td {
@@ -166,26 +165,26 @@
         <table>
             <thead>
                 <tr>
-                    <th>Date</th>
+                    <th>Date| Time</th>
                     {% if user.is_staff or user.is_admin %}
                         <th>Student</th>
                         <th>Staff</th>
                     {% endif %}
                     <th>Payment Type</th>
-                    <th>Amount</th>
+                    <th>Amount(₹)</th>
                     <th>Payment Method</th>
                 </tr>
             </thead>
             <tbody>
                 {% for transaction in object_list %}
                     <tr>
-                        <td>{{ transaction.created_at|date:"Y-m-d" }}</td>
+                        <td>{{ transaction.created_at|date:"Y-m-d | H:m" }}</td>
                         {% if user.is_staff or user.is_admin %}
-                            <td>{{ transaction.student }}</td>
-                            <td>{{ transaction.staff }}</td>
+                            <td>{{ transaction.student.first_name|capfirst }} {{transaction.student.last_name|capfirst}}</td>
+                            <td>{{ transaction.staff.first_name|capfirst }} {{transaction.staff.last_name|capfirst}}</td>
                         {% endif %}
                         <td>{{ transaction.payment_type }}</td>
-                        <td>{{ transaction.amount }}</td>
+                        <td>₹ {{ transaction.amount }}</td>
                         <td>{{ transaction.payment_method }}</td>
                     </tr>
                 {% endfor %}

@@ -27,20 +27,19 @@
             max-width: 1200px;
             background-color: white;
             border-radius: 5px;
-            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
         .table-wrapper {
-            max-height: 500px; /* Set the maximum height for scrollable area */
-            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 500px; 
+            overflow-y: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         th, td {
@@ -129,27 +128,29 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Student</th>
+                        <th>Date | Time</th>
                         {% if user.is_staff or user.is_admin %}
+                            <th>Student</th>
                             <th>Staff</th>
                         {% endif %}
                         <th>Item</th>
+                        <th>Price(₹)</th>
                         <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Date</th>
+                        <th>Total(₹)</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for order in object_list %}
                         <tr>
-                            <td>{{ order.student }}</td>
+                            <td>{{ order.created_at|date:"Y-m-d | H:m" }}</td>
                             {% if user.is_staff or user.is_admin %}
-                                <td>{{ order.staff }}</td>
+                                <td>{{ order.student.first_name|capfirst }} {{ order.student.last_name|capfirst }}</td>
+                                <td>{{ order.staff.first_name|capfirst }} {{ order.staff.last_name|capfirst }}</td>
                             {% endif %}
                             <td>{{ order.item }}</td>
+                            <td>₹ {{ order.item.price }}</td>
                             <td>{{ order.quantity }}</td>
-                            <td>{{ order.total }}</td>
-                            <td>{{ order.created_at|date:"Y-m-d" }}</td>
+                            <td>₹ {{ order.total }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
