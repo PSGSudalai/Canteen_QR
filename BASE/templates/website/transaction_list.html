@@ -16,12 +16,10 @@
             align-items: center;
             height: 100vh;
         }
-
         h1 {
             color: #fff;
             text-align: center;
         }
-
         .table-container {
             width: 100%;
             max-width: 1200px;
@@ -30,20 +28,17 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 0px;
         }
-
         th, td {
             padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
             color: black;
         }
-
         th {
             background-color: #343a40;
             color: white;
@@ -51,11 +46,9 @@
             top: 0;
             z-index: 2;
         }
-
         tr:hover {
             background-color: #d6d6d6;
         }
-
         .back-link {
             background-color: #6c757d;
             color: white;
@@ -68,26 +61,22 @@
             margin-top: 20px;
             text-align: right;
         }
-
         .filter-form {
             margin-bottom: 20px;
             text-align: center;
         }
-
         .filter-form form {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .filter-input {
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 3px;
             color: black;
         }
-
         .filter-button {
             padding: 8px 16px;
             background-color: #007bff;
@@ -96,22 +85,18 @@
             border-radius: 3px;
             cursor: pointer;
         }
-
         .filter-button:hover {
             background-color: #0056b3;
         }
-
         .pagination {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
         .pagination li {
             display: inline;
             margin: 0 5px;
         }
-
         .pagination a, .pagination span {
             color: #007bff;
             text-decoration: none;
@@ -119,12 +104,10 @@
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .pagination a:hover, .pagination span:hover {
             background-color: #007bff;
             color: #fff;
         }
-
         .pagination .active span {
             font-weight: bold;
             color: #000;
@@ -135,7 +118,6 @@
 </head>
 <body>
     <h1>Transactions</h1>
-
     <div class="filter-form">
         <form method="GET" action="{% url 'transaction_list' %}">
             <input type="number" name="min_amount" class="filter-input" placeholder="Min Amount" value="{{ min_amount }}">
@@ -160,7 +142,6 @@
             <button type="submit" class="filter-button">Filter</button>
         </form>
     </div>
-
     <div class="table-container">
         <table>
             <thead>
@@ -191,7 +172,6 @@
             </tbody>
         </table>
     </div>
-
     <div class="pagination">
         <ul class="pagination">
             {% if page_obj.has_previous %}
@@ -201,9 +181,7 @@
                 <li class="disabled"><span>&laquo; first</span></li>
                 <li class="disabled"><span>previous</span></li>
             {% endif %}
-
             <li class="active"><span>{{ page_obj.number }}</span></li>
-
             {% if page_obj.has_next %}
                 <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
                 <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
@@ -213,10 +191,9 @@
             {% endif %}
         </ul>
     </div>
-
     <div style="text-align: right; width: 100%; max-width: 1200px; margin-top: 20px;">
         <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
-        <a href="{% url 'generate_report' %}" class="back-link">Report</a>
+        <a href="{% url 'redirect_generate_report' %}" class="back-link">Report</a>
     </div>
 </body>
 </html>

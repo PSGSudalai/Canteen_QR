@@ -1,6 +1,6 @@
 import openpyxl
 from openpyxl.utils import get_column_letter
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from BASE.models import Transaction
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -63,3 +63,7 @@ def generate_report(request):
     response["Content-Disposition"] = "attachment; filename=transactions_report.xlsx"
     wb.save(response)
     return response
+
+
+def redirect_report_page(request):
+    return render(request, "generate_report.html")
