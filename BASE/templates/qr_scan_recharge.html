@@ -29,6 +29,7 @@
         }
 
         #qr-input-file {
+            display: none;
             margin-top: 20px;
             padding: 10px;
             border-radius: 5px;
@@ -36,12 +37,24 @@
             background-color: #fff;
             cursor: pointer;
         }
+        
+        .btn-back {
+            background-color: #007bff;
+            text-align: center;
+            color: white;
+            width: 50px;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
 <div id="qr-reader">
     <!-- QR code reader will be rendered here -->
 </div>
+
 <input type="file" id="qr-input-file" accept="image/*">
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>
@@ -79,5 +92,8 @@
         });
     });
 </script>
+
+    <a href="{% url 'canteen_item_list' %}" class="btn btn-back">Back</a>
+
 </body>
 </html>
