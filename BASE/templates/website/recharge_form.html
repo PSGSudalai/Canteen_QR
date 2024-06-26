@@ -69,6 +69,16 @@
         .error-message {
             color: #dc3545;
         }
+        .btn-back {
+            background-color: #007bff;
+            text-align: center;
+            color: white;
+            width: 50px;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +103,8 @@
             <div class="status-message success-message" id="success-message">Transaction successful!</div>
             <div class="status-message error-message" id="error-message">Transaction failed. Please try again.</div>
         </form>
+        
+        <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
     </div>
 
     <script>

@@ -74,6 +74,16 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .btn-back {
+            background-color: #007bff;
+            text-align: center;
+            color: white;
+            width: 50px;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            height: 20px;
+        }
 
         @keyframes spin {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
@@ -105,6 +115,8 @@
                 <button type="submit" class="btn btn-payment" id="submit-btn">Submit Payment</button>
                 <div class="loader" id="loader"></div>
             </form>
+            
+            <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
         </div>
     </div>
 
