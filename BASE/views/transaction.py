@@ -91,7 +91,7 @@ def recharge_transaction(request, uuid):
         except ValueError:
             return HttpResponseBadRequest("Invalid amount")
 
-        transaction = Transaction.objects.create(
+        Transaction.objects.create(
             student=student,
             amount=amount,
             staff=staff,
@@ -100,7 +100,7 @@ def recharge_transaction(request, uuid):
         )
         # send_email("recharge", amount, student.email)
 
-        next_url = request.GET.get("next", reverse("canteen_item_list"))
+        next_url = request.POST.get("next") or request.GET.get("next") or reverse("canteen_item_list")
         return HttpResponseRedirect(next_url)
 
     elif request.method == "GET":
@@ -112,8 +112,11 @@ def recharge_transaction(request, uuid):
         context = {
             "uuid": uuid,
             "student": student,
+            "next": request.GET.get("next", ""),
+            
         }
         return render(request, "website/recharge_form.html", context)
+    
 
 
 @login_required
