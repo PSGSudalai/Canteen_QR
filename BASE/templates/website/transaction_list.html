@@ -14,7 +14,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height:100vh;
+            height: 100vh;
         }
 
         h1 {
@@ -28,14 +28,13 @@
             overflow-x: auto;
             background-color: white;
             border-radius: 5px;
-            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         th, td {
@@ -101,6 +100,37 @@
         .filter-button:hover {
             background-color: #0056b3;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            color: #007bff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .pagination a:hover, .pagination span:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .pagination .active span {
+            font-weight: bold;
+            color: #000;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -135,31 +165,53 @@
         <table>
             <thead>
                 <tr>
-                    <th>Student</th>
+                    <th>Date| Time</th>
                     {% if user.is_staff or user.is_admin %}
+                        <th>Student</th>
                         <th>Staff</th>
                     {% endif %}
-                    <th>Amount</th>
                     <th>Payment Type</th>
+                    <th>Amount(₹)</th>
                     <th>Payment Method</th>
-                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 {% for transaction in object_list %}
                     <tr>
-                        <td>{{ transaction.student }}</td>
+                        <td>{{ transaction.created_at|date:"Y-m-d | H:m" }}</td>
                         {% if user.is_staff or user.is_admin %}
-                            <td>{{ transaction.staff }}</td>
+                            <td>{{ transaction.student.first_name|capfirst }} {{transaction.student.last_name|capfirst}}</td>
+                            <td>{{ transaction.staff.first_name|capfirst }} {{transaction.staff.last_name|capfirst}}</td>
                         {% endif %}
-                        <td>{{ transaction.amount }}</td>
                         <td>{{ transaction.payment_type }}</td>
+                        <td>₹ {{ transaction.amount }}</td>
                         <td>{{ transaction.payment_method }}</td>
-                        <td>{{ transaction.created_at|date:"Y-m-d" }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="pagination">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo; first</span></li>
+                <li class="disabled"><span>previous</span></li>
+            {% endif %}
+
+            <li class="active"><span>{{ page_obj.number }}</span></li>
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>next</span></li>
+                <li class="disabled"><span>last &raquo;</span></li>
+            {% endif %}
+        </ul>
     </div>
 
     <div style="text-align: right; width: 100%; max-width: 1200px; margin-top: 20px;">

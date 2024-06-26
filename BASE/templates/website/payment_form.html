@@ -13,8 +13,8 @@
             background-size: cover;
             margin: 0;
             display: flex;
-            justify-content: flex-end; /* Aligns form to the right */
-            align-items: center; /* Centers form on Y-axis */
+            justify-content: flex-end;
+            align-items: center;
             height: 100vh;
         }
 
@@ -24,11 +24,11 @@
             align-items: center;
             width: 100%;
             height: 100%;
-            padding-right: 20px; /* Adds padding on the right for some space */
+            padding-right: 20px; 
         }
 
         .payment-form {
-            max-width: 500px; /* Increased width */
+            max-width: 500px;
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
@@ -36,7 +36,7 @@
         }
 
         .payment-form h1 {
-            text-align: center; /* Centers the heading inside the form */
+            text-align: center;
         }
 
         .form-group {
@@ -103,12 +103,11 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-payment" id="submit-btn">Submit Payment</button>
-                <div class="loader" id="loader"></div> <!-- Loader element -->
+                <div class="loader" id="loader"></div>
             </form>
         </div>
     </div>
 
-    <!-- JavaScript to handle form submission and show loader -->
     <script>
         document.getElementById('payment-form').addEventListener('submit', function() {
             document.getElementById('loader').style.display = 'inline-block';

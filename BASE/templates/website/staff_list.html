@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Staff List</title>
     <style>
         body {
@@ -16,7 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height:100vh;
+            height: 100vh;
         }
 
         h1 {
@@ -26,21 +25,19 @@
 
         .table-container {
             width: 100%;
-
             max-width: 1200px;
             overflow-x: auto;
             background-color: white;
             border-radius: 5px;
-            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-            max-height: 400px; /* Limiting max height for scroll */
+            max-height: 400px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         th, td {
@@ -59,20 +56,8 @@
         }
 
         tr:hover {
-            background-color: #d6d6d6; /* Slightly darker shade */
+            background-color: #d6d6d6;
         }
-        /* .edit_link{
-            background-color: #ec0c0c;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 3px;
-            text-decoration: none;
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-        } */
 
         .back-link {
             background-color: #6c757d;
@@ -118,6 +103,47 @@
         .filter-button:hover {
             background-color: #0056b3;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            color: #007bff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .pagination a:hover, .pagination span:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .pagination .active span {
+            font-weight: bold;
+            color: #000;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+
+        a {
+            font-style: normal;
+            color: white;
+        }
+
+        a:hover {
+            font-style: normal;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -134,9 +160,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Email</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Email</th>
                     <th>Phone Number</th>
                     <th>Balance</th>
                     <th>Date Joined</th>
@@ -146,17 +172,38 @@
             <tbody>
                 {% for user in users %}
                     <tr>
+                        <td>{{ user.first_name|capfirst }}</td>
+                        <td>{{ user.last_name|capfirst }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.first_name }}</td>
-                        <td>{{ user.last_name }}</td>
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
-                        <td><button class="btn btn-danger"><a href="{% url 'edit_user' user.id %}">Edit</a></button></td>
+                        <td><button class="btn btn-info"><a href="{% url 'edit_user' user.id %}">Edit</a></button></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class="pagination">
+        <ul class="pagination">
+            {% if users.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a href="?page={{ users.previous_page_number }}">previous</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo; first</span></li>
+                <li class="disabled"><span>previous</span></li>
+            {% endif %}
+
+            <li class="active"><span>{{ users.number }}</span></li>
+
+            {% if users.has_next %}
+                <li><a href="?page={{ users.next_page_number }}">next</a></li>
+                <li><a href="?page={{ users.paginator.num_pages }}">last &raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>next</span></li>
+                <li class="disabled"><span>last &raquo;</span></li>
+            {% endif %}
+        </ul>
     </div>
     <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
 </body>
