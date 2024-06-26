@@ -5,17 +5,20 @@ from BASE.models import Transaction
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.dateparse import parse_date
-
+from BASE.choices import PAYMENT_TYPE
 @login_required
-def generate_report_all(request):
+def generate_report_all(request,):
     transactions = Transaction.objects.all()
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
+    payment_type = request.GET.get("payment_type")
 
     if start_date:
         transactions = transactions.filter(created_at__date__gte=parse_date(start_date))
     if end_date:
         transactions = transactions.filter(created_at__date__lte=parse_date(end_date))
+    if payment_type:
+        transactions = transactions.filter(payment_type=payment_type)
 
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -31,11 +34,11 @@ def generate_report_all(request):
     ]
     for col_num, column_title in enumerate(columns, 1):
         column_letter = get_column_letter(col_num)
-        ws[column_letter + "1"] = column_title
+        ws[f"{column_letter}1"] = column_title
 
     # Populate the data
     for row_num, transaction in enumerate(transactions, 2):
-        ws[f"A{row_num}"] = str(transaction.student)
+        ws[f"A{row_num}"] = str(transaction.student.first_name)
         ws[f"B{row_num}"] = transaction.amount
         ws[f"C{row_num}"] = str(transaction.staff)
         ws[f"D{row_num}"] = transaction.payment_type
@@ -57,10 +60,9 @@ def generate_report_all(request):
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response["Content-Disposition"] = "attachment; filename=transactions_report.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=transactions_report_{payment_type}.xlsx" if payment_type else "attachment; filename=transactions_report.xlsx"
     wb.save(response)
     return response
-
 
 def redirect_report_page(request):
     return render(request, "generate_report.html")
