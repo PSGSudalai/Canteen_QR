@@ -7,18 +7,15 @@ from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 
 @login_required
-def generate_report(request):
+def generate_report_all(request):
     transactions = Transaction.objects.all()
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
-    payment_type = request.GET.get("payment_type")
 
     if start_date:
         transactions = transactions.filter(created_at__date__gte=parse_date(start_date))
     if end_date:
         transactions = transactions.filter(created_at__date__lte=parse_date(end_date))
-    if payment_type:
-        transactions = transactions.filter(payment_type=payment_type)
 
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -43,7 +40,7 @@ def generate_report(request):
         ws[f"C{row_num}"] = str(transaction.staff)
         ws[f"D{row_num}"] = transaction.payment_type
         ws[f"E{row_num}"] = transaction.payment_method
-        ws[f"F{row_num}"] = transaction.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        ws[f"F{row_num}"] = transaction.created_at.strftime("%Y-%m-%d %H:%M")
 
     for col in ws.columns:
         max_length = 0

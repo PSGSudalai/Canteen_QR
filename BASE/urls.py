@@ -30,7 +30,7 @@ from BASE.views import (
     archived_student_list,
     unarchive_user,
     archived_items_list_view,
-    generate_report,
+    generate_report_all,
     canteen_item_unarchive,
     redirect_report_page,
 )
@@ -76,7 +76,7 @@ urlpatterns = [
     path("recharge/<uuid>/", recharge_transaction, name="recharge_transaction"),
     path("payment/<uuid>/", payment_transaction, name="payment_transaction"),
     path("archived-items/", archived_items_list_view, name="archived_items_list"),
-    path('generate_report/',generate_report, name='generate_report'),
+    path('generate_report_all/',generate_report_all, name='generate_report_all'),
     path('redirect_generate_report/',redirect_report_page, name='redirect_generate_report'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
