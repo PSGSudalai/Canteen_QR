@@ -29,6 +29,6 @@ from .transaction import (
     TransactionListView,
     recharge_transaction,
     payment_transaction,
-    generate_report,
 )
 from .user_list import staff_list, student_list, edit_user
+from .reports import generate_report
