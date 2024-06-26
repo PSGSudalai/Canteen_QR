@@ -32,7 +32,8 @@ from BASE.views import (
     archived_items_list_view,
     generate_payment_report_all,
     canteen_item_unarchive,
-    redirect_report_page,
+    redirect_transaction_report_page,
+    redirect_sales_report_page,
     generate_product_sale_report_all,
 )
 
@@ -79,7 +80,8 @@ urlpatterns = [
     path("archived-items/", archived_items_list_view, name="archived_items_list"),
     path('generate_payment_report_all/',generate_payment_report_all, name='generate_payment_report_all'),
     path('generate_product_sale_report_all/',generate_product_sale_report_all, name='generate_product_sale_report_all'),
-    path('redirect_generate_report/<str:type>/',redirect_report_page, name='redirect_generate_report'),
+    path('redirect_transaction_report_page/',redirect_transaction_report_page, name='redirect_transaction_report_page'),
+    path('redirect_sales_report_page/',redirect_sales_report_page, name='redirect_sales_report_page'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

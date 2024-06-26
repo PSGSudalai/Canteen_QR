@@ -129,8 +129,9 @@ def generate_product_sale_report_all(request):
     wb.save(response)
     return response
 
-def redirect_report_page(request, type):
-    if type == "transaction":
+def redirect_transaction_report_page(request):
         return render(request, "reports/generate_transaction_report.html")
-    else:
+
+
+def redirect_sales_report_page(request):
         return render(request, "reports/generate_sales_report.html")
