@@ -29,12 +29,24 @@
         }
 
         #qr-input-file {
+            display: none;
             margin-top: 20px;
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
             background-color: #fff;
             cursor: pointer;
+        }
+        
+        .btn-back {
+            background-color: #007bff;
+            text-align: center;
+            color: white;
+            width: 50px;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            height: 20px;
         }
     </style>
 </head>
@@ -79,5 +91,6 @@
         });
     });
 </script>
+<a href="{% url 'canteen_item_list' %}" class="btn btn-back">Back</a>
 </body>
 </html>
