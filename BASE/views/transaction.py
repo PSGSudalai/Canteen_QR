@@ -19,6 +19,7 @@ from BASE.helpers import send_email
 class TransactionListView(ListView):
     model = Transaction
     template_name = "website/transaction_list.html"
+    paginate_by = 15
 
     def get_queryset(self):
         queryset = (
@@ -50,6 +51,7 @@ class TransactionListView(ListView):
         if payment_method:
             queryset = queryset.filter(payment_method=payment_method)
 
+        queryset = queryset.order_by("-created_at")
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -193,15 +195,15 @@ def generate_report(request):
     transactions = Transaction.objects.all()
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
-    payment_type = request.GET.get("payment_type")
+    # payment_type = request.GET.get("payment_type")
     payment_method = request.GET.get("payment_method")
 
     if start_date:
         transactions = transactions.filter(created_at__date__gte=parse_date(start_date))
     if end_date:
         transactions = transactions.filter(created_at__date__lte=parse_date(end_date))
-    if payment_type:
-        transactions = transactions.filter(payment_type=payment_type)
+    # if payment_type:
+    #     transactions = transactions.filter(payment_type=payment_type)
     if payment_method:
         transactions = transactions.filter(payment_method=payment_method)
 
