@@ -75,8 +75,7 @@ urlpatterns = [
     path("recharge/<uuid>/", recharge_transaction, name="recharge_transaction"),
     path("payment/<uuid>/", payment_transaction, name="payment_transaction"),
     path("archived-items/", archived_items_list_view, name="archived_items_list"),
-    path("generate_report/", generate_report, name="generate_report"),
+    path("transactions/generate_report/", generate_report, name="generate_report"),
 ]
-
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
