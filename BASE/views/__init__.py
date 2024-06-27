@@ -31,4 +31,4 @@ from .transaction import (
     payment_transaction,
 )
 from .user_list import staff_list, student_list, edit_user
-from .reports import generate_payment_report_all, generate_product_sales_day_based_report_all, generate_product_sales_month_based_report_all, redirect_transaction_report_page, generate_product_sales_report_all
+from .reports import (generate_payment_report_all, generate_product_sales_day_based_report_all, generate_product_sales_month_based_report_all, redirect_transaction_report_page, generate_product_sales_report_all, redirect_sales_report_page)
