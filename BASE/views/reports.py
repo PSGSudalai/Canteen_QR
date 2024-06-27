@@ -137,7 +137,7 @@ def generate_product_sales_month_based_report_all(request):
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response["Content-Disposition"] = f"attachment; filename=sales_report.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=daily_sales_report.xlsx"
     workbook.save(response)
     return response
 
@@ -232,7 +232,7 @@ def generate_product_sales_day_based_report_all(request):
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response["Content-Disposition"] = f"attachment; filename=sales_report.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=monthly_sales_report.xlsx"
     wb.save(response)
     return response
 
