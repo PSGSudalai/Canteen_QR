@@ -27,7 +27,7 @@
             max-width: 900px;
         }
         .form-container {
-            width: 45%;
+            width: 70%;
         }
         h1 {
             text-align: center;
@@ -46,7 +46,7 @@
             background-color: #0056b3;
         }
         .report-img {
-            width: 45%;
+            width: 30%;
             overflow: hidden;
         }
         .report-img img {
@@ -60,7 +60,7 @@
     <div class="container">
         <div class="form-container">
             <h1>Generate Sales Report</h1>
-            <form method="get" action="{% url 'generate_product_sale_report_all' %}">
+            <form method="get" action="{% url 'generate_product_sales_report_all' %}">
                 <div class="form-group">
                     <label for="start_date">Start Date:</label>
                     <input type="date" class="form-control" id="start_date" name="start_date">
@@ -69,7 +69,8 @@
                     <label for="end_date">End Date:</label>
                     <input type="date" class="form-control" id="end_date" name="end_date">
                 </div>
-                <button type="submit" class="btn btn-primary">Generate Report</button>
+                <button type="submit" class="btn btn-primary" name="report_action" value="monthly">Generate Monthly Report</button>
+                <button type="submit" class="btn btn-primary" name="report_action" value="daily">Generate Daily Report</button>
             </form>
         </div>
         <div class="report-img">

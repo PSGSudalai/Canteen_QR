@@ -8,7 +8,7 @@ from django.utils.dateparse import parse_date
 class PreviousOrdersListView(LoginRequiredMixin, ListView):
     model = PreviousOrders
     template_name = "website/previous_orders_list.html"
-    paginate_by = 12
+    paginate_by = 15
 
     def get_queryset(self):
         queryset = (
