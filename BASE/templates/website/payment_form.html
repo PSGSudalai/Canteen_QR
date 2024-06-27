@@ -51,13 +51,14 @@
             background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 70px;
             cursor: pointer;
             border-radius: 3px;
         }
 
         .btn-payment:hover {
-            background-color: #218838;
+            background-color: #00460f;
+            color: #fff;
         }
 
         /* Loader CSS */
@@ -74,15 +75,22 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        .btn-back {
+
+        .back-link {
+            display: block;
             background-color: #007bff;
-            text-align: center;
             color: white;
-            width: 50px;
+            text-align: center;
+            width: 100%;
             border-radius: 5px;
             padding: 10px;
-            margin: 10px;
-            height: 20px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .back-link:hover {
+            background-color: #0056b3;
+            color: white;
         }
 
         @keyframes spin {
@@ -115,7 +123,6 @@
                 <button type="submit" class="btn btn-payment" id="submit-btn">Submit Payment</button>
                 <div class="loader" id="loader"></div>
             </form>
-            
             <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
         </div>
     </div>
@@ -123,7 +130,7 @@
     <script>
         document.getElementById('payment-form').addEventListener('submit', function() {
             document.getElementById('loader').style.display = 'inline-block';
-            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('submit-btn').disabled = true;
         });
     </script>
 </body>

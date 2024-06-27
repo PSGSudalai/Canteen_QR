@@ -345,7 +345,6 @@
                 </a>
             </span>
             {% elif user.is_staff %}
-                <li><a href="{% url 'signup' %}" class="add-item-admin-button">New User</a></li>
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
             {% else %}

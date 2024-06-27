@@ -8,51 +8,35 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            
-            
         }
-        .new {
-            text-align: center;
-            font-weight: bold;
-        }
-        #identity {
-            margin-bottom: 10px;
-        }
-        h1 {
+        h1, h3 {
             text-align: center;
         }
         form {
-            /* background:transparent;
-            border: 2px solid rgba(225, 225, 225, 0.1);
-            backdrop-filter: blur(40px);
-            padding: 50px;
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px; Adjust width as needed */
-            
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 20px;
-  width: 400px;
-  background: linear-gradient(135deg, #4c83ff, #72e2ff);
-  
-
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            padding-bottom: 50px;
+            width: 100%;
+            max-width: 400px;
         }
         p {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         label {
             display: block;
             margin-bottom: 5px;
+            font-weight: 500;
         }
         input[type="text"],
         input[type="number"],
@@ -61,29 +45,29 @@
             margin-bottom: 10px;
             width: 100%;
             box-sizing: border-box;
-            border-radius: 50px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
         }
-        .add {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        input[type="file"] {
+            margin-bottom: 10px;
         }
         input[type="checkbox"] {
             margin-left: 0;
         }
         button {
-            background-color: #007BFF;
+            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
-            margin-top: 10px;
             border-radius: 5px;
             white-space: nowrap;
         }
-        .btn:hover {
-            background-color: #19293a;
+        button:hover {
+            background-color: #0056b3;
+        }
+        a:hover {
+            color: white;
         }
         button a {
             color: white;
@@ -94,41 +78,47 @@
         }
         .button-right button {
             float: right;
+            margin-left: 10px;
         }
-        .add{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins';
-            
-
+        img {
+            display: block;
+            margin-top: 10px;
+            max-width: 100px;
+            max-height: 100px;
         }
-            /* Mobile devices (portrait and landscape) */
-@media only screen and (max-width: 480px) {
-  /* styles here */
-}
 
-/* Tablets (portrait and landscape) */
-@media only screen and (min-width: 481px) and (max-width: 768px) {
-  /* styles here */
-}
+        @media only screen and (max-width: 480px) {
+            form {
+                padding: 20px;
+                width: 90%;
+            }
+        }
 
-/* Desktops and laptops */
-@media only screen and (min-width: 769px) {
-  /* styles here */
-}
+        @media only screen and (min-width: 481px) and (max-width: 768px) {
+            form {
+                padding: 25px;
+                width: 80%;
+            }
+        }
+
+        @media only screen and (min-width: 769px) {
+            form {
+                padding: 30px;
+                width: 400px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="add">
         <form method="post" enctype="multipart/form-data">
-            <h3 class="new">{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
+            <h3>{% if item %}Edit Item{% else %}Add New Item{% endif %}</h3>
 
             {% csrf_token %}
             <p>
                 <label for="identity">Identity:</label>
-                <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" {% if item %}readonly{% endif %} required>
+                <input type="text" name="identity" id="identity" value="{{ form_data.identity }}" required>
             </p>
             <p>
                 <label for="price">Price:</label>
@@ -150,13 +140,13 @@
                 <label for="image">Image:</label>
                 <input type="file" name="image" id="image">
                 {% if form_data.image %}
-                    <img src="{{ form_data.image }}" alt="{{ form_data.identity }}" style="max-width: 100px; max-height: 100px;">
+                    <img src="{{ form_data.image }}" alt="{{ form_data.identity }}">
                 {% endif %}
             </p>
 
-            <div>
+            <div class="button-right">
                 <button type="submit">Save</button>
-                <button class="button-right">
+                <button>
                     <a href="{% url 'canteen_item_list' %}">Back</a>
                 </button>
             </div>
