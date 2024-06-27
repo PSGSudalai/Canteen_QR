@@ -17,7 +17,7 @@ from BASE.helpers import send_email
 class TransactionListView(ListView):
     model = Transaction
     template_name = "website/transaction_list.html"
-    paginate_by = 15
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = (

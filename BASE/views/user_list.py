@@ -21,13 +21,13 @@ def staff_list(request):
             | Q(phone_number__icontains=query)
         )
         if start_date:
-            users = users.filter(date_joined__date__gte=parse_date(start_date))
+            users = users.filter(created_at__date__gte=parse_date(start_date))
         if end_date:
-            users = users.filter(date_joined__date__lte=parse_date(end_date))
+            users = users.filter(created_at__date__lte=parse_date(end_date))
     else:
         users = CustomUser.objects.none()
 
-    paginator = Paginator(users, 15) 
+    paginator = Paginator(users, 12) 
     paginated_users = paginator.get_page(page_number)
 
     return render(
@@ -57,13 +57,13 @@ def student_list(request):
             | Q(phone_number__icontains=query)
         )
         if start_date:
-            users = users.filter(date_joined__date__gte=parse_date(start_date))
+            users = users.filter(created_at__date__gte=parse_date(start_date))
         if end_date:
-            users = users.filter(date_joined__date__lte=parse_date(end_date))
+            users = users.filter(created_at__date__lte=parse_date(end_date))
     else:
         users = CustomUser.objects.none()
 
-    paginator = Paginator(users, 15)
+    paginator = Paginator(users, 12)
     paginated_users = paginator.get_page(page_number)
 
     return render(

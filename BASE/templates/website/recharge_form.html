@@ -13,12 +13,15 @@
             margin: 0;
             background: url('/static/illustrations/recharge.jpg') no-repeat center center fixed;
             background-size: cover;
+            color: white;
         }
         .tran {
             text-align: center;
-            margin-left: 80%;
-            margin-right: 15%;
-            color: white;
+            margin-right: 5%;
+        }
+        label{
+            color: black;
+            font-family: Arial, sans-serif;
         }
         form {
             background-color: #fff;
@@ -26,6 +29,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 300px;
+            margin-top: 20px;
         }
         input[type="number"], input[type="text"], select, button {
             padding: 10px;
@@ -34,13 +38,16 @@
             box-sizing: border-box;
         }
         button {
-            background-color: #007bff;
+            background-color: #28a745;
             color: #fff;
             border: none;
             cursor: pointer;
+            border-radius: 5px;
         }
         button:hover {
-            background-color: #0056b3;
+            text-decoration: underline;
+            background-color: #00460f;
+            color: #fff;
         }
         .loader {
             display: none;
@@ -69,15 +76,20 @@
         .error-message {
             color: #dc3545;
         }
-        .btn-back {
+        .back-link {
+            display: block;
             background-color: #007bff;
-            text-align: center;
             color: white;
-            width: 50px;
+            text-align: center;
+            width: 100%;
             border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
-            height: 20px;
+            padding: 10px 0px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .back-link:hover {
+            background-color: #0056b3;
+            color: white;
         }
     </style>
 </head>
@@ -99,12 +111,11 @@
             </select>
             <br>
             <button type="submit" id="submit-btn">Recharge</button>
+            <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
             <div class="loader" id="loader"></div>
             <div class="status-message success-message" id="success-message">Transaction successful!</div>
             <div class="status-message error-message" id="error-message">Transaction failed. Please try again.</div>
         </form>
-        
-        <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
     </div>
 
     <script>
