@@ -171,6 +171,8 @@ def payment_transaction(request, uuid):
                 student=student,
                 staff=staff,
                 item=cartItem.item,
+                item_name=cartItem.item.identity,
+                item_price=cartItem.item.price,
                 quantity=cartItem.quantity,
                 total=cartItem.quantity * cartItem.item.price,
             )
