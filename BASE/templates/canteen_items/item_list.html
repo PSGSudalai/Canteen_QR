@@ -9,15 +9,16 @@
         /* Style for the body */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         body {
-
             background-color: #f0f0f0;
             margin: 0;
             padding: 20px;
         }
 
+        .food-items{
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+        }
         .navigation {
             background: rgb(26,83,201);
-            background: linear-gradient(90deg, rgba(26,83,201,1) 19%, rgb(45, 99, 216) 37%, rgba(36,97,223,1) 61%, rgba(29,82,193,1) 100%, rgba(0,212,255,1) 100%);
             text-align: center;
             text-align: right;
             padding: 10px 20px;
@@ -105,7 +106,6 @@
 
 
         }
-
         .search {
             display: flex;
             justify-content: center;
@@ -215,7 +215,7 @@
         }
 
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #003a77;
         }
 
         .admin-actions {
@@ -242,38 +242,37 @@
         }
 
         .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-.pagination li {
-    display: inline;
-    margin: 0 5px;
-}
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
 
-.pagination a, .pagination span {
-    color: #007bff;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+        .pagination a, .pagination span {
+            color: #007bff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-.pagination a:hover, .pagination span:hover {
-    background-color: #007bff;
-    color: #fff;
-}
+        .pagination a:hover, .pagination span:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-.pagination .active span {
-    font-weight: bold;
-    color: #000;
-    background-color: #e9ecef;
-    border-radius: 5px;
-}
+        .pagination .active span {
+            font-weight: bold;
+            color: #000;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
 
 
-        /* Popup styles */
         .popup {
             display: none;
             position: fixed;
@@ -298,19 +297,19 @@
             cursor: pointer;
         }
             /* Mobile devices (portrait and landscape) */
-@media only screen and (max-width: 480px) {
-  /* styles here */
-}
+        @media only screen and (max-width: 480px) {
+        /* styles here */
+        }
 
-/* Tablets (portrait and landscape) */
-@media only screen and (min-width: 481px) and (max-width: 768px) {
-  /* styles here */
-}
+        /* Tablets (portrait and landscape) */
+        @media only screen and (min-width: 481px) and (max-width: 768px) {
+        /* styles here */
+        }
 
-/* Desktops and laptops */
-@media only screen and (min-width: 769px) {
-  /* styles here */
-}
+        /* Desktops and laptops */
+        @media only screen and (min-width: 769px) {
+        /* styles here */
+        }
     </style>
 </head>
 <body>
@@ -361,21 +360,24 @@
             <input type="text" name="q" placeholder="Search..." class="form-control">
             <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price.">
             <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
-                            <select id="category" name="category" class="form-control">
+                <select id="category" name="category" class="form-control">
                     <option value="">All Categories</option>
                     <option value="Food">Food</option>
                     <option value="Snacks">Snacks</option>
                     <option value="Beverage">Beverage</option>
                 </select>
                 <button type="submit" style="background-color: #007bff;">Search</button>
-            </form>
-        </div>
-
+        </form>
+    </div>
+    <div class="food-lists">
         <ul class="item">
             {% for item in items %}
                 <li class="item-card">
                     <div class="item-image-container">
-                        <img class="item-image" src="{{ item.itemImage.image.url }}" alt="{{ item.identity }}">
+                        {% load static %}
+                        <img class="item-image" 
+                        src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}" 
+                        alt="{{ item.identity }}">
                     </div>
                     <div class="item-details">
                         <p class="item-identity">{{ item.identity }}</p>
@@ -422,53 +424,54 @@
                 </li>
             {% endfor %}
         </ul>
+    </div>
 
-        <!-- Pagination controls -->
-        <div class="pagination">
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                    <li><a href="?page=1">&laquo; first</a></li>
-                    <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
-                {% else %}
-                    <li class="disabled"><span>&laquo; first</span></li>
-                    <li class="disabled"><span>previous</span></li>
-                {% endif %}
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo; first</span></li>
+                <li class="disabled"><span>previous</span></li>
+            {% endif %}
 
-                <li class="active"><span>{{ page_obj.number }}</span></li>
+            <li class="active"><span>{{ page_obj.number }}</span></li>
 
-                {% if page_obj.has_next %}
-                    <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
-                    <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>next</span></li>
-                    <li class="disabled"><span>last &raquo;</span></li>
-                {% endif %}
-            </ul>
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>next</span></li>
+                <li class="disabled"><span>last &raquo;</span></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Popup for balance -->
+    <div class="popup" id="balance-popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="togglePopup()">&times;</span>
+            <h2>Your Balance</h2>
+            <p>Balance: Rs. {{ user.balance }}</p>
         </div>
+    </div>
 
-        <!-- Popup for balance -->
-        <div class="popup" id="balance-popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="togglePopup()">&times;</span>
-                <h2>Your Balance</h2>
-                <p>Balance: Rs. {{ user.balance }}</p>
-            </div>
-        </div>
-
-        <script>
-            function togglePopup() {
-                var popup = document.getElementById('balance-popup');
-                if (popup.style.display === 'none' || popup.style.display === '') {
-                    popup.style.display = 'block';
-                } else {
-                    popup.style.display = 'none';
-                }
+    <script>
+        function togglePopup() {
+            var popup = document.getElementById('balance-popup');
+            if (popup.style.display === 'none' || popup.style.display === '') {
+                popup.style.display = 'block';
+            } else {
+                popup.style.display = 'none';
             }
+        }
 
-            document.querySelector('.balance-link').addEventListener('click', function(event) {
-                event.preventDefault();
-                togglePopup();
-            });
-        </script>
-    </body>
+        document.querySelector('.balance-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            togglePopup();
+        });
+    </script>
+</body>
 </html>
