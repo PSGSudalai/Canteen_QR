@@ -77,12 +77,73 @@ def generate_payment_report_all(request):
     return response
 
 
-def redirect_report_page(request):
-    return render(request, "generate_report.html")
+def redirect_transaction_report_page(request):
+    return render(request, "reports/generate_transaction_report.html")
 
 
 @login_required
-def generate_product_sale_report_all(request):
+def generate_product_sales_month_based_report_all(request):
+    orders = PreviousOrders.objects.all()
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
+    if start_date:
+        orders = orders.filter(created_at__date__gte=parse_date(start_date))
+    if end_date:
+        orders = orders.filter(created_at__date__lte=parse_date(end_date))
+
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Month-wise Sales Report"
+    
+    monthly_sales_data = {}
+    months = set()
+
+    for order in orders:
+        item_name = order.item.identity.capitalize()
+        item_price = order.item.price
+        month = order.created_at.strftime("%B").capitalize()
+        
+        if item_name not in monthly_sales_data:
+            monthly_sales_data[item_name] = {"price": item_price}
+        
+        if month not in monthly_sales_data[item_name]:
+            monthly_sales_data[item_name][month] = {"sales": 0, "earnings": 0}
+        
+        monthly_sales_data[item_name][month]["sales"] += order.quantity
+        monthly_sales_data[item_name][month]["earnings"] += order.total
+
+        months.add(month)
+
+    columns = ["Items", "Price(₹)"]
+    for month in sorted(months):
+        columns.append(f"{month} Count")
+        columns.append(f"{month} Earnings")
+    
+    worksheet.append(columns)
+    
+    for item_name, sales_data in monthly_sales_data.items():
+        row = [item_name, sales_data["price"]]
+        for month in sorted(months):
+            if month in sales_data:
+                row.append(sales_data[month]["sales"])
+                row.append(sales_data[month]["earnings"])
+            else:
+                row.append(0)
+                row.append(0)
+                
+        worksheet.append(row)
+    
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = f"attachment; filename=sales_report.xlsx"
+    workbook.save(response)
+    return response
+
+
+@login_required   
+def generate_product_sales_day_based_report_all(request):
     orders = PreviousOrders.objects.all()
     start_date = request.GET.get("start_date")
     end_date = request.GET.get("end_date")
@@ -94,7 +155,7 @@ def generate_product_sale_report_all(request):
 
     wb = openpyxl.Workbook()
     ws = wb.active
-    ws.title = "Sales Report"
+    ws.title = "Day-wise Sales Report"
 
     columns = [
         "Item",
@@ -141,7 +202,6 @@ def generate_product_sale_report_all(request):
     for row_num, (item_name, sales) in enumerate(sales_data.items(), 2):
         ws[f"A{row_num}"] = item_name
         ws[f"B{row_num}"] = f"₹ {sales['price']}"
-
         ws[f"C{row_num}"] = sales["monday"]["quantity"]
         ws[f"D{row_num}"] = f"₹ {sales['monday']['total']}"
         ws[f"E{row_num}"] = sales["tuesday"]["quantity"]
@@ -177,9 +237,20 @@ def generate_product_sale_report_all(request):
     return response
 
 
-def redirect_transaction_report_page(request):
-    return render(request, "reports/generate_transaction_report.html")
-
-
 def redirect_sales_report_page(request):
     return render(request, "reports/generate_sales_report.html")
+
+@login_required
+def generate_product_sales_report_all(request):
+    if request.method == "GET":
+        start_date = request.GET.get("start_date")
+        end_date = request.GET.get("end_date")
+        report_action = request.GET.get("report_action")
+
+        if report_action == "monthly":
+            return generate_product_sales_month_based_report_all(request)
+
+        elif report_action == "daily":
+            return generate_product_sales_day_based_report_all(request)
+
+    return redirect_sales_report_page(request)
