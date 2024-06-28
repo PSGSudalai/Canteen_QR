@@ -172,7 +172,7 @@ def payment_transaction(request, uuid):
             PreviousOrders.objects.create(
                 student=student,
                 staff=staff,
-                # item=cartItem.item,
+                item=cartItem.item,
                 item_name=cartItem.item.identity,
                 item_price=cartItem.item.price,
                 quantity=cartItem.quantity,
@@ -183,7 +183,6 @@ def payment_transaction(request, uuid):
         cartItems.update(is_sold=True)
         cartItems.delete()
         return redirect("canteen_item_list")
-
     elif request.method == "GET":
         return render(
             request,

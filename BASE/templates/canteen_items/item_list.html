@@ -375,12 +375,12 @@
                 <li class="item-card">
                     <div class="item-image-container">
                         {% load static %}
-                        <img class="item-image" 
-                        src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}" 
+                        <img class="item-image"
+                        src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
                         alt="{{ item.identity }}">
                     </div>
                     <div class="item-details">
-                        <p class="item-identity">{{ item.identity }}</p>
+                        <p class="item-identity">{{ item.identity|title }}</p>
                         <p class="item-price">Rs.{{ item.price }}</p>
                         {% if user.is_admin %}
                             <p class="item-availability">
