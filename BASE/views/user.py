@@ -19,7 +19,7 @@ def signup_view(request):
 
         if CustomUser.objects.filter(email=email).exists():
             messages.error(
-                request, "Email address is already in use. Please use another email."
+                request, "Email address is already in use. Please use another email.", extra_tags='signup'
             )
         else:
             # Create the user
@@ -77,7 +77,7 @@ def login_view(request):
             login(request, user)
             return redirect("canteen_item_list")
         else:
-            messages.error(request, "Invalid UserName or Password")
+            messages.error(request, "Invalid UserName or Password", extra_tags='login')
             return redirect("login")
 
     return render(request, "registration/login.html")
