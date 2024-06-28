@@ -138,7 +138,7 @@ def canteen_item_edit(request, item_id):
                     item.itemImage.image = image
                     item.itemImage.save()
                 else:
-                    item_image = ItemImage(canteen_item=item, image=image)
+                    item_image = ItemImage(image=image)
                     item_image.save()
                     item.itemImage = item_image
                     item.save()
