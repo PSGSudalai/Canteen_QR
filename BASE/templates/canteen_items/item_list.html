@@ -129,7 +129,12 @@
             padding: 10px;
             margin-bottom: 0;
         }
-
+        #searching{
+            max-width: 200px;
+        }
+        #category {
+            padding: 0px;
+        }
         .search button {
             color: white;
             border: none;
@@ -172,6 +177,7 @@
         }
 
         .item-image {
+            border-radius: 10px;
             max-width: 100%;
             max-height: 100%;
             object-fit: cover;
@@ -371,7 +377,7 @@
 
     <div class="search">
         <form method="GET" action="{% url 'canteen_item_list' %}">
-            <input type="text" name="q" placeholder="Search..." class="form-control">
+            <input type="text" name="q" placeholder="Search..." id="searching" class="form-control">
             <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price.">
             <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
                 <select id="category" name="category" class="form-control">
@@ -395,7 +401,7 @@
                     </div>
                     <div class="item-details">
                         <p class="item-identity">{{ item.identity|title }}</p>
-                        <p class="item-price">Rs.{{ item.price }}</p>
+                        <p class="item-price">₹. {{ item.price }}</p>
                         {% if user.is_admin %}
                             <p class="item-availability">
                                 {% if item.availability %}
