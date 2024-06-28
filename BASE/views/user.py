@@ -130,6 +130,27 @@ def archive_user(request, id):
     user.save()
     return redirect("student_list")
 
+@login_required
+def archive_staff(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    user.is_archieved = True
+    user.save()
+    return redirect("staff_list")
+
+@login_required
+def delete_user(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    if user.is_archieved :
+        user.delete()
+    return redirect("student_list")
+
+@login_required
+def delete_staff(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    if user.is_archieved :
+        user.delete()
+    return redirect("staff_list")
+
 
 @login_required
 def unarchive_user(request, id):
@@ -138,8 +159,21 @@ def unarchive_user(request, id):
     user.save()
     return redirect("archived_student_list")
 
+@login_required
+def unarchive_staff(request, id):
+    user = get_object_or_404(CustomUser, id=id)
+    user.is_archieved = False
+    user.save()
+    return redirect("archived_staff_list")
+
 
 @login_required
 def archived_student_list(request):
     users = CustomUser.objects.filter(is_archieved=True)
     return render(request, "website/archived_student_list.html", {"users": users})
+
+
+@login_required
+def archived_staff_list(request):
+    users = CustomUser.objects.filter(is_archieved=True)
+    return render(request, "website/archived_staff_list.html", {"users": users})

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <title>Archived Student List</title>
+    <title>Archived Staff List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -121,9 +121,9 @@
     </style>
 </head>
 <body>
-    <h1>Archived Student List</h1>
+    <h1>Archived Staff List</h1>
     <div class="filter-form">
-        <form method="GET" action="{% url 'archived_student_list' %}">
+        <form method="GET" action="{% url 'archived_staff_list' %}">
             <input type="text" name="q" class="filter-input" placeholder="Search ..." value="{{ query }}">
             <input type="date" name="start_date" class="filter-input" placeholder="Start Date" value="{{ start_date }}">
             <input type="date" name="end_date" class="filter-input" placeholder="End Date" value="{{ end_date }}">
@@ -156,10 +156,10 @@
                         <td>{{ user.modified_at|date:"Y-m-d H:i" }}</td>
                         <td>
                             <button class="btn btn-success btn-custom">
-                                <a href="{% url 'unarchive_user' user.id %}" style="color: white;">Unarchive</a>
+                                <a href="{% url 'unarchive_staff' user.id %}" style="color: white;">Unarchive</a>
                             </button>
                             <button class="btn btn-danger btn-custom">
-                                <a href="{% url 'delete_user' user.id %}" style="color: white;">Delete</a>
+                                <a href="{% url 'delete_staff' user.id %}"  style="color: white;">Delete</a>
                             </button>
                         </td>
                     </tr>
@@ -167,6 +167,6 @@
             </tbody>
         </table>
     </div>
-    <a href="{% url 'student_list' %}" class="back-link">Back</a>
+    <a href="{% url 'staff_list' %}" class="back-link">Back</a>
 </body>
 </html>

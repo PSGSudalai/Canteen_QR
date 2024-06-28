@@ -170,3 +170,10 @@ def canteen_item_unarchive(request, item_id):
     item.is_archieved = False
     item.save()
     return redirect("canteen_item_list")
+
+
+def canteen_delete_item(request, item_id):
+    item = get_object_or_404(CanteenItems, pk=item_id)
+    if item.is_archieved :
+        item.delete()
+    return redirect("canteen_item_list")

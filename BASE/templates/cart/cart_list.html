@@ -196,7 +196,9 @@
                 <ul>
                     {% for item in cart_items %}
                         <li>
-                            <img class="item-image" src="{{ item.item.itemImage.image.url }}" alt="Item Image">
+                            <img class="item-image"
+                                src="{% if item.item.itemImage and item.item.itemImage.image %}{{ item.item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
+                                alt="{{ item.item.identity }}">
                             <div class="item-details">
                                 <p>{{ item.item.identity }}</p>
                                 <p>Quantity: {{ item.quantity }} | Rs. {{ item.item.price }}</p>

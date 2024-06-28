@@ -5,8 +5,13 @@ from .user import (
     qr_image_view,
     balance_check_view,
     archive_user,
+    archive_staff,
     unarchive_user,
+    unarchive_staff,
     archived_student_list,
+    archived_staff_list,
+    delete_user,
+    delete_staff,
 )
 from .item import (
     canteen_item_create,
@@ -15,6 +20,7 @@ from .item import (
     canteen_item_archive,
     archived_items_list_view,
     canteen_item_unarchive,
+    canteen_delete_item,
 )
 from .add_cart import (
     add_to_cart,

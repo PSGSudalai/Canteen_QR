@@ -59,7 +59,7 @@
             background-color: #d6d6d6;
         }
 
-        .back-link {
+        .back-link, .archive-link {
             background-color: #6c757d;
             color: white;
             border: none;
@@ -70,6 +70,13 @@
             display: block;
             margin-top: 20px;
             text-align: center;
+            margin-right: 10px;
+        }
+        
+        .link-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
 
         .filter-form {
@@ -178,7 +185,14 @@
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
-                        <td><button class="btn btn-info"><a href="{% url 'edit_user' user.id %}">Edit</a></button></td>
+                        <td>
+                            <button class="btn btn-primary btn-custom">
+                                <a href="{% url 'edit_user' user.id %}" style="color: white;">Edit</a>
+                            </button>
+                            <button class="btn btn-warning btn-custom">
+                                <a href="{% url 'archive_staff' user.id %}" style="color: white;">Archive</a>
+                            </button>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -205,6 +219,9 @@
             {% endif %}
         </ul>
     </div>
-    <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+    <div class="link-container">
+        <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+        <a href="{% url 'archived_staff_list' %}" class="archive-link">Archived Staffs</a>
+    </div>
 </body>
 </html>

@@ -27,7 +27,10 @@ from BASE.views import (
     recharge_transaction,
     payment_transaction,
     archive_user,
+    archive_staff,
     archived_student_list,
+    archived_staff_list,
+    unarchive_staff,
     unarchive_user,
     archived_items_list_view,
     generate_payment_report_all,
@@ -36,7 +39,10 @@ from BASE.views import (
     redirect_sales_report_page,
     generate_product_sales_day_based_report_all,
     generate_product_sales_month_based_report_all,
-    generate_product_sales_report_all
+    generate_product_sales_report_all,
+    delete_staff,
+    delete_user,
+    canteen_delete_item,
 )
 
 urlpatterns = [
@@ -45,8 +51,13 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("students/archive/<int:id>/", archive_user, name="archive_user"),
+    path("staff/archive/<int:id>/", archive_staff, name="archive_staff"),
+    path("student/delete/<int:id>/", delete_user, name="delete_user"),
+    path("staff/delete/<int:id>/", delete_staff, name="delete_staff"),
     path("students/unarchive/<int:id>/", unarchive_user, name="unarchive_user"),
+    path("staff/unarchive/<int:id>/", unarchive_staff, name="unarchive_staff"),
     path("students/archived/", archived_student_list, name="archived_student_list"),
+    path("staffs/archived/", archived_staff_list, name="archived_staff_list"),
     path("canteen/items/", canteen_item_list, name="canteen_item_list"),
     path("canteen/items/create/", canteen_item_create, name="canteen_item_create"),
     path("items/edit/<int:item_id>/", canteen_item_edit, name="canteen_item_edit"),
@@ -59,6 +70,11 @@ urlpatterns = [
         "items/unarchive/<int:item_id>/",
         canteen_item_unarchive,
         name="unarchive_item",
+    ),
+    path(
+        "items/delete/<int:item_id>/",
+        canteen_delete_item,
+        name="canteen_delete_item",
     ),
     path("cart/add/", add_to_cart, name="add_to_cart"),
     path("update-cart-item/<int:item_id>/", update_cart_item, name="update_cart_item"),

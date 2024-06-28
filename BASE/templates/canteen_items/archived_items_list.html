@@ -147,6 +147,9 @@
                             <button class="btn btn-success btn-custom">
                                 <a href="{% url 'unarchive_item' item.id %}" style="color: white;">Unarchive</a>
                             </button>
+                            <button class="btn btn-danger btn-custom">
+                                <a href="{% url 'canteen_delete_item' item.id %}" style="color: white;">Delete</a>
+                            </button>
                         </td>
                     </tr>
                 {% endfor %}

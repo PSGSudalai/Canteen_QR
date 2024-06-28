@@ -1,8 +1,6 @@
 from Canteen_QR import settings
-from django.shortcuts import render
 from django.core.mail import send_mail
-
-from django.core.files.base import ContentFile
+from django.http import HttpResponse
 from django.core.mail import EmailMessage
 
 
@@ -49,12 +47,8 @@ def send_sms(to_number, body):
     return message.sid
 
 
-from django.shortcuts import render
-from django.http import HttpResponse
-from .helpers import send_sms
 
-
-def send_sms_view(message):
+def send_sms_view(message="hello"):
     to_number = "+918110015692"
     message_body = message if message else "Hello from Twilio!"
 
