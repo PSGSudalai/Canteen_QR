@@ -12,9 +12,9 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = (
-            PreviousOrders.objects.all()
+            PreviousOrders.objects.all().order_by('-created_at')
             if self.request.user.is_admin or self.request.user.is_staff
-            else PreviousOrders.objects.filter(student=self.request.user)
+            else PreviousOrders.objects.filter(student=self.request.user).order_by('-created_at')
         )
 
         min_total = self.request.GET.get("min_total")
@@ -34,7 +34,7 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
         if end_date:
             queryset = queryset.filter(created_at__date__lte=parse_date(end_date))
 
-        return queryset
+        return queryset.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
