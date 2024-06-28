@@ -5,8 +5,11 @@ from .user import (
     qr_image_view,
     balance_check_view,
     archive_user,
+    archive_staff,
     unarchive_user,
+    unarchive_staff,
     archived_student_list,
+    archived_staff_list,
 )
 from .item import (
     canteen_item_create,

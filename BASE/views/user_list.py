@@ -14,7 +14,7 @@ def staff_list(request):
     page_number = request.GET.get("page", 1)
 
     if request.user.is_admin:
-        users = CustomUser.objects.filter(is_staff=True).filter(
+        users = CustomUser.objects.filter(is_staff=True, is_archieved=False).filter(
             Q(email__icontains=query)
             | Q(first_name__icontains=query)
             | Q(last_name__icontains=query)
