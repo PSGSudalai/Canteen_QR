@@ -142,14 +142,14 @@ def delete_user(request, id):
     user = get_object_or_404(CustomUser, id=id)
     if user.is_archieved :
         user.delete()
-    return redirect("archived_student_list")
+    return redirect("student_list")
 
 @login_required
 def delete_staff(request, id):
     user = get_object_or_404(CustomUser, id=id)
     if user.is_archieved :
         user.delete()
-    return redirect("archived_staff_list")
+    return redirect("staff_list")
 
 
 @login_required
