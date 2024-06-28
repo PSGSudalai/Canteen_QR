@@ -89,6 +89,7 @@
         .header span {
             font-size: 23px;
             margin-left: 6px;
+            margin-bottom: 3px;
         }
         .header .logout {
             background-color: #dc3545;
@@ -296,6 +297,19 @@
             right: 10px;
             cursor: pointer;
         }
+        .cart-popup {
+            display: none;
+            position: fixed;    
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
             /* Mobile devices (portrait and landscape) */
         @media only screen and (max-width: 480px) {
         /* styles here */
@@ -348,7 +362,7 @@
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
                 <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
             {% else %}
-                <li><a href="{% url 'qr_image' %}" class="add-item-button">Show QR</a></li>
+                <li><a href="{% url 'qr_image' user.id %}" class="add-item-button">Show QR</a></li>
                 <li><a href="#" class="balance-link">Balance</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
@@ -395,6 +409,11 @@
                         {% if user.is_admin or user.is_staff %}
                         <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
+                        <div id="cart-popup" class="cart-popup">
+                            Item added to cart!
+                        </div>
+                    
+                        <!-- Your existing HTML continues -->
                         <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
                             {% csrf_token %}
                             <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -449,6 +468,8 @@
             {% endif %}
         </ul>
     </div>
+    
+
 
     <!-- Popup for balance -->
     <div class="popup" id="balance-popup">
@@ -458,12 +479,25 @@
             <p>Balance: Rs. {{ user.balance }}</p>
         </div>
     </div>
+    
 
-    <script>
+    <!-- popup for add to cart notify -->
+    {% if messages %}
+    <div id="cart-popup" class="cart-popup">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- <script>
         function togglePopup() {
             var popup = document.getElementById('balance-popup');
             if (popup.style.display === 'none' || popup.style.display === '') {
                 popup.style.display = 'block';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 2000); // Hide the popup after 1 second
             } else {
                 popup.style.display = 'none';
             }
@@ -473,6 +507,28 @@
             event.preventDefault();
             togglePopup();
         });
+
+    </script> -->
+
+    <script>
+        function togglePopup() {
+            var popup = document.getElementById('balance-popup');
+            if (popup.style.display === 'none' || popup.style.display === '') {
+                popup.style.display = 'block';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 1000); // Hide the popup after 1 second
+            } else {
+                popup.style.display = 'none';
+            }
+        }
+
+        document.querySelector('.balance-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            togglePopup();
+        });
+
+        
     </script>
 </body>
 </html>
