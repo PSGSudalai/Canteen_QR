@@ -400,9 +400,9 @@
                         {% if user.is_admin %}
                             <p class="item-availability">
                                 {% if item.availability %}
-                                    Available
+                                    {{ item.category|title }}  -  Available
                                 {% else %}
-                                    Unavailable
+                                    {{ item.category|title }}  -  Unavailable
                                 {% endif %}
                             </p>
                         {% endif %}
