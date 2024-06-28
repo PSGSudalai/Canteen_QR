@@ -56,12 +56,12 @@ def signup_view(request):
                 "mimetype": "image/png",
             }
 
-            # send_welcome_email(
-            #     subject="Welcome to Our Service",
-            #     message="Thank you for signing up. Please find your QR code attached.",
-            #     email=user.email,
-            #     attachment=attachment,
-            # )
+            send_welcome_email(
+                subject="Welcome to Our Service",
+                message="Thank you for signing up. Please find your QR code attached.",
+                email=user.email,
+                attachment=attachment,
+            )
 
             return redirect("qr_image", user_id=user.id)
 

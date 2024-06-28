@@ -90,9 +90,13 @@ def edit_user(request, user_id):
         user.phone_number = request.POST.get("phone_number", user.phone_number)
         user.balance = request.POST.get("balance", user.balance)
 
-        # Handling boolean fields
-        user.is_staff = request.POST.get("is_staff") == "on"
-        user.is_admin = request.POST.get("is_admin") == "on"
+
+        if request.user == user:
+            user.is_admin=True
+            user.is_staff=True
+        else:
+            user.is_staff = request.POST.get("is_staff") == "on"
+            user.is_admin = request.POST.get("is_admin") == "on"
 
         user.save()
         return redirect("staff_list" if user.is_staff else "student_list")

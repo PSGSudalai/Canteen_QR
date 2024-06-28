@@ -329,7 +329,6 @@
 <body>
     <div class="header">
         <div>
-            <!-- <span class="glyphicon glyphicon-user"></span> -->
             <i class='bx bxs-user-circle' style="font-size:x-large;"></i>
             <span>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
         </div>
@@ -412,8 +411,7 @@
                         <div id="cart-popup" class="cart-popup">
                             Item added to cart!
                         </div>
-                    
-                        <!-- Your existing HTML continues -->
+                        
                         <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
                             {% csrf_token %}
                             <input type="hidden" name="item_id" value="{{ item.id }}">

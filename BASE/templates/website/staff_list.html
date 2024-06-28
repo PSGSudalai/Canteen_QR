@@ -171,7 +171,7 @@
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
-                    <th>Balance</th>
+                    <th>Role</th>
                     <th>Date Joined</th>
                     <th>Actions</th>
                 </tr>
@@ -183,7 +183,11 @@
                         <td>{{ user.last_name|capfirst }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.phone_number }}</td>
-                        <td>{{ user.balance }}</td>
+                        {% if user.is_admin%}
+                            <td>Admin</td>
+                        {% else %}
+                            <td>Staff</td>
+                        {% endif%}
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
                         <td>
                             <button class="btn btn-primary btn-custom">
