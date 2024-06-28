@@ -44,6 +44,7 @@
             background-color: #007bff;
             padding: 10px 20px;
             border-radius: 5px;
+            border: none;
             transition: background-color 0.3s;
         }
 
@@ -64,7 +65,7 @@
             <div class="button-container">
                 <a href="{% url 'cart_list' %}" class="view-cart-button">View Cart</a>
                 <button type="submit" name="action" value="recharge" class="transaction-history-button">Recharge</button>
-                <button type="submit" name="action" value="cancel" class="transaction-history-button">Cancel</button>
+                <a href="{% url 'cancel_transaction' %}" class="view-cart-button">Cancel</a>
             </div>
         </form>
     </div>

@@ -192,3 +192,11 @@ def payment_transaction(request, uuid):
 
     else:
         return HttpResponseBadRequest("Method not allowed")
+
+
+def cancel_transaction(request):
+    try:
+        Cart.objects.all().delete()
+    except:
+        pass
+    return redirect("canteen_item_list")

@@ -181,6 +181,7 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: cover;
+            margin: 5px;
         }
 
         .item-details {
@@ -305,7 +306,7 @@
         }
         .cart-popup {
             display: none;
-            position: fixed;    
+            position: fixed;
             top: 10px;
             right: 10px;
             background-color: #007bff;
@@ -315,7 +316,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
-        
+
             /* Mobile devices (portrait and landscape) */
         @media only screen and (max-width: 480px) {
         /* styles here */
@@ -417,7 +418,7 @@
                         <div id="cart-popup" class="cart-popup">
                             Item added to cart!
                         </div>
-                        
+
                         <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
                             {% csrf_token %}
                             <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -472,7 +473,7 @@
             {% endif %}
         </ul>
     </div>
-    
+
 
 
     <!-- Popup for balance -->
@@ -483,7 +484,7 @@
             <p>Balance: Rs. {{ user.balance }}</p>
         </div>
     </div>
-    
+
 
     <!-- popup for add to cart notify -->
     {% if messages %}
@@ -532,7 +533,7 @@
             togglePopup();
         });
 
-        
+
     </script>
 </body>
 </html>
