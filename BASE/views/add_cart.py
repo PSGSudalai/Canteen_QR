@@ -22,9 +22,7 @@ def add_to_cart(request):
             cart_item.quantity += quantity
             cart_item.save()
 
-        messages.success(request, f"{item.identity} added to cart")
-
-        return redirect("cart_list")  # Redirect to the cart list view
+        return redirect("canteen_item_list")
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
