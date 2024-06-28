@@ -123,7 +123,7 @@
                 <button type="submit" class="btn btn-payment" id="submit-btn">Submit Payment</button>
                 <div class="loader" id="loader"></div>
             </form>
-            <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+            <a href="{% url 'canteen_item_list' %}" class="back-link" id="back-link">Back</a>
         </div>
     </div>
 
@@ -131,6 +131,7 @@
         document.getElementById('payment-form').addEventListener('submit', function() {
             document.getElementById('loader').style.display = 'inline-block';
             document.getElementById('submit-btn').disabled = true;
+            document.getElementById('back-link').disabled = true;
         });
     </script>
 </body>
