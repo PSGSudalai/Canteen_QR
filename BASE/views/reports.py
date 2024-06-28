@@ -81,7 +81,6 @@ def redirect_transaction_report_page(request):
     return render(request, "reports/generate_transaction_report.html")
 
 
-
 @login_required
 def generate_product_sales_month_based_report_all(request):
     orders = PreviousOrders.objects.all()
@@ -89,30 +88,35 @@ def generate_product_sales_month_based_report_all(request):
     end_date = request.GET.get("end_date")
 
     if start_date:
-        orders = orders.filter(created_at__date__gte=parse_date(start_date))
+        orders = orders.filter(created_at__date__gte=(parse_date(start_date)))
     if end_date:
-        orders = orders.filter(created_at__date__lte=parse_date(end_date))
+        orders = orders.filter(created_at__date__lte=(parse_date(end_date)))
 
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
     worksheet.title = "Month-wise Sales Report"
-    
+
     monthly_sales_data = {}
     months = set()
+    total_earnings_per_month = {}
 
     for order in orders:
         item_name = order.item_name.capitalize()
         item_price = order.item_price
         month = order.created_at.strftime("%B").capitalize()
-        
+
         if item_name not in monthly_sales_data:
             monthly_sales_data[item_name] = {"price": item_price}
-        
+
         if month not in monthly_sales_data[item_name]:
             monthly_sales_data[item_name][month] = {"sales": 0, "earnings": 0}
-        
+
         monthly_sales_data[item_name][month]["sales"] += order.quantity
         monthly_sales_data[item_name][month]["earnings"] += order.total
+
+        if month not in total_earnings_per_month:
+            total_earnings_per_month[month] = 0
+        total_earnings_per_month[month] += order.total
 
         months.add(month)
 
@@ -120,9 +124,9 @@ def generate_product_sales_month_based_report_all(request):
     for month in sorted(months):
         columns.append(f"{month} Count")
         columns.append(f"{month} Earnings")
-    
+
     worksheet.append(columns)
-    
+
     for item_name, sales_data in monthly_sales_data.items():
         row = [item_name, sales_data["price"]]
         for month in sorted(months):
@@ -132,93 +136,16 @@ def generate_product_sales_month_based_report_all(request):
             else:
                 row.append(0)
                 row.append(0)
-                
+
         worksheet.append(row)
-    
-    response = HttpResponse(
-        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
-    response["Content-Disposition"] = f"attachment; filename=monthly_sales_report.xlsx"
-    workbook.save(response)
-    return response
 
+    total_row = ["Total", ""]
+    for month in sorted(months):
+        total_row.append("")
+        total_row.append(total_earnings_per_month[month])
+    worksheet.append(total_row)
 
-@login_required   
-def generate_product_sales_day_based_report_all(request):
-    orders = PreviousOrders.objects.all()
-    start_date = request.GET.get("start_date")
-    end_date = request.GET.get("end_date")
-
-    if start_date:
-        orders = orders.filter(created_at__date__gte=parse_date(start_date))
-    if end_date:
-        orders = orders.filter(created_at__date__lte=parse_date(end_date))
-
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Day-wise Sales Report"
-
-    columns = [
-        "Item",
-        "Price (₹)",
-        "Monday's Sales Q",
-        "Monday's Sales P",
-        "Tuesday's Sales Q",
-        "Tuesday's Sales P",
-        "Wednesday's Sales Q",
-        "Wednesday's Sales P",
-        "Thursday's Sales Q",
-        "Thursday's Sales P",
-        "Friday's Sales Q",
-        "Friday's Sales P",
-        "Saturday's Sales Q",
-        "Saturday's Sales P",
-        "Sunday's Sales Q",
-        "Sunday's Sales P",
-    ]
-    for col_num, column_title in enumerate(columns, 1):
-        column_letter = get_column_letter(col_num)
-        ws[f"{column_letter}1"] = column_title
-
-    sales_data = {}
-
-    for order in orders:
-        item_name = order.item_name.capitalize()
-        if item_name not in sales_data:
-            sales_data[item_name] = {
-                "price": order.item_price,
-                "monday": {"quantity": 0, "total": 0},
-                "tuesday": {"quantity": 0, "total": 0},
-                "wednesday": {"quantity": 0, "total": 0},
-                "thursday": {"quantity": 0, "total": 0},
-                "friday": {"quantity": 0, "total": 0},
-                "saturday": {"quantity": 0, "total": 0},
-                "sunday": {"quantity": 0, "total": 0},
-            }
-
-        day_of_week = order.created_at.strftime("%A").lower()
-        sales_data[item_name][day_of_week]["quantity"] += order.quantity
-        sales_data[item_name][day_of_week]["total"] += order.total
-
-    for row_num, (item_name, sales) in enumerate(sales_data.items(), 2):
-        ws[f"A{row_num}"] = item_name
-        ws[f"B{row_num}"] = f"₹ {sales['price']}"
-        ws[f"C{row_num}"] = sales["monday"]["quantity"]
-        ws[f"D{row_num}"] = f"₹ {sales['monday']['total']}"
-        ws[f"E{row_num}"] = sales["tuesday"]["quantity"]
-        ws[f"F{row_num}"] = f"₹ {sales['tuesday']['total']}"
-        ws[f"G{row_num}"] = sales["wednesday"]["quantity"]
-        ws[f"H{row_num}"] = f"₹ {sales['wednesday']['total']}"
-        ws[f"I{row_num}"] = sales["thursday"]["quantity"]
-        ws[f"J{row_num}"] = f"₹ {sales['thursday']['total']}"
-        ws[f"K{row_num}"] = sales["friday"]["quantity"]
-        ws[f"L{row_num}"] = f"₹ {sales['friday']['total']}"
-        ws[f"M{row_num}"] = sales["saturday"]["quantity"]
-        ws[f"N{row_num}"] = f"₹ {sales['saturday']['total']}"
-        ws[f"O{row_num}"] = sales["sunday"]["quantity"]
-        ws[f"P{row_num}"] = f"₹ {sales['sunday']['total']}"
-
-    for col in ws.columns:
+    for col in worksheet.columns:
         max_length = 0
         column = col[0].column_letter
         for cell in col:
@@ -228,19 +155,110 @@ def generate_product_sales_day_based_report_all(request):
             except:
                 pass
         adjusted_width = max_length + 2
-        ws.column_dimensions[column].width = adjusted_width
+        worksheet.column_dimensions[column].width = adjusted_width
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = f"attachment; filename=monthly_sales_report.xlsx"
+    workbook.save(response)
+    return response
+
+
+@login_required
+def generate_product_sales_day_based_report_all(request):
+    orders = PreviousOrders.objects.all()
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
+    if start_date:
+        orders = orders.filter(created_at__date__gte=parse_date(start_date))
+    if end_date:
+        orders = orders.filter(created_at__date__lte=(parse_date(end_date)))
+
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Day-wise Sales Report"
+
+    daily_sales_data = {}
+    days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ]
+    days_with_data = set()
+    total_earnings_per_day = {day: 0 for day in days}
+
+    for order in orders:
+        item_name = order.item_name.capitalize()
+        item_price = order.item_price
+        day = order.created_at.strftime("%A")
+
+        if item_name not in daily_sales_data:
+            daily_sales_data[item_name] = {"price": item_price}
+
+        if day not in daily_sales_data[item_name]:
+            daily_sales_data[item_name][day] = {"sales": 0, "earnings": 0}
+
+        daily_sales_data[item_name][day]["sales"] += order.quantity
+        daily_sales_data[item_name][day]["earnings"] += order.total
+        total_earnings_per_day[day] += order.total
+        days_with_data.add(day)
+
+    columns = ["Item", "Price(₹)"]
+    for day in days:
+        if day in days_with_data:
+            columns.append(f"{day} Sales")
+            columns.append(f"{day} Earnings")
+
+    worksheet.append(columns)
+
+    for item_name, sales_data in daily_sales_data.items():
+        row = [item_name, sales_data["price"]]
+        for day in days:
+            if day in days_with_data:
+                if day in sales_data:
+                    row.append(sales_data[day]["sales"])
+                    row.append(sales_data[day]["earnings"])
+                else:
+                    row.append(0)
+                    row.append(0)
+        worksheet.append(row)
+
+    total_row = ["Total", ""]
+    for day in days:
+        if day in days_with_data:
+            total_row.append("")
+            total_row.append(total_earnings_per_day[day])
+    worksheet.append(total_row)
+
+    for col in worksheet.columns:
+        max_length = 0
+        column = col[0].column_letter
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = max_length + 2
+        worksheet.column_dimensions[column].width = adjusted_width
 
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
     response["Content-Disposition"] = f"attachment; filename=daily_sales_report.xlsx"
-    wb.save(response)
+    workbook.save(response)
     return response
-
 
 
 def redirect_sales_report_page(request):
     return render(request, "reports/generate_sales_report.html")
+
 
 @login_required
 def generate_product_sales_report_all(request):

@@ -2,7 +2,7 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from BASE.models import CanteenItems, ItemImage
+from BASE.models import CanteenItems, ItemImage, Cart
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -174,6 +174,8 @@ def canteen_item_unarchive(request, item_id):
 
 def canteen_delete_item(request, item_id):
     item = get_object_or_404(CanteenItems, pk=item_id)
-    if item.is_archieved :
+    cart_item = Cart.objects.filter(item=item)
+    if item.is_archieved:
         item.delete()
+        cart_item.delete()
     return redirect("canteen_item_list")
