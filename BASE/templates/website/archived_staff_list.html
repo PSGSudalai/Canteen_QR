@@ -121,7 +121,7 @@
     </style>
 </head>
 <body>
-    <h1>Archived Student List</h1>
+    <h1>Archived Staff List</h1>
     <div class="filter-form">
         <form method="GET" action="{% url 'archived_staff_list' %}">
             <input type="text" name="q" class="filter-input" placeholder="Search ..." value="{{ query }}">
@@ -157,6 +157,9 @@
                         <td>
                             <button class="btn btn-success btn-custom">
                                 <a href="{% url 'unarchive_staff' user.id %}" style="color: white;">Unarchive</a>
+                            </button>
+                            <button class="btn btn-danger btn-custom">
+                                <a href="{% url 'delete_staff' user.id %}"  style="color: white;">Delete</a>
                             </button>
                         </td>
                     </tr>

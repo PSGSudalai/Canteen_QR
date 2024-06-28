@@ -39,7 +39,9 @@ from BASE.views import (
     redirect_sales_report_page,
     generate_product_sales_day_based_report_all,
     generate_product_sales_month_based_report_all,
-    generate_product_sales_report_all
+    generate_product_sales_report_all,
+    delete_staff,
+    delete_user,
 )
 
 urlpatterns = [
@@ -49,6 +51,8 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("students/archive/<int:id>/", archive_user, name="archive_user"),
     path("staff/archive/<int:id>/", archive_staff, name="archive_staff"),
+    path("student/delete/<int:id>/", delete_user, name="delete_user"),
+    path("staff/delete/<int:id>/", delete_staff, name="delete_staff"),
     path("students/unarchive/<int:id>/", unarchive_user, name="unarchive_user"),
     path("staff/unarchive/<int:id>/", unarchive_staff, name="unarchive_staff"),
     path("students/archived/", archived_student_list, name="archived_student_list"),

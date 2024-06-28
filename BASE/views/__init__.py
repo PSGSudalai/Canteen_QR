@@ -10,6 +10,8 @@ from .user import (
     unarchive_staff,
     archived_student_list,
     archived_staff_list,
+    delete_user,
+    delete_staff,
 )
 from .item import (
     canteen_item_create,
