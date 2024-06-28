@@ -81,6 +81,7 @@ def redirect_transaction_report_page(request):
     return render(request, "reports/generate_transaction_report.html")
 
 
+
 @login_required
 def generate_product_sales_month_based_report_all(request):
     orders = PreviousOrders.objects.all()
@@ -100,8 +101,8 @@ def generate_product_sales_month_based_report_all(request):
     months = set()
 
     for order in orders:
-        item_name = order.item.identity.capitalize()
-        item_price = order.item.price
+        item_name = order.item_name.capitalize()
+        item_price = order.item_price
         month = order.created_at.strftime("%B").capitalize()
         
         if item_name not in monthly_sales_data:
@@ -137,7 +138,7 @@ def generate_product_sales_month_based_report_all(request):
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response["Content-Disposition"] = f"attachment; filename=daily_sales_report.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=monthly_sales_report.xlsx"
     workbook.save(response)
     return response
 
@@ -182,10 +183,10 @@ def generate_product_sales_day_based_report_all(request):
     sales_data = {}
 
     for order in orders:
-        item_name = order.item.identity.capitalize()
+        item_name = order.item_name.capitalize()
         if item_name not in sales_data:
             sales_data[item_name] = {
-                "price": order.item.price,
+                "price": order.item_price,
                 "monday": {"quantity": 0, "total": 0},
                 "tuesday": {"quantity": 0, "total": 0},
                 "wednesday": {"quantity": 0, "total": 0},
@@ -232,9 +233,10 @@ def generate_product_sales_day_based_report_all(request):
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response["Content-Disposition"] = f"attachment; filename=monthly_sales_report.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=daily_sales_report.xlsx"
     wb.save(response)
     return response
+
 
 
 def redirect_sales_report_page(request):

@@ -178,8 +178,8 @@
                                 <td>{{ order.student.first_name|capfirst }} {{ order.student.last_name|capfirst }}</td>
                                 <td>{{ order.staff.first_name|capfirst }} {{ order.staff.last_name|capfirst }}</td>
                             {% endif %}
-                            <td>{{ order.item }}</td>
-                            <td>₹ {{ order.item.price }}</td>
+                            <td>{{ order.item_name }}</td>
+                            <td>₹ {{ order.item_price }}</td>
                             <td>{{ order.quantity }}</td>
                             <td>₹ {{ order.total }}</td>
                         </tr>

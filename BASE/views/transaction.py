@@ -98,7 +98,11 @@ def recharge_transaction(request, uuid):
         )
         # send_email("recharge", amount, student.email)
 
-        next_url = request.POST.get("next") or request.GET.get("next") or reverse("canteen_item_list")
+        next_url = (
+            request.POST.get("next")
+            or request.GET.get("next")
+            or reverse("canteen_item_list")
+        )
         return HttpResponseRedirect(next_url)
 
     elif request.method == "GET":
@@ -111,10 +115,8 @@ def recharge_transaction(request, uuid):
             "uuid": uuid,
             "student": student,
             "next": request.GET.get("next", ""),
-            
         }
         return render(request, "website/recharge_form.html", context)
-    
 
 
 @login_required
@@ -171,6 +173,8 @@ def payment_transaction(request, uuid):
                 student=student,
                 staff=staff,
                 item=cartItem.item,
+                item_name=cartItem.item.identity,
+                item_price=cartItem.item.price,
                 quantity=cartItem.quantity,
                 total=cartItem.quantity * cartItem.item.price,
             )
@@ -179,7 +183,6 @@ def payment_transaction(request, uuid):
         cartItems.update(is_sold=True)
         cartItems.delete()
         return redirect("canteen_item_list")
-
     elif request.method == "GET":
         return render(
             request,
@@ -189,4 +192,3 @@ def payment_transaction(request, uuid):
 
     else:
         return HttpResponseBadRequest("Method not allowed")
-

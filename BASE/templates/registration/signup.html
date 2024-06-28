@@ -7,114 +7,106 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #4c83ff, #72e2ff);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            padding: 0;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
         }
+
         .container {
             display: flex;
-            background: #fff;
-            box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            overflow: hidden;
             max-width: 800px;
-            width: 100%;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        .registration-form {
+
+        .left_container {
             padding: 20px;
-            margin-right: 20px;
-            width: 50%;
-            box-sizing: border-box;
+            flex: 1;
+            display: flex;
+            margin-right: 10px;
+            flex-direction: column;
+            justify-content: center;
         }
-        h2 {
-            font-size: 24px;
-            margin: 0 0 20px 0;
+
+        .right_container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
+
+        .right_container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .form-group {
-            text-align: left;
-            margin: 10px 0;
+            margin-bottom: 20px;
         }
+
         label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="password"],
         input[type="tel"] {
-            width: 100%;
+            width: 93%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 5px;
         }
+
+        .btn,
+        .button-right {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border: 0;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            width: 48%;
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
         .button-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
         }
-        button,
-        .button-right {
-            width: 48%;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
-            display: inline-block;
-            box-sizing: border-box;
-        }
-        button {
-            background: #333;
-            color: #fff;
-        }
-        button:hover {
-            background: #555;
-        }
-        .button-right {
-            background: #007bff;
-            color: #fff;
-            text-decoration: none;
-        }
-        .button-right:hover {
-            background: #00346b;
-            color: #fff;
-            text-decoration: none;
-        }
-        .button-right:active,
-        .button-right:focus,
-        .button-right:visited {
-            background: #007bff;
-            color: #fff;
-            text-decoration: none;
-        }
-        .image-container {
-            width: 50%;
-            overflow: hidden;
-        }
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
             }
-            .registration-form,
-            .image-container {
-                width: 100%;
-            }
+
             .button-container {
                 flex-direction: column;
                 align-items: stretch;
             }
-            button,
+
+            .btn,
             .button-right {
                 width: 100%;
                 margin-top: 10px;
@@ -132,7 +124,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="registration-form">
+        <div class="left_container">
             <h2>Register</h2>
             {% load static %}
             <form method="post" action="{% url 'signup' %}">
@@ -158,12 +150,20 @@
                     <input type="password" id="password1" name="password1" required>
                 </div>
                 <div class="button-container">
-                    <button type="submit">Register</button>
+                    <button class="btn" type="submit">Register</button>
                     <a class="button-right" href="{% url 'canteen_item_list' %}">Back</a>
                 </div>
             </form>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
-        <div class="image-container">
+        <div class="right_container">
             <img src="{% static 'illustrations/signup.jpg' %}" alt="Sign Up Image">
         </div>
     </div>
