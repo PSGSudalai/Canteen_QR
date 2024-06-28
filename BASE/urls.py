@@ -42,6 +42,7 @@ from BASE.views import (
     generate_product_sales_report_all,
     delete_staff,
     delete_user,
+    canteen_delete_item,
 )
 
 urlpatterns = [
@@ -69,6 +70,11 @@ urlpatterns = [
         "items/unarchive/<int:item_id>/",
         canteen_item_unarchive,
         name="unarchive_item",
+    ),
+    path(
+        "items/delete/<int:item_id>/",
+        canteen_delete_item,
+        name="canteen_delete_item",
     ),
     path("cart/add/", add_to_cart, name="add_to_cart"),
     path("update-cart-item/<int:item_id>/", update_cart_item, name="update_cart_item"),

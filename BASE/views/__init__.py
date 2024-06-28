@@ -20,6 +20,7 @@ from .item import (
     canteen_item_archive,
     archived_items_list_view,
     canteen_item_unarchive,
+    canteen_delete_item,
 )
 from .add_cart import (
     add_to_cart,
