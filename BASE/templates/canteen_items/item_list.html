@@ -297,6 +297,18 @@
             right: 10px;
             cursor: pointer;
         }
+        .cart-popup {
+            display: none;
+            position: fixed;    
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
         
             /* Mobile devices (portrait and landscape) */
         @media only screen and (max-width: 480px) {
@@ -397,6 +409,11 @@
                         {% if user.is_admin or user.is_staff %}
                         <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
+                        <div id="cart-popup" class="cart-popup">
+                            Item added to cart!
+                        </div>
+                    
+                        <!-- Your existing HTML continues -->
                         <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
                             {% csrf_token %}
                             <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -452,9 +469,8 @@
         </ul>
     </div>
     
-    <div id="cart-popup" class="cart-popup">
-        Item added to cart!
-    </div>
+
+
     <!-- Popup for balance -->
     <div class="popup" id="balance-popup">
         <div class="popup-content">
@@ -463,7 +479,18 @@
             <p>Balance: Rs. {{ user.balance }}</p>
         </div>
     </div>
-    <script>
+    
+
+    <!-- popup for add to cart notify -->
+    {% if messages %}
+    <div id="cart-popup" class="cart-popup">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- <script>
         function togglePopup() {
             var popup = document.getElementById('balance-popup');
             if (popup.style.display === 'none' || popup.style.display === '') {
@@ -481,25 +508,27 @@
             togglePopup();
         });
 
-    </script>
-    {% if messages %}
-    <div id="cart-popup" class="cart-popup">
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-    </div>
-    {% endif %}
+    </script> -->
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const cartPopup = document.getElementById('cart-popup');
-            if (cartPopup) {
-                cartPopup.style.display = 'block';
+        function togglePopup() {
+            var popup = document.getElementById('balance-popup');
+            if (popup.style.display === 'none' || popup.style.display === '') {
+                popup.style.display = 'block';
                 setTimeout(() => {
-                    cartPopup.style.display = 'none';
-                }, 1000);
+                    popup.style.display = 'none';
+                }, 1000); // Hide the popup after 1 second
+            } else {
+                popup.style.display = 'none';
             }
+        }
+
+        document.querySelector('.balance-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            togglePopup();
         });
+
+        
     </script>
 </body>
 </html>
