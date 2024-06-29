@@ -19,7 +19,9 @@ def signup_view(request):
 
         if CustomUser.objects.filter(email=email).exists():
             messages.error(
-                request, "Email address is already in use. Please use another email.", extra_tags='signup'
+                request,
+                "Email address is already in use. Please use another email.",
+                extra_tags="signup",
             )
         else:
             # Create the user
@@ -72,12 +74,15 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=(password or 0000))
+        user = authenticate(request, username=username, password=(password or "0000"))
         if user is not None:
             login(request, user)
             return redirect("canteen_item_list")
+        elif user == None or password == None:
+            messages.error(request, "Please Email and Password", extra_tags="login")
+
         else:
-            messages.error(request, "Invalid UserName or Password", extra_tags='login')
+            messages.error(request, "Invalid Email or Password", extra_tags="login")
             return redirect("login")
 
     return render(request, "registration/login.html")
@@ -130,6 +135,7 @@ def archive_user(request, id):
     user.save()
     return redirect("student_list")
 
+
 @login_required
 def archive_staff(request, id):
     user = get_object_or_404(CustomUser, id=id)
@@ -137,17 +143,19 @@ def archive_staff(request, id):
     user.save()
     return redirect("staff_list")
 
+
 @login_required
 def delete_user(request, id):
     user = get_object_or_404(CustomUser, id=id)
-    if user.is_archieved :
+    if user.is_archieved:
         user.delete()
     return redirect("student_list")
+
 
 @login_required
 def delete_staff(request, id):
     user = get_object_or_404(CustomUser, id=id)
-    if user.is_archieved :
+    if user.is_archieved:
         user.delete()
     return redirect("staff_list")
 
@@ -158,6 +166,7 @@ def unarchive_user(request, id):
     user.is_archieved = False
     user.save()
     return redirect("archived_student_list")
+
 
 @login_required
 def unarchive_staff(request, id):

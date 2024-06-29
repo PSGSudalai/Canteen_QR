@@ -366,6 +366,7 @@
             {% elif user.is_staff %}
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
+                <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
                 <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
             {% else %}
                 <li><a href="{% url 'qr_image' user.id %}" class="add-item-button">Show QR</a></li>

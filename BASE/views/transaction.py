@@ -1,4 +1,5 @@
 # BASE/views/transaction.py
+from datetime import timezone
 from django.urls import reverse
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
@@ -11,6 +12,7 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 from django.utils.dateparse import parse_date
 from BASE.helpers import send_email
+from django.db.models import Sum
 
 
 @method_decorator(login_required, name="dispatch")
@@ -20,11 +22,12 @@ class TransactionListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = (
-            Transaction.objects.all()
-            if self.request.user.is_admin or self.request.user.is_staff
-            else Transaction.objects.filter(student=self.request.user)
-        )
+        queryset = Transaction.objects.all()
+        if self.request.user.is_staff and not self.request.user.is_admin:
+            today = timezone.now().date()
+            queryset = queryset.filter(created_at__date=today)
+        elif not self.request.user.is_admin:
+            queryset = queryset.filter(student=self.request.user)
 
         min_amount = self.request.GET.get("min_amount")
         max_amount = self.request.GET.get("max_amount")
@@ -39,7 +42,7 @@ class TransactionListView(ListView):
         if max_amount:
             queryset = queryset.filter(amount__lte=max_amount)
         if user_email and (self.request.user.is_admin or self.request.user.is_staff):
-            queryset = queryset.filter(student__email__icontains=user_email)
+            queryset = queryset.filter(student__email__icontains=(user_email))
         if start_date:
             queryset = queryset.filter(created_at__date__gte=parse_date(start_date))
         if end_date:
@@ -49,11 +52,29 @@ class TransactionListView(ListView):
         if payment_method:
             queryset = queryset.filter(payment_method=payment_method)
 
+        self.total_payments = (
+            queryset.filter(payment_type="Payment").aggregate(Sum("amount"))[
+                "amount__sum"
+            ]
+            or 0
+        )
+        self.total_recharges = (
+            queryset.filter(payment_type="Recharge").aggregate(Sum("amount"))[
+                "amount__sum"
+            ]
+            or 0
+        )
+
         queryset = queryset.order_by("-created_at")
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # Add totals to context from the instance variables
+        context["total_payments"] = self.total_payments
+        context["total_recharges"] = self.total_recharges
+
         context["user"] = self.request.user
         context["min_amount"] = self.request.GET.get("min_amount", "")
         context["max_amount"] = self.request.GET.get("max_amount", "")

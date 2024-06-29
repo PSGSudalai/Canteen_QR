@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.views.generic import ListView
 from BASE.models import PreviousOrders
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,11 +12,15 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        queryset = (
-            PreviousOrders.objects.all().order_by('-created_at')
-            if self.request.user.is_admin or self.request.user.is_staff
-            else PreviousOrders.objects.filter(student=self.request.user).order_by('-created_at')
-        )
+        today = timezone.now().date()
+        queryset = PreviousOrders.objects.all().order_by("-created_at")
+
+        if self.request.user.is_staff and not self.request.user.is_admin:
+            queryset = queryset.filter(created_at__date=today)
+        elif not self.request.user.is_admin:
+            queryset = queryset.filter(student=self.request.user).order_by(
+                "-created_at"
+            )
 
         min_total = self.request.GET.get("min_total")
         max_total = self.request.GET.get("max_total")
@@ -34,7 +39,7 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
         if end_date:
             queryset = queryset.filter(created_at__date__lte=parse_date(end_date))
 
-        return queryset.order_by('-created_at')
+        return queryset.order_by("-created_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
