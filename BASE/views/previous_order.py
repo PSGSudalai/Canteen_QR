@@ -1,4 +1,4 @@
-from datetime import timezone
+from datetime import datetime, timezone
 from django.views.generic import ListView
 from BASE.models import PreviousOrders
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,7 +12,7 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        today = timezone.now().date()
+        today = datetime.now().date()
         queryset = PreviousOrders.objects.all().order_by("-created_at")
 
         if self.request.user.is_staff and not self.request.user.is_admin:

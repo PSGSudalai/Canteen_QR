@@ -1,5 +1,5 @@
 # BASE/views/transaction.py
-from datetime import timezone
+from datetime import datetime
 from django.urls import reverse
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
@@ -24,7 +24,7 @@ class TransactionListView(ListView):
     def get_queryset(self):
         queryset = Transaction.objects.all()
         if self.request.user.is_staff and not self.request.user.is_admin:
-            today = timezone.now().date()
+            today = datetime.now().date()
             queryset = queryset.filter(created_at__date=today)
         elif not self.request.user.is_admin:
             queryset = queryset.filter(student=self.request.user)
