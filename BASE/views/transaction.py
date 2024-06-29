@@ -27,7 +27,7 @@ class TransactionListView(ListView):
             today = datetime.now().date()
             queryset = queryset.filter(created_at__date=today)
         elif not self.request.user.is_admin:
-            queryset = queryset.filter(student=self.request.user)
+            queryset = queryset.filter(user=self.request.user)
 
         min_amount = self.request.GET.get("min_amount")
         max_amount = self.request.GET.get("max_amount")
@@ -42,7 +42,7 @@ class TransactionListView(ListView):
         if max_amount:
             queryset = queryset.filter(amount__lte=max_amount)
         if user_email and (self.request.user.is_admin or self.request.user.is_staff):
-            queryset = queryset.filter(student__email__icontains=(user_email))
+            queryset = queryset.filter(user__email__icontains=(user_email))
         if start_date:
             queryset = queryset.filter(created_at__date__gte=parse_date(start_date))
         if end_date:
@@ -99,25 +99,25 @@ def recharge_transaction(request, uuid):
             return HttpResponseBadRequest("Permission denied")
 
         try:
-            student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
+            user = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
-            return HttpResponseBadRequest("Student not found")
+            return HttpResponseBadRequest("user not found")
 
         try:
             amount = int(amount)
-            student.balance += amount
-            student.save()
+            user.balance += amount
+            user.save()
         except ValueError:
             return HttpResponseBadRequest("Invalid amount")
 
         Transaction.objects.create(
-            student=student,
+            user=user,
             amount=amount,
             staff=staff,
             payment_type="Recharge",
             payment_method=payment_method,
         )
-        # send_email("recharge", amount, student.email)
+        # send_email("recharge", amount, user.email)
 
         next_url = (
             request.POST.get("next")
@@ -128,13 +128,13 @@ def recharge_transaction(request, uuid):
 
     elif request.method == "GET":
         try:
-            student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
+            user = CustomUser.objects.get(uuid=uuid, is_archieved=False)
         except CustomUser.DoesNotExist:
-            return HttpResponseBadRequest("Student not found")
+            return HttpResponseBadRequest("user not found")
 
         context = {
             "uuid": uuid,
-            "student": student,
+            "user": user,
             "next": request.GET.get("next", ""),
         }
         return render(request, "website/recharge_form.html", context)
@@ -143,9 +143,9 @@ def recharge_transaction(request, uuid):
 @login_required
 def payment_transaction(request, uuid):
     try:
-        student = CustomUser.objects.get(uuid=uuid, is_archieved=False)
+        user = CustomUser.objects.get(uuid=uuid, is_archieved=False)
     except CustomUser.DoesNotExist:
-        return HttpResponseBadRequest("Student not found")
+        return HttpResponseBadRequest("user not found")
 
     cartItems = Cart.objects.filter(is_sold=False)
     total_amount = calculating_total_cost(cartItems)
@@ -154,9 +154,9 @@ def payment_transaction(request, uuid):
         action = request.POST.get("action")
 
         if action == "recharge":
-            next_url = reverse("payment_transaction", kwargs={"uuid": student.uuid})
+            next_url = reverse("payment_transaction", kwargs={"uuid": user.uuid})
             return redirect(
-                f"{reverse('recharge_transaction', kwargs={'uuid': student.uuid})}?next={next_url}"
+                f"{reverse('recharge_transaction', kwargs={'uuid': user.uuid})}?next={next_url}"
             )
 
         if action == "cancel":
@@ -170,19 +170,19 @@ def payment_transaction(request, uuid):
 
         try:
             amount = int(total_amount)
-            if student.balance < amount:
+            if user.balance < amount:
                 return render(
                     request,
                     "website/insufficient_balance.html",
-                    {"user": student, "total_amount": total_amount},
+                    {"user": user, "total_amount": total_amount},
                 )
-            student.balance -= amount
-            student.save()
+            user.balance -= amount
+            user.save()
         except ValueError:
             return HttpResponseBadRequest("Invalid amount")
 
         transaction = Transaction.objects.create(
-            student=student,
+            user=user,
             amount=amount,
             staff=staff,
             payment_type="Payment",
@@ -191,7 +191,7 @@ def payment_transaction(request, uuid):
 
         for cartItem in cartItems:
             PreviousOrders.objects.create(
-                student=student,
+                user=user,
                 staff=staff,
                 item=cartItem.item,
                 item_name=cartItem.item.identity,
@@ -199,7 +199,7 @@ def payment_transaction(request, uuid):
                 quantity=cartItem.quantity,
                 total=cartItem.quantity * cartItem.item.price,
             )
-        # send_email("payment", amount, student.email)
+        # send_email("payment", amount, user.email)
 
         cartItems.update(is_sold=True)
         cartItems.delete()
@@ -208,7 +208,7 @@ def payment_transaction(request, uuid):
         return render(
             request,
             "website/payment_form.html",
-            {"student": student, "total_amount": total_amount},
+            {"user": user, "total_amount": total_amount},
         )
 
     else:

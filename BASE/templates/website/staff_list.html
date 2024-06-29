@@ -197,6 +197,9 @@
                             <button class="btn btn-warning btn-custom">
                                 <i class='bx bx-archive'></i><a href="{% url 'archive_staff' user.id %}" style="color: white;">Archive</a>
                             </button>
+                            <button class="btn btn-info btn-custom">
+                                <a href="{{ user.qr_code.url }}" style="color: white;">QR Code</a>
+                            </button>
                         </td>
                     </tr>
                 {% endfor %}
