@@ -88,7 +88,6 @@
             margin-right: 50px;
         }
 
-
         .btn,
         .button-right {
             display: inline-block;
@@ -154,7 +153,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phone_number">Phone Number:</label>
-                    <input type="tel" id="phone_number" name="phone_number" required oninput="validatePhoneNumber(this)">
+                    <input type="tel" id="phone_number" name="phone_number" required pattern="\d*" maxlength="10" oninput="validatePhoneNumber(this)">
                 </div>
                 <div class="checkbox-group-container">
                     <div class="checkbox-group">
@@ -193,5 +192,11 @@
             <img src="{% static 'illustrations/signup.jpg' %}" alt="Sign Up Image">
         </div>
     </div>
+
+    <script>
+        function validatePhoneNumber(input) {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 10);
+        }
+    </script>
 </body>
 </html>
