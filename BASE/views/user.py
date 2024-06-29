@@ -16,6 +16,9 @@ def signup_view(request):
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_number")
         password1 = request.POST.get("password1")
+        is_user = request.POST.get("is_user") == "on"
+        is_staff = request.POST.get("is_staff") == "on"
+        is_admin = request.POST.get("is_admin") == "on"
 
         if CustomUser.objects.filter(email=email).exists():
             messages.error(
@@ -31,6 +34,9 @@ def signup_view(request):
                 password=password1,
                 first_name=firstname,
                 last_name=lastname,
+                is_user=True,
+                is_staff=is_staff,
+                is_admin=is_admin,
             )
 
             # Generate QR code
@@ -74,15 +80,20 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=(password or "0000"))
+
+        if not username or not password:
+            messages.error(
+                request, "Please enter both email and password.", extra_tags="login"
+            )
+            return redirect("login")
+
+        user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
             return redirect("canteen_item_list")
-        elif user == None or password == None:
-            messages.error(request, "Please Email and Password", extra_tags="login")
-
         else:
-            messages.error(request, "Invalid Email or Password", extra_tags="login")
+            messages.error(request, "Invalid email or password.", extra_tags="login")
             return redirect("login")
 
     return render(request, "registration/login.html")
