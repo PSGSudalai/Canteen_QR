@@ -33,7 +33,7 @@ class PreviousOrdersListView(LoginRequiredMixin, ListView):
         if max_total:
             queryset = queryset.filter(total__lte=max_total)
         if user_email and (self.request.user.is_admin or self.request.user.is_staff):
-            queryset = queryset.filter(student__email__icontains=user_email)
+            queryset = queryset.filter(user__email__icontains=user_email)
         if start_date:
             queryset = queryset.filter(created_at__date__gte=parse_date(start_date))
         if end_date:

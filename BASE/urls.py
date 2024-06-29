@@ -47,13 +47,16 @@ from BASE.views import (
 )
 
 urlpatterns = [
+    # User Creation
     path("signup/", signup_view, name="signup"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
-    path("edit-user/<int:user_id>/", edit_user, name="edit_user"),
-    path("qr_image/<int:user_id>/", qr_image_view, name="qr_image"),
+    # user function
+    path("qr_image/<uuid>/", qr_image_view, name="qr_image"),
     path("balance_check/", balance_check_view, name="balance_check"),
+    # user
     path("student_list/", student_list, name="student_list"),
+    path("edit-user/<uuid>/", edit_user, name="edit_user"),
     path("students/archive/<int:id>/", archive_user, name="archive_user"),
     path("students/unarchive/<int:id>/", unarchive_user, name="unarchive_user"),
     path("student/delete/<int:id>/", delete_user, name="delete_user"),

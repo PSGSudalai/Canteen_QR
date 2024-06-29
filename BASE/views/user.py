@@ -71,7 +71,7 @@ def signup_view(request):
                 attachment=attachment,
             )
 
-            return redirect("qr_image", user_id=user.id)
+            return redirect("qr_image", uuid=user.uuid)
 
     return render(request, "registration/signup.html")
 
@@ -105,8 +105,8 @@ def logout_view(request):
     return redirect("login")
 
 
-def qr_image_view(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
+def qr_image_view(request, uuid):
+    user = get_object_or_404(CustomUser, uuid=uuid)
 
     qr = qrcode.QRCode(
         version=1,

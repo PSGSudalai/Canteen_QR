@@ -27,7 +27,7 @@ def staff_list(request):
     else:
         users = CustomUser.objects.none()
 
-    paginator = Paginator(users, 12) 
+    paginator = Paginator(users, 12)
     paginated_users = paginator.get_page(page_number)
 
     return render(
@@ -78,10 +78,9 @@ def student_list(request):
     )
 
 
-
 @login_required
-def edit_user(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
+def edit_user(request, uuid):
+    user = get_object_or_404(CustomUser, id=uuid)
 
     if request.method == "POST":
         user.email = request.POST.get("email", user.email)
@@ -90,10 +89,9 @@ def edit_user(request, user_id):
         user.phone_number = request.POST.get("phone_number", user.phone_number)
         user.balance = request.POST.get("balance", user.balance)
 
-
         if request.user == user:
-            user.is_admin=True
-            user.is_staff=True
+            user.is_admin = True
+            user.is_staff = True
         else:
             user.is_staff = request.POST.get("is_staff") == "on"
             user.is_admin = request.POST.get("is_admin") == "on"

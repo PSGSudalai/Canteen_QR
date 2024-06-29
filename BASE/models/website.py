@@ -3,7 +3,7 @@ from django.db import models
 
 
 class PreviousOrders(BaseModels):
-    student = models.ForeignKey(
+    user = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="user_student_order",

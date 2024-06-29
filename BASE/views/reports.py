@@ -27,13 +27,13 @@ def generate_payment_report_all(request):
     ws.title = "Transactions"
 
     columns = [
-        "Student",
+        "Date",
+        "Time",
+        "User",
         "Amount(₹)",
         "Staff",
         "Payment Type",
         "Payment Method",
-        "Date",
-        "Time",
     ]
     for col_num, column_title in enumerate(columns, 1):
         column_letter = get_column_letter(col_num)
@@ -41,17 +41,17 @@ def generate_payment_report_all(request):
 
     # Populate the data
     for row_num, transaction in enumerate(transactions, 2):
-        ws[
-            f"A{row_num}"
-        ] = f"{transaction.student.first_name} {transaction.student.last_name}".capitalize()
-        ws[f"B{row_num}"] = f"₹ {transaction.amount}"
+        ws[f"A{row_num}"] = transaction.created_at.strftime("%Y-%m-%d")
+        ws[f"B{row_num}"] = transaction.created_at.strftime("%H:%M")
         ws[
             f"C{row_num}"
+        ] = f"{transaction.student.first_name} {transaction.student.last_name}".capitalize()
+        ws[f"D{row_num}"] = f"₹ {transaction.amount}"
+        ws[
+            f"E{row_num}"
         ] = f"{transaction.staff.first_name} {transaction.staff.last_name}".capitalize()
-        ws[f"D{row_num}"] = transaction.payment_type
-        ws[f"E{row_num}"] = transaction.payment_method
-        ws[f"F{row_num}"] = transaction.created_at.strftime("%Y-%m-%d")
-        ws[f"G{row_num}"] = transaction.created_at.strftime("%H:%M")
+        ws[f"F{row_num}"] = transaction.payment_type
+        ws[f"G{row_num}"] = transaction.payment_method
 
     for col in ws.columns:
         max_length = 0
