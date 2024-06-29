@@ -31,7 +31,6 @@
             padding: 20px;
             flex: 1;
             display: flex;
-            margin-right: 10px;
             flex-direction: column;
             justify-content: center;
         }
@@ -68,6 +67,25 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        .checkbox-group-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .checkbox-group {
+            margin-right: 10px;
+        }
+
+        .checkbox-group-container {
+            white-space: nowrap;
+        }
+
+        .checkbox-group {
+            display: inline-block;
+            margin-right: 50px;
         }
 
         .btn,
@@ -113,14 +131,6 @@
             }
         }
     </style>
-    <script>
-        function validatePhoneNumber(input) {
-            input.value = input.value.replace(/[^0-9]/g, '');
-            if (input.value.length > 10) {
-                input.value = input.value.slice(0, 10);
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="container">
@@ -143,8 +153,23 @@
                 </div>
                 <div class="form-group">
                     <label for="phone_number">Phone Number:</label>
-                    <input type="tel" id="phone_number" name="phone_number" required oninput="validatePhoneNumber(this)">
+                    <input type="tel" id="phone_number" name="phone_number" required pattern="\d*" maxlength="10" oninput="validatePhoneNumber(this)">
                 </div>
+                <div class="checkbox-group-container">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="is_user" name="is_user" {% if user.is_user %}checked{% endif %}>
+                        <label for="is_user">Is User</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="is_staff" name="is_staff" {% if user.is_staff %}checked{% endif %}>
+                        <label for="is_staff">Is Staff</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="is_admin" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+                        <label for="is_admin">Is Admin</label>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="password1">Password:</label>
                     <input type="password" id="password1" name="password1" required>
@@ -156,18 +181,22 @@
             </form>
 
             {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        {% if 'signup' in message.tags %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                {% for message in messages %}
+                    {% if 'signup' in message.tags %}
+                        <h6 style="color: rgb(215, 59, 59);" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         </div>
         <div class="right_container">
             <img src="{% static 'illustrations/signup.jpg' %}" alt="Sign Up Image">
         </div>
     </div>
+
+    <script>
+        function validatePhoneNumber(input) {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 10);
+        }
+    </script>
 </body>
 </html>

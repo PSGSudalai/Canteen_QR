@@ -16,7 +16,7 @@
             align-items: center;
             height: 100vh;
         }
-        
+
         h1 {
             color: #fff;
             text-align: center;
@@ -59,7 +59,6 @@
             border-radius: 3px;
             text-decoration: none;
             display: inline-block;
-            margin-top: 20px;
             text-align: right;
         }
         .filter-form {
@@ -92,7 +91,6 @@
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
         }
         .pagination li {
             display: inline;
@@ -115,16 +113,23 @@
             background-color: #e9ecef;
             border-radius: 5px;
         }
+        .totals{
+            display: flex;
+        }
+        p{
+            margin: 10px 10px 5px 10px;
+
+        }
     </style>
 </head>
 <body>
-    <h1>Transactions</h1>
+    <h1 style="color: #000;">Transactions</h1>
     <div class="filter-form">
         <form method="GET" action="{% url 'transaction_list' %}">
             <input type="number" name="min_amount" class="filter-input" placeholder="Min Amount" value="{{ min_amount }}">
             <input type="number" name="max_amount" class="filter-input" placeholder="Max Amount" value="{{ max_amount }}">
             {% if user.is_admin %}
-                <input type="text" name="user_email" class="filter-input" placeholder="User Email" value="{{ user_email }}">
+                <input type="text" name="user_email" class="filter-input" placeholder="Search ..." value="{{ user_email }}">
             {% endif %}
             <input type="date" name="start_date" class="filter-input" placeholder="Start Date" value="{{ start_date }}">
             <input type="date" name="end_date" class="filter-input" placeholder="End Date" value="{{ end_date }}">
@@ -173,6 +178,14 @@
             </tbody>
         </table>
     </div>
+
+    {% if user.is_staff or user.is_admin %}
+    <div class="totals" style="color: #000;">
+        <p>Total Payments: ₹{{ total_payments }}</p>
+        <p>Total Recharges: ₹{{ total_recharges }}</p>
+    </div>
+    {% endif %}
+
     <div class="pagination">
         <ul class="pagination">
             {% if page_obj.has_previous %}
@@ -192,7 +205,7 @@
             {% endif %}
         </ul>
     </div>
-    <div style="text-align: right; width: 100%; max-width: 1200px; margin-top: 20px;">
+    <div style="text-align: right; width: 100%; max-width: 1200px;">
         <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
         {% if user.is_admin %}
         <a href="{% url 'redirect_transaction_report_page'%}" class="back-link">Report</a>

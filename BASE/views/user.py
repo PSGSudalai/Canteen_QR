@@ -16,10 +16,15 @@ def signup_view(request):
         email = request.POST.get("email")
         phone_number = request.POST.get("phone_number")
         password1 = request.POST.get("password1")
+        is_user = request.POST.get("is_user") == "on"
+        is_staff = request.POST.get("is_staff") == "on"
+        is_admin = request.POST.get("is_admin") == "on"
 
         if CustomUser.objects.filter(email=email).exists():
             messages.error(
-                request, "Email address is already in use. Please use another email.", extra_tags='signup'
+                request,
+                "Email address is already in use. Please use another email.",
+                extra_tags="signup",
             )
         else:
             # Create the user
@@ -29,6 +34,9 @@ def signup_view(request):
                 password=password1,
                 first_name=firstname,
                 last_name=lastname,
+                is_user=True,
+                is_staff=is_staff,
+                is_admin=is_admin,
             )
 
             # Generate QR code
@@ -56,12 +64,12 @@ def signup_view(request):
                 "mimetype": "image/png",
             }
 
-            # send_welcome_email(
-            #     subject="Welcome to Our Service",
-            #     message="Thank you for signing up. Please find your QR code attached.",
-            #     email=user.email,
-            #     attachment=attachment,
-            # )
+            send_welcome_email(
+                subject="Welcome to Our Service",
+                message="Thank you for signing up. Please find your QR code attached.",
+                email=user.email,
+                attachment=attachment,
+            )
 
             return redirect("qr_image", user_id=user.id)
 
@@ -72,12 +80,20 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=(password or 0000))
+
+        if not username or not password:
+            messages.error(
+                request, "Please enter both email and password.", extra_tags="login"
+            )
+            return redirect("login")
+
+        user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
             return redirect("canteen_item_list")
         else:
-            messages.error(request, "Invalid UserName or Password", extra_tags='login')
+            messages.error(request, "Invalid email or password.", extra_tags="login")
             return redirect("login")
 
     return render(request, "registration/login.html")
@@ -130,6 +146,7 @@ def archive_user(request, id):
     user.save()
     return redirect("student_list")
 
+
 @login_required
 def archive_staff(request, id):
     user = get_object_or_404(CustomUser, id=id)
@@ -137,17 +154,19 @@ def archive_staff(request, id):
     user.save()
     return redirect("staff_list")
 
+
 @login_required
 def delete_user(request, id):
     user = get_object_or_404(CustomUser, id=id)
-    if user.is_archieved :
+    if user.is_archieved:
         user.delete()
     return redirect("student_list")
+
 
 @login_required
 def delete_staff(request, id):
     user = get_object_or_404(CustomUser, id=id)
-    if user.is_archieved :
+    if user.is_archieved:
         user.delete()
     return redirect("staff_list")
 
@@ -158,6 +177,7 @@ def unarchive_user(request, id):
     user.is_archieved = False
     user.save()
     return redirect("archived_student_list")
+
 
 @login_required
 def unarchive_staff(request, id):

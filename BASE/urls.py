@@ -43,6 +43,7 @@ from BASE.views import (
     delete_staff,
     delete_user,
     canteen_delete_item,
+    cancel_transaction,
 )
 
 urlpatterns = [
@@ -96,12 +97,37 @@ urlpatterns = [
     path("recharge/<uuid>/", recharge_transaction, name="recharge_transaction"),
     path("payment/<uuid>/", payment_transaction, name="payment_transaction"),
     path("archived-items/", archived_items_list_view, name="archived_items_list"),
-    path('generate_payment_report_all/',generate_payment_report_all, name='generate_payment_report_all'),
-    path('generate_product_sales_day_based_report_all/',generate_product_sales_day_based_report_all, name='generate_product_sales_day_based_report_all'),
-    path('generate_product_sales_month_based_report_all/',generate_product_sales_month_based_report_all, name='generate_product_sales_month_based_report_all'),
-    path('redirect_transaction_report_page/',redirect_transaction_report_page, name='redirect_transaction_report_page'),
-    path('redirect_sales_report_page/',redirect_sales_report_page, name='redirect_sales_report_page'),
-    path('generate_product_sales_report_all/',generate_product_sales_report_all, name='generate_product_sales_report_all'),
+    path(
+        "generate_payment_report_all/",
+        generate_payment_report_all,
+        name="generate_payment_report_all",
+    ),
+    path(
+        "generate_product_sales_day_based_report_all/",
+        generate_product_sales_day_based_report_all,
+        name="generate_product_sales_day_based_report_all",
+    ),
+    path(
+        "generate_product_sales_month_based_report_all/",
+        generate_product_sales_month_based_report_all,
+        name="generate_product_sales_month_based_report_all",
+    ),
+    path(
+        "redirect_transaction_report_page/",
+        redirect_transaction_report_page,
+        name="redirect_transaction_report_page",
+    ),
+    path(
+        "redirect_sales_report_page/",
+        redirect_sales_report_page,
+        name="redirect_sales_report_page",
+    ),
+    path(
+        "generate_product_sales_report_all/",
+        generate_product_sales_report_all,
+        name="generate_product_sales_report_all",
+    ),
+    path("cancel_transaction/", cancel_transaction, name="cancel_transaction"),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

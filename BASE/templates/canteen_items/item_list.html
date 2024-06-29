@@ -4,340 +4,22 @@
     <title>Canteen Items</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css_js/item_list.css' %}">
+    <script type="text/javascript" src="{% static 'css_js/item_list.js' %}"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        /* Style for the body */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-        body {
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .food-items{
-            background: linear-gradient(135deg, #4c83ff, #72e2ff);
-        }
-        .navigation {
-            background: rgb(26,83,201);
-            text-align: center;
-            text-align: right;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            font-size: 15px;
-            color: #fff;
-        }
-
-        .navigation ul {
-
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content:space-around;
-            text-align: center;
-
-        }
-        .navigation  .view-cart-button{
-            background-color: #fff;
-            color: #333;
-            border: none;
-            padding: 5px 10px;
-            font-size: 15px;
-            border-radius: 5px;
-            cursor: pointer;
-
-        }
-        .navigation  .view-cart-button:hover{
-            background-color: rgb(96, 223, 96);
-            color: #fff;
-            text-decoration: none;
-
-        }
-
-        .navigation ul li {
-            margin-left: 20px;
-        }
-
-        .navigation ul li a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .navigation ul li a:hover {
-            text-decoration: underline;
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        .header .glyphicon {
-            font-size: 20px;
-        }
-        .header h1 {
-            margin: 0;
-            font-family: 'Poppins';
-        }
-        .header span {
-            font-size: 23px;
-            margin-left: 6px;
-            margin-bottom: 3px;
-        }
-        .header .logout {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 4px 4px;
-            font-size: medium;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-
-        .header .logout:hover {
-            background-color: #890412;
-
-
-        }
-        .search {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            background-color: #fffcfc;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .search form {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search input[type="text"], .search input[type="number"], .search select, .search button {
-            flex: 1;
-            min-width: 120px;
-            padding: 10px;
-            margin-bottom: 0;
-        }
-
-        .search button {
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
-            text-decoration: none;
-        }
-
-        .search button:hover {
-            background-color: #0056b3;
-        }
-
-        ul.item {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-        }
-
-        .item-card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: calc(25% - 40px);
-            box-sizing: border-box;
-            margin-bottom: 20px;
-
-
-        }
-
-        .item-image-container {
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .item-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-        }
-
-        .item-details {
-            padding: 10px;
-            text-align: left;
-        }
-
-        .item-identity {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .item-price {
-            color: #555;
-            margin-top: 5px;
-            font-size: 12px;
-        }
-
-        form {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        input[type="number"] {
-            width: 50px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        button[type="submit"] {
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 3px;
-            text-decoration: none;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #003a77;
-        }
-
-        .admin-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .admin-actions form {
-            flex: 1;
-        }
-
-        .quantity-control {
-            height: 36px;
-            width: 75px;
-        }
-
-        .form-group {
-            height: 36px;
-            padding: 0px 5px;
-        }
-
-        iframe {
-            display: none;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .pagination li {
-            display: inline;
-            margin: 0 5px;
-        }
-
-        .pagination a, .pagination span {
-            color: #007bff;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .pagination a:hover, .pagination span:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .pagination .active span {
-            font-weight: bold;
-            color: #000;
-            background-color: #e9ecef;
-            border-radius: 5px;
-        }
-
-
-        .popup {
-            display: none;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-        }
-
-        .popup-content {
-            text-align: center;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-        .cart-popup {
-            display: none;
-            position: fixed;    
-            top: 10px;
-            right: 10px;
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        
-            /* Mobile devices (portrait and landscape) */
-        @media only screen and (max-width: 480px) {
-        /* styles here */
-        }
-
-        /* Tablets (portrait and landscape) */
-        @media only screen and (min-width: 481px) and (max-width: 768px) {
-        /* styles here */
-        }
-
-        /* Desktops and laptops */
-        @media only screen and (min-width: 769px) {
-        /* styles here */
-        }
-    </style>
 </head>
 <body>
     <div class="header">
         <div>
-            <!-- <span class="glyphicon glyphicon-user"></span> -->
             <i class='bx bxs-user-circle' style="font-size:x-large;"></i>
             <span>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
         </div>
         <h1>Canteen Items</h1>
         <span>
-        <a href="{% url 'logout' %}" class="logout">Logout
-            <i class='bx bx-log-out'></i>
-        </a>
+            <a href="{% url 'logout' %}" class="logout">Logout
+                <i class='bx bx-log-out'></i>
+            </a>
         </span>
     </div>
 
@@ -353,14 +35,19 @@
                 <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
                 <span>
-                <a href="{% url 'cart_list' %}" class="view-cart-button"  >Cart
-                    <i class='bx bx-cart' ></i>
-                </a>
-            </span>
+                    <a href="{% url 'cart_list' %}" class="view-cart-button">
+                        Cart <i class='bx bx-cart'></i>
+                    </a>
+                </span>
             {% elif user.is_staff %}
                 <li><a href="{% url 'qr_scan_recharge' %}" class="transaction-history-button">Recharge</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
-                <a href="{% url 'cart_list' %}" class="view-cart-button">Cart</a>
+                <li><a href="{% url 'previous_orders_list' %}" class="order-history-button">Order History</a></li>
+                <span>
+                    <a href="{% url 'cart_list' %}" class="view-cart-button">
+                        Cart <i class='bx bx-cart'></i>
+                    </a>
+                </span>
             {% else %}
                 <li><a href="{% url 'qr_image' user.id %}" class="add-item-button">Show QR</a></li>
                 <li><a href="#" class="balance-link">Balance</a></li>
@@ -372,79 +59,90 @@
 
     <div class="search">
         <form method="GET" action="{% url 'canteen_item_list' %}">
-            <input type="text" name="q" placeholder="Search..." class="form-control">
-            <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price.">
-            <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price." class="form-control">
-                <select id="category" name="category" class="form-control">
-                    <option value="">All Categories</option>
-                    <option value="Food">Food</option>
-                    <option value="Snacks">Snacks</option>
-                    <option value="Beverage">Beverage</option>
-                </select>
-                <button type="submit" style="background-color: #007bff;">Search</button>
+            <input type="text" name="q" placeholder="Search..." id="searching" class="form-control">
+            <input type="number" id="min_price" name="min_price" min="0" class="form-control" placeholder="Min Price">
+            <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price" class="form-control">
+            <select id="category" name="category" class="form-control">
+                <option value="">All Categories</option>
+                <option value="Food">Food</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Beverage">Beverage</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
+
     <div class="food-lists">
-        <ul class="item">
-            {% for item in items %}
-                <li class="item-card">
-                    <div class="item-image-container">
-                        {% load static %}
-                        <img class="item-image"
-                        src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
-                        alt="{{ item.identity }}">
-                    </div>
-                    <div class="item-details">
-                        <p class="item-identity">{{ item.identity|title }}</p>
-                        <p class="item-price">Rs.{{ item.price }}</p>
-                        {% if user.is_admin %}
-                            <p class="item-availability">
-                                {% if item.availability %}
-                                    Available
-                                {% else %}
-                                    Unavailable
-                                {% endif %}
-                            </p>
-                        {% endif %}
-                        {% if user.is_admin or user.is_staff %}
-                        <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
-
-                        <div id="cart-popup" class="cart-popup">
-                            Item added to cart!
+        <div class="food-card">
+            <div class="item">
+                {% for item in items %}
+                    <div class="item-card">
+                        <div class="item-image-container">
+                            {% load static %}
+                            <img class="item-image"
+                                src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
+                                alt="{{ item.identity }}">
                         </div>
-                    
-                        <!-- Your existing HTML continues -->
-                        <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
-                            {% csrf_token %}
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
-                            <div class="form-group">
-                                <input type="number" name="quantity" value="1" min="1" class="quantity-control">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" style="background-color: #007bff;">Add to Cart</button>
-                            </div>
-                        </form>
+                        <div class="item-details">
+                            <p class="item-identity">{{ item.identity|title }}</p>
+                            <p class="item-price">₹. {{ item.price }}</p>
+                            {% if user.is_admin %}
+                                <p class="item-availability {% if item.availability %}available{% else %}unavailable{% endif %}">
+                                    {{ item.category|title }} - {% if item.availability %}Available{% else %}Unavailable{% endif %}
+                                </p>
+                            {% endif %}
+                            <div class="btn-group">
+                                {% if user.is_admin or user.is_staff %}
+                                <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
-                        {% endif %}
+                                <div id="cart-popup" class="cart-popup">
+                                    Item added to cart!
+                                </div>
+                                <div class="quantity-form-group">
+                                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <div class="form-group">
+                                            <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary" title="Add to Cart">
+                                                {% if user.is_staff %}
+                                                <i class='bx bx-cart'></i>
+                                                {% else %}
+                                                <i class='bx bx-cart'>Add to cart</i>
+                                                {% endif %}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            {% endif %}
 
-                        {% if user.is_admin %}
-                            <div class="admin-actions">
-                                <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="item_id" value="{{ item.id }}">
-                                    <button type="submit" class="btn btn-warning">Archive Item</button>
-                                </form>
+                            {% if user.is_admin %}
+                                <div class="admin-actions">
+                                    <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" class="btn btn-warning" title="Archive">
+                                            <i class='bx bx-archive'></i>
+                                        </button>
+                                    </form>
 
-                                <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
-                                    <button type="submit" class="btn btn-info">Edit Item</button>
-                                </form>
+                                    <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
+                                        <button type="submit" class="btn btn-info" title="Edit">
+                                            <i class='bx bx-edit'></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endif %}
                             </div>
-                        {% endif %}
+                        </div>
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
 
     <!-- Pagination controls -->
     <div class="pagination">
@@ -468,8 +166,6 @@
             {% endif %}
         </ul>
     </div>
-    
-
 
     <!-- Popup for balance -->
     <div class="popup" id="balance-popup">
@@ -479,56 +175,16 @@
             <p>Balance: Rs. {{ user.balance }}</p>
         </div>
     </div>
-    
 
-    <!-- popup for add to cart notify -->
+    <!-- Popup for add to cart notification -->
     {% if messages %}
-    <div id="cart-popup" class="cart-popup">
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-    </div>
+        <div id="cart-popup" class="cart-popup">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <!-- <script>
-        function togglePopup() {
-            var popup = document.getElementById('balance-popup');
-            if (popup.style.display === 'none' || popup.style.display === '') {
-                popup.style.display = 'block';
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                }, 2000); // Hide the popup after 1 second
-            } else {
-                popup.style.display = 'none';
-            }
-        }
-
-        document.querySelector('.balance-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            togglePopup();
-        });
-
-    </script> -->
-
-    <script>
-        function togglePopup() {
-            var popup = document.getElementById('balance-popup');
-            if (popup.style.display === 'none' || popup.style.display === '') {
-                popup.style.display = 'block';
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                }, 1000); // Hide the popup after 1 second
-            } else {
-                popup.style.display = 'none';
-            }
-        }
-
-        document.querySelector('.balance-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            togglePopup();
-        });
-
-        
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
