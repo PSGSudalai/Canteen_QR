@@ -50,7 +50,7 @@
                 </span>
             {% else %}
                 <li><a href="{% url 'qr_image' user.id %}" class="add-item-button">Show QR</a></li>
-                <li><a href="#" class="balance-link">Balance</a></li>
+                <li><a href="#" class="balance-link" onclick="togglePopup()">Balance</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
             {% endif %}
@@ -93,13 +93,13 @@
                             {% endif %}
                             <div class="btn-group">
                                 {% if user.is_admin or user.is_staff %}
-                                <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+                                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-                                <div id="cart-popup" class="cart-popup">
+                                <div id="cart-popup" class="cart-popup" style="display:none;">
                                     Item added to cart!
                                 </div>
                                 <div class="quantity-form-group">
-                                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
+                                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe" onsubmit="showCartPopup()">
                                         {% csrf_token %}
                                         <input type="hidden" name="item_id" value="{{ item.id }}">
                                         <div class="form-group">
@@ -168,7 +168,7 @@
     </div>
 
     <!-- Popup for balance -->
-    <div class="popup" id="balance-popup">
+    <div class="popup" id="balance-popup" style="display:none;">
         <div class="popup-content">
             <span class="close-btn" onclick="togglePopup()">&times;</span>
             <h2>Your Balance</h2>
@@ -178,13 +178,46 @@
 
     <!-- Popup for add to cart notification -->
     {% if messages %}
-        <div id="cart-popup" class="cart-popup">
+        <div id="cart-popup" class="cart-popup" style="display:none;">
             {% for message in messages %}
                 {{ message }}
             {% endfor %}
         </div>
     {% endif %}
+    <script>
+        // Function to toggle popup visibility
+    function togglePopup() {
+        var popup = document.getElementById("balance-popup");
+        if (popup.style.display === "none") {
+            popup.style.display = "block";
+        } else {
+            popup.style.display = "none";
+        }
+    }
 
+    // Function to show cart popup for a few seconds
+    function showCartPopup() {
+        var cartPopup = document.getElementById("cart-popup");
+        cartPopup.style.display = "block";
+        setTimeout(function() {
+            cartPopup.style.display = "none";
+        }, 2000);
+    }
+
+    // Event listener for add to cart form submission
+    document.addEventListener("DOMContentLoaded", function() {
+        var addToCartForms = document.querySelectorAll("form[action='{% url 'add_to_cart' %}']");
+        addToCartForms.forEach(function(form) {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                var formData = new FormData(form);
+                var quantity = formData.get("quantity");
+                showCartPopup();
+            });
+        });
+    });
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
