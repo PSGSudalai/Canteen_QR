@@ -167,7 +167,7 @@
                     <tr>
                         <td>{{ transaction.created_at|date:"Y-m-d | H:m" }}</td>
                         {% if user.is_staff or user.is_admin %}
-                            <td>{{ transaction.student.first_name|capfirst }} {{transaction.student.last_name|capfirst}}</td>
+                            <td>{{ transaction.user.first_name|capfirst }} {{transaction.user.last_name|capfirst}}</td>
                             <td>{{ transaction.staff.first_name|capfirst }} {{transaction.staff.last_name|capfirst}}</td>
                         {% endif %}
                         <td>{{ transaction.payment_type }}</td>

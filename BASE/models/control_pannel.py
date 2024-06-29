@@ -27,7 +27,7 @@ class ItemImage(BaseModels):
 
 
 class Transaction(BaseModels):
-    student = models.ForeignKey(
+    user = models.ForeignKey(
         "BASE.CustomUser",
         on_delete=models.SET_NULL,
         null=True,

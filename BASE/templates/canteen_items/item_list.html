@@ -205,17 +205,17 @@
     }
 
     // Event listener for add to cart form submission
-    document.addEventListener("DOMContentLoaded", function() {
-        var addToCartForms = document.querySelectorAll("form[action='{% url 'add_to_cart' %}']");
-        addToCartForms.forEach(function(form) {
-            form.addEventListener("submit", function(event) {
-                event.preventDefault();
-                var formData = new FormData(form);
-                var quantity = formData.get("quantity");
-                showCartPopup();
-            });
-        });
-    });
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     var addToCartForms = document.querySelectorAll("form[action='{% url 'add_to_cart' %}']");
+    //     addToCartForms.forEach(function(form) {
+    //         form.addEventListener("submit", function(event) {
+    //             event.preventDefault();
+    //             var formData = new FormData(form);
+    //             var quantity = formData.get("quantity");
+    //             showCartPopup();
+    //         });
+    //     });
+    // });
 
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
