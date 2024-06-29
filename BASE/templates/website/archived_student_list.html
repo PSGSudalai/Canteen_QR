@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Archived Student List</title>
     <style>
         body {
@@ -109,14 +111,15 @@
         .btn-custom {
             margin-right: 5px;
         }
+
         a {
-            font-style: normal;
             color: white;
+            text-decoration: none;
         }
 
         a:hover {
-            font-style: normal;
             color: white;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -140,7 +143,6 @@
                     <th>Phone Number</th>
                     <th>Balance</th>
                     <th>Date Joined</th>
-                    <th>Modified Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -153,13 +155,12 @@
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
-                        <td>{{ user.modified_at|date:"Y-m-d H:i" }}</td>
                         <td>
                             <button class="btn btn-success btn-custom">
-                                <a href="{% url 'unarchive_user' user.id %}" style="color: white;">Unarchive</a>
+                                <i class="fas fa-box-open"></i> <a href="{% url 'unarchive_user' user.id %}" style="color: white;">Unarchive</a>
                             </button>
                             <button class="btn btn-danger btn-custom">
-                                <a href="{% url 'delete_user' user.id %}" style="color: white;">Delete</a>
+                                <i class="bi bi-trash"></i> <a href="{% url 'delete_user' user.id %}" style="color: white;">Delete</a>
                             </button>
                         </td>
                     </tr>

@@ -21,6 +21,18 @@
             text-align: center;
         }
 
+        #back-link{
+            background-color: #4f4a4a;
+        }
+        a {
+            font-style: normal;
+            color: white;
+        }
+
+        a:hover {
+            font-style: normal;
+            color: white;
+        }
         form {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 10px;
@@ -128,6 +140,7 @@
             }
         }
 
+
     </style>
 </head>
 <body>
@@ -167,7 +180,7 @@
 
             <div class="button-right">
                 <button type="submit">Save</button>
-                <button>
+                <button id="back-link">
                     <a href="{% url 'canteen_item_list' %}">Back</a>
                 </button>
             </div>
