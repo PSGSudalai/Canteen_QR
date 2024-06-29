@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Archived Staff List</title>
     <style>
         body {
@@ -156,10 +157,10 @@
                         <td>{{ user.modified_at|date:"Y-m-d H:i" }}</td>
                         <td>
                             <button class="btn btn-success btn-custom">
-                                <a href="{% url 'unarchive_staff' user.id %}" style="color: white;">Unarchive</a>
+                                <i class="fas fa-box-open"></i> <a href="{% url 'unarchive_staff' user.id %}" style="color: white;">Unarchive</a>
                             </button>
                             <button class="btn btn-danger btn-custom">
-                                <a href="{% url 'delete_staff' user.id %}"  style="color: white;">Delete</a>
+                                <a href="{% url 'delete_staff' user.id %}" class="glyphicon glyphicon-trash" style="color: white;">Delete</a>
                             </button>
                         </td>
                     </tr>

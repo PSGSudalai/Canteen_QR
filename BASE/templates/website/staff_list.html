@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Staff List</title>
     <style>
         body {
@@ -72,7 +73,7 @@
             text-align: center;
             margin-right: 10px;
         }
-        
+
         .link-container {
             display: flex;
             justify-content: center;
@@ -191,10 +192,10 @@
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
                         <td>
                             <button class="btn btn-primary btn-custom">
-                                <a href="{% url 'edit_user' user.id %}" style="color: white;">Edit</a>
+                                <i class='bx bx-edit'></i><a href="{% url 'edit_user' user.id %}" style="color: white;">Edit</a>
                             </button>
                             <button class="btn btn-warning btn-custom">
-                                <a href="{% url 'archive_staff' user.id %}" style="color: white;">Archive</a>
+                                <i class='bx bx-archive'></i><a href="{% url 'archive_staff' user.id %}" style="color: white;">Archive</a>
                             </button>
                         </td>
                     </tr>
