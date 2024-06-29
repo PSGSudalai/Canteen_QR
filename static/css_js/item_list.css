@@ -152,10 +152,10 @@ body {
     color: #dc3545; /* Red color for unavailable items */
 }
 
-
 /* Food items styles */
 .food-items {
-    background: linear-gradient(135deg, #4c83ff, #72e2ff);
+    max-height: 230px;
+    overflow-y: auto; /* Enables vertical scrolling if content exceeds the max-height */
 }
 
 .food-lists {
@@ -164,9 +164,7 @@ body {
     padding: 20px;
 }
 
-ul.item {
-    list-style-type: none;
-    padding: 0;
+.item {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -227,12 +225,7 @@ ul.item {
 
 .item-availability {
     font-size: 0.9em;
-    color: #28a745;
     margin-bottom: 10px;
-}
-
-.item-availability.unavailable {
-    color: #dc3545;
 }
 
 .form-inline {

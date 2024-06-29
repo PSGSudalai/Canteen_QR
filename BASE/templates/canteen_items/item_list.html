@@ -73,66 +73,69 @@
     </div>
 
     <div class="food-lists">
-        <ul class="item">
-            {% for item in items %}
-                <li class="item-card">
-                    <div class="item-image-container">
-                        {% load static %}
-                        <img class="item-image"
-                            src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
-                            alt="{{ item.identity }}">
-                    </div>
-                    <div class="item-details">
-                        <p class="item-identity">{{ item.identity|title }}</p>
-                        <p class="item-price">₹. {{ item.price }}</p>
-                        {% if user.is_admin %}
-                            <p class="item-availability {% if item.availability %}available{% else %}unavailable{% endif %}">
-                                {{ item.category|title }} - {% if item.availability %}Available{% else %}Unavailable{% endif %}
-                            </p>
-                        {% endif %}
-                        {% if user.is_admin or user.is_staff %}
-                            <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+        <div class="food-card">
+            <div class="item">
+                {% for item in items %}
+                    <div class="item-card">
+                        <div class="item-image-container">
+                            {% load static %}
+                            <img class="item-image"
+                                src="{% if item.itemImage and item.itemImage.image %}{{ item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
+                                alt="{{ item.identity }}">
+                        </div>
+                        <div class="item-details">
+                            <p class="item-identity">{{ item.identity|title }}</p>
+                            <p class="item-price">₹. {{ item.price }}</p>
+                            {% if user.is_admin %}
+                                <p class="item-availability {% if item.availability %}available{% else %}unavailable{% endif %}">
+                                    {{ item.category|title }} - {% if item.availability %}Available{% else %}Unavailable{% endif %}
+                                </p>
+                            {% endif %}
+                            {% if user.is_admin or user.is_staff %}
+                                <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
-                            <div id="cart-popup" class="cart-popup">
-                                Item added to cart!
-                            </div>
-
-                            <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
-                                {% csrf_token %}
-                                <input type="hidden" name="item_id" value="{{ item.id }}">
-                                <div class="form-group">
-                                    <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                                <div id="cart-popup" class="cart-popup">
+                                    Item added to cart!
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class='bx bx-cart'></i> Add to Cart
-                                    </button>
-                                </div>
-                            </form>
-                        {% endif %}
 
-                        {% if user.is_admin %}
-                            <div class="admin-actions">
-                                <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
+                                <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
                                     {% csrf_token %}
                                     <input type="hidden" name="item_id" value="{{ item.id }}">
-                                    <button type="submit" class="btn btn-warning">
-                                        <i class='bx bx-archive'></i> Archive
-                                    </button>
+                                    <div class="form-group">
+                                        <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" title="Add to Cart">
+                                            <i class='bx bx-cart'></i>
+                                        </button>
+                                    </div>
                                 </form>
+                            {% endif %}
 
-                                <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
-                                    <button type="submit" class="btn btn-info">
-                                        <i class='bx bx-edit'></i> Edit
-                                    </button>
-                                </form>
-                            </div>
-                        {% endif %}
+                            {% if user.is_admin %}
+                                <div class="admin-actions">
+                                    <form action="{% url 'canteen_item_archive' item.id %}" method="post" class="form-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" class="btn btn-warning" title="Archive">
+                                            <i class='bx bx-archive'></i>
+                                        </button>
+                                    </form>
+
+                                    <form action="{% url 'canteen_item_edit' item.id %}" method="get" class="form-inline">
+                                        <button type="submit" class="btn btn-info" title="Edit">
+                                            <i class='bx bx-edit'></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+
 
     <!-- Pagination controls -->
     <div class="pagination">
