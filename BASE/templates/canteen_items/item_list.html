@@ -91,29 +91,31 @@
                                     {{ item.category|title }} - {% if item.availability %}Available{% else %}Unavailable{% endif %}
                                 </p>
                             {% endif %}
-                            {% if user.is_admin or user.is_staff %}
+                            <div class="btn-group">
+                                {% if user.is_admin or user.is_staff %}
                                 <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
 
                                 <div id="cart-popup" class="cart-popup">
                                     Item added to cart!
                                 </div>
-
-                                <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="item_id" value="{{ item.id }}">
-                                    <div class="form-group">
-                                        <input type="number" name="quantity" value="1" min="1" class="quantity-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary" title="Add to Cart">
-                                            {% if user.is_staff %}
-                                            <i class='bx bx-cart'></i>
-                                            {% else %}
-                                            <i class='bx bx-cart'>Add to cart</i>
-                                            {% endif %}
-                                        </button>
-                                    </div>
-                                </form>
+                                <div class="quantity-form-group">
+                                    <form action="{% url 'add_to_cart' %}" method="post" class="form-inline" target="hidden_iframe">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <div class="form-group">
+                                            <input type="number" name="quantity" value="1" min="1" class="quantity-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary" title="Add to Cart">
+                                                {% if user.is_staff %}
+                                                <i class='bx bx-cart'></i>
+                                                {% else %}
+                                                <i class='bx bx-cart'>Add to cart</i>
+                                                {% endif %}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             {% endif %}
 
                             {% if user.is_admin %}
@@ -133,6 +135,7 @@
                                     </form>
                                 </div>
                             {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

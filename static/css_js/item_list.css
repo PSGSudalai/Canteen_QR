@@ -168,7 +168,6 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: space-between;
 }
 
 .item-card {
@@ -217,12 +216,19 @@ body {
     margin-bottom: 10px;
 }
 
+.quantity-form-group{
+    margin-top: 10px;
+    margin-right: 10px;
+}
 .item-price {
     color: #007bff;
     font-size: 1.15em;
     margin-bottom: 10px;
 }
+.btn-group{
+    display: flex;
 
+}
 .item-availability {
     font-size: 0.9em;
     margin-bottom: 10px;
