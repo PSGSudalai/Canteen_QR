@@ -48,7 +48,7 @@ class Transaction(BaseModels):
     )
 
     def __str__(self) -> str:
-        return f"{self.student} - {self.payment_type}"
+        return f"{self.user} - {self.payment_type}"
 
 
 class Cart(BaseModels):
