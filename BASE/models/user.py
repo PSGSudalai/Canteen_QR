@@ -4,8 +4,6 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
-    Group,
-    Permission,
 )
 from django.db import models
 from BASE.models import BaseModels
@@ -34,6 +32,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin, BaseModels):
+    user_id = models.CharField(max_length=30, unique=True, editable=False, blank=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
@@ -44,21 +43,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, BaseModels):
     balance = models.IntegerField(default=0)
     qr_code = models.ImageField(upload_to="qr_codes/", blank=True, null=True)
 
-    # groups = models.ManyToManyField(
-    #     Group,
-    #     related_name='customuser_set',
-    #     blank=True
-    # )
-    # user_permissions = models.ManyToManyField(
-    #     Permission,
-    #     related_name='customuser_set',
-    #     blank=True
-    # )
-
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    # REQUIRED_FIELDS = ["first_name", "last_name"]
+
+    def save(self, *args, **kwargs):
+        if not self.user_id:
+            last_user = CustomUser.objects.order_by("-id").first()
+            if last_user and last_user.user_id:
+                last_user_id_int = int(last_user.user_id[1:])
+                new_user_id_int = last_user_id_int + 1
+                self.user_id = f"R{new_user_id_int:03d}"
+            else:
+                self.user_id = "R001"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email
