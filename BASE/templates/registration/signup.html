@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+        }
+
+        .container {
+            display: flex;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .left_container {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right_container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .right_container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 93%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .checkbox-group-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .checkbox-group {
+            margin-right: 10px;
+        }
+
+        .checkbox-group-container {
+            white-space: nowrap;
+        }
+
+        .checkbox-group {
+            display: inline-block;
+            margin-right: 50px;
+        }
+
+        .btn,
+        .button-right {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border: 0;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            width: 48%;
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn,
+            .button-right {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left_container">
+            <h2>Register</h2>
+            {% load static %}
+            <form method="post" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="firstname" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="lastname" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number:</label>
+                    <input type="tel" id="phone_number" name="phone_number" required pattern="\d*" maxlength="10" oninput="validatePhoneNumber(this)">
+                </div>
+                <div class="checkbox-group-container">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="is_user" name="is_user" {% if user.is_user %}checked{% endif %}>
+                        <label for="is_user">Is User</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="is_staff" name="is_staff" {% if user.is_staff %}checked{% endif %}>
+                        <label for="is_staff">Is Staff</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="is_admin" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+                        <label for="is_admin">Is Admin</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password1">Password:</label>
+                    <input type="password" id="password1" name="password1" required>
+                </div>
+                <div class="button-container">
+                    <button class="btn" type="submit">Register</button>
+                    <a class="button-right" href="{% url 'canteen_item_list' %}">Back</a>
+                </div>
+            </form>
+
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'signup' in message.tags %}
+                        <h6 style="color: rgb(215, 59, 59);" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="right_container">
+            <img src="{% static 'illustrations/signup.jpg' %}" alt="Sign Up Image">
+        </div>
+    </div>
+
+    <script>
+        function validatePhoneNumber(input) {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 10);
+        }
+    </script>
+</body>
+</html>

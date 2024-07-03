@@ -10,6 +10,7 @@ class BaseModels(models.Model):
     # created_by
     # modified_by
     is_active = models.BooleanField(default=True)
+    is_archieved = models.BooleanField(default=False)
 
     class Meta:
         abstract = True

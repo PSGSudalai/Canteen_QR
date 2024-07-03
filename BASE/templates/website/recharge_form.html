@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Recharge Amount</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/illustrations/recharge.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        .tran {
+            text-align: center;
+            margin-right: 5%;
+        }
+        label{
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-top: 20px;
+        }
+        input[type="number"], input[type="text"], select, button {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            text-decoration: underline;
+            background-color: #00460f;
+            color: #fff;
+        }
+        .loader {
+            display: none;
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #007bff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .status-message {
+            display: none;
+            margin-top: 10px;
+        }
+        .success-message {
+            color: #28a745;
+        }
+        .error-message {
+            color: #dc3545;
+        }
+        .back-link {
+            display: block;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            width: 100%;
+            border-radius: 5px;
+            padding: 10px 0px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .back-link:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="tran">
+        <h2>Transaction</h2>
+        <form id="recharge-form" action="{% url 'recharge_transaction' uuid %}?next={{ request.GET.next }}" method="POST">
+            {% csrf_token %}
+            <label for="user_name">Student Name:</label>
+            <input type="text" id="user_name" name="user_name" value="{{ user.first_name }} {{ user.last_name }}" readonly>
+            <br>
+            <label for="amount">Enter Recharge Amount:</label>
+            <input type="number" id="amount" name="amount" required>
+            <br>
+            <label for="payment_method">Payment Method:</label>
+            <select id="payment_method" name="payment_method">
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+            </select>
+            <br>
+            <button type="submit" id="submit-btn">Recharge</button>
+            <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+            <div class="loader" id="loader"></div>
+            <div class="status-message success-message" id="success-message">Transaction successful!</div>
+            <div class="status-message error-message" id="error-message">Transaction failed. Please try again.</div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('recharge-form').addEventListener('submit', function(event) {
+            document.getElementById('loader').style.display = 'inline-block';
+            document.getElementById('recharge-form').disabled = true;
+            document.getElementById('back-link').disabled = true;
+        });
+    </script>
+</body>
+</html>

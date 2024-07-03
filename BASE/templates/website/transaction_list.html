@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+        }
+        .table-container {
+            width: 100%;
+            max-width: 1200px;
+            overflow-x: auto;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            color: black;
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        tr:hover {
+            background-color: #d6d6d6;
+        }
+        .back-link {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: right;
+        }
+        .filter-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .filter-form form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            color: black;
+        }
+        .filter-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .filter-button:hover {
+            background-color: #0056b3;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+        .pagination a, .pagination span {
+            color: #0a0a0a;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .pagination a:hover, .pagination span:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .pagination .active span {
+            font-weight: bold;
+            color: #000;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .totals{
+            display: flex;
+        }
+        p{
+            margin: 10px 10px 5px 10px;
+
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: #000;">Transactions</h1>
+    <div class="filter-form">
+        <form method="GET" action="{% url 'transaction_list' %}">
+            <input type="number" name="min_amount" class="filter-input" placeholder="Min Amount" value="{{ min_amount }}">
+            <input type="number" name="max_amount" class="filter-input" placeholder="Max Amount" value="{{ max_amount }}">
+            {% if user.is_admin %}
+                <input type="text" name="user_email" class="filter-input" placeholder="Search ..." value="{{ user_email }}">
+            {% endif %}
+            <input type="date" name="start_date" class="filter-input" placeholder="Start Date" value="{{ start_date }}">
+            <input type="date" name="end_date" class="filter-input" placeholder="End Date" value="{{ end_date }}">
+            <select name="payment_type" class="filter-input">
+                <option value="">All Payment Types</option>
+                {% for type in payment_types %}
+                    <option value="{{ type.0 }}" {% if payment_type == type.0 %}selected{% endif %}>{{ type.1 }}</option>
+                {% endfor %}
+            </select>
+            <select name="payment_method" class="filter-input">
+                <option value="">All Payment Methods</option>
+                {% for method in payment_methods %}
+                    <option value="{{ method.0 }}" {% if payment_method == method.0 %}selected{% endif %}>{{ method.1 }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="filter-button">Filter</button>
+        </form>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date| Time</th>
+                    {% if user.is_staff or user.is_admin %}
+                        <th>Student</th>
+                        <th>Staff</th>
+                    {% endif %}
+                    <th>Payment Type</th>
+                    <th>Amount(₹)</th>
+                    <th>Payment Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in object_list %}
+                    <tr>
+                        <td>{{ transaction.created_at|date:"Y-m-d | H:m" }}</td>
+                        {% if user.is_staff or user.is_admin %}
+                            <td>{{ transaction.user.first_name|capfirst }} {{transaction.user.last_name|capfirst}}</td>
+                            <td>{{ transaction.staff.first_name|capfirst }} {{transaction.staff.last_name|capfirst}}</td>
+                        {% endif %}
+                        <td>{{ transaction.payment_type }}</td>
+                        <td>₹ {{ transaction.amount }}</td>
+                        <td>{{ transaction.payment_method }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if user.is_staff or user.is_admin %}
+    <div class="totals" style="color: #000;">
+        <p>Total Payments: ₹{{ total_payments }}</p>
+        <p>Total Recharges: ₹{{ total_recharges }}</p>
+    </div>
+    {% endif %}
+
+    <div class="pagination">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1">&laquo; first</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo; first</span></li>
+                <li class="disabled"><span>previous</span></li>
+            {% endif %}
+            <li class="active"><span>{{ page_obj.number }}</span></li>
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li><a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>next</span></li>
+                <li class="disabled"><span>last &raquo;</span></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div style="text-align: right; width: 100%; max-width: 1200px;">
+        <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+        {% if user.is_admin %}
+        <a href="{% url 'redirect_transaction_report_page'%}" class="back-link">Report</a>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,9 +1,9 @@
 CATEGORY_CHOICES = {
-    ("FOOD", "Food"),
-    ("DRINK", "Drink"),
-    ("SNACK", "Snack"),
+    ("Food", "Food"),
+    ("Beverage", "Beverage"),
+    ("Snacks", "Snacks"),
 }
 
-PAYMENT_TYPE = {("RECHARGE", "Recharge"), ("PAYMENT", "Payment")}
+PAYMENT_TYPE = {("Recharge", "Recharge"), ("Payment", "Payment")}
 
-PAYMENT_METHOD = {("CASH", "Cash"), ("UPI", "Upi")}
+PAYMENT_METHOD = {("Cash", "Cash"), ("UPI", "UPI"), ("QR", "QR")}

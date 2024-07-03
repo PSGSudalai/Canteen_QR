@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Cart</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            background: linear-gradient(135deg, #4c83ff, #72e2ff);
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        h1 {
+            color: #000000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .cart-class {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart-left {
+            width: 350px;
+            margin-right: 20px;
+        }
+        .cart-left img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .cart-item-list-right {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 20px;
+            margin-top: 50px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0.1, 0.1, 0.3, 0.1);
+
+        }
+        .items-list {
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            float: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-height: 400px; 
+            overflow-y: auto;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 10px;
+
+            display: flex;
+            align-items: center;
+        }
+        .item-image {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .item-details {
+            flex: 1;
+        }
+        .item-details p {
+            margin: 5px 0;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .clear-cart-button {
+            background-color: #aeaeae;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .payment-button,
+        .back-link {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .clear-cart-button:hover {
+            background-color: #5f5f60;
+        }
+        .back-link:hover {
+            background-color: #1c67b7;
+            color: white;
+            font-style: normal;
+        }
+        .payment-button {
+            background-color: #28a745;
+        }
+        .payment-button:hover {
+            background-color: #218838;
+        }
+        .total-cost-label {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+        @media (max-width: 768px) {
+            .cart-class {
+                flex-direction: column;
+                align-items: center;
+            }
+            .cart-left {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .cart-item-list-right {
+                max-width: 100%;
+            }
+            .buttons-container {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            .clear-cart-button, .payment-button, .back-link {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+            .total-cost-label {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Cart</h1>
+    <div class="cart-class">
+        <div class="cart-left">
+            {% load static %}
+            <img src="{% static 'illustrations/Add_to_Cart_Illustraions.png' %}" alt="Add to Cart Illustration">
+        </div>
+        <div class="cart-item-list-right">
+            <div class="items-list">
+                <ul>
+                    {% for item in cart_items %}
+                        <li>
+                            <img class="item-image"
+                                src="{% if item.item.itemImage and item.item.itemImage.image %}{{ item.item.itemImage.image.url }}{% else %}{% static 'illustrations/foods.jpg' %}{% endif %}"
+                                alt="{{ item.item.identity }}">
+                            <div class="item-details">
+                                <p>{{ item.item.identity }}</p>
+                                <p>Quantity: {{ item.quantity }} | Rs. {{ item.item.price }}</p>
+                            </div>
+                            <div>
+                                <form method="post" action="{% url 'update_cart_item' item.id %}">
+                                    {% csrf_token %}
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" required>
+                                    <button type="submit" class="btn btn-primary">Update Quantity</button>
+                                </form>
+                                <form method="post" action="{% url 'delete_cart_item' item.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger delete-button" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="buttons-container">
+                <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
+                <form method="post" action="{% url 'clear_cart' %}">
+                    {% csrf_token %}
+                    <button class="clear-cart-button" type="submit">Clear</button>
+                </form>
+                <form method="get" action="{% url 'qr_scan_payment' %}">
+                    <button class="payment-button" type="submit">Payment</button>
+                </form>
+                <label class="total-cost-label">Total Cost: Rs. {{ total_cost }}</label>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
