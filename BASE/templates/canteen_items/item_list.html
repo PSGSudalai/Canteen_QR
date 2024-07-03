@@ -49,7 +49,7 @@
                     </a>
                 </span>
             {% else %}
-                <li><a href="{% url 'qr_image' user.id %}" class="add-item-button">Show QR</a></li>
+                <li><a href="{% url 'qr_image' user.uuid %}" class="add-item-button">Show QR</a></li>
                 <li><a href="#" class="balance-link" onclick="togglePopup()">Balance</a></li>
                 <li><a href="{% url 'previous_orders_list' %}" class="add-item-button">Order History</a></li>
                 <li><a href="{% url 'transaction_list' %}" class="transaction-history-button">Transaction History</a></li>
