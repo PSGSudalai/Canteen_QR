@@ -109,7 +109,6 @@
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
         }
 
         .pagination li {
@@ -175,7 +174,7 @@
                         <tr>
                             <td>{{ order.created_at|date:"Y-m-d | H:m" }}</td>
                             {% if user.is_staff or user.is_admin %}
-                                <td>{{ order.student.first_name|capfirst }} {{ order.student.last_name|capfirst }}</td>
+                                <td>{{ order.user.first_name|capfirst }} {{ order.user.last_name|capfirst }}</td>
                                 <td>{{ order.staff.first_name|capfirst }} {{ order.staff.last_name|capfirst }}</td>
                             {% endif %}
                             <td>{{ order.item_name }}</td>
@@ -211,7 +210,7 @@
         </ul>
     </div>
 
-    <div style="text-align: right; width: 100%; max-width: 1200px; margin-top: 20px;">
+    <div style="text-align: right; width: 100%; max-width: 1200px;">
         <a href="{% url 'canteen_item_list' %}" class="back-link">Back</a>
         {% if user.is_admin %}
         <a href="{% url 'generate_product_sales_report_all'%}" class="back-link">Report</a>

@@ -135,11 +135,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>Email</th>
+                    <th>ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Email</th>
                     <th>Phone Number</th>
-                    <th>Balance</th>
+                    <th>Balance(₹)</th>
                     <th>Date Joined</th>
                     <th>Modified Date</th>
                     <th>Actions</th>
@@ -148,9 +149,10 @@
             <tbody>
                 {% for user in users %}
                     <tr>
-                        <td>{{ user.email }}</td>
+                        <td>{{ user.user_id }}</td>
                         <td>{{ user.first_name }}</td>
                         <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
                         <td>{{ user.phone_number }}</td>
                         <td>{{ user.balance }}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>

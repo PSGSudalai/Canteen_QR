@@ -2,6 +2,7 @@ from .user import (
     login_view,
     signup_view,
     logout_view,
+    edit_user,
     qr_image_view,
     balance_check_view,
     archive_user,
@@ -29,7 +30,7 @@ from .add_cart import (
     delete_cart_item,
     update_cart_item,
 )
-from .qr_scan import qr_scan_recharge_view, qr_scan_payment_view
+
 from .previous_order import PreviousOrdersListView
 from .transaction import (
     TransactionListView,
@@ -37,7 +38,7 @@ from .transaction import (
     payment_transaction,
     cancel_transaction,
 )
-from .user_list import staff_list, student_list, edit_user
+from .user_list import staff_list, student_list
 from .reports import (
     generate_payment_report_all,
     generate_product_sales_day_based_report_all,
@@ -45,4 +46,9 @@ from .reports import (
     redirect_transaction_report_page,
     generate_product_sales_report_all,
     redirect_sales_report_page,
+)
+from .redirect import (
+    qr_scan_payment_view,
+    qr_scan_recharge_view,
+    custom_404_view,
 )

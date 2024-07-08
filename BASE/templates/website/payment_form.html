@@ -24,7 +24,7 @@
             align-items: center;
             width: 100%;
             height: 100%;
-            padding-right: 20px; 
+            padding-right: 20px;
         }
 
         .payment-form {
@@ -106,8 +106,8 @@
             <form id="payment-form" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="student_name">Name</label>
-                    <input type="text" id="student_name" name="student_name" value="{{ student.first_name }} {{ student.last_name }}" readonly class="form-control">
+                    <label for="user_name">Name</label>
+                    <input type="text" id="user_name" name="user_name" value="{{ user.first_name }} {{ user.last_name }}" readonly class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="total_amount">Total Amount (Rs.)</label>

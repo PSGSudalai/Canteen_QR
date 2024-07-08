@@ -168,11 +168,13 @@
         <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
                     <th>Role</th>
+                    <td>Balance</td>
                     <th>Date Joined</th>
                     <th>Actions</th>
                 </tr>
@@ -180,6 +182,7 @@
             <tbody>
                 {% for user in users %}
                     <tr>
+                        <td>{{ user.user_id}}</td>
                         <td>{{ user.first_name|capfirst }}</td>
                         <td>{{ user.last_name|capfirst }}</td>
                         <td>{{ user.email }}</td>
@@ -189,6 +192,7 @@
                         {% else %}
                             <td>Staff</td>
                         {% endif%}
+                        <td>{{user.balance}}</td>
                         <td>{{ user.created_at|date:"Y-m-d" }}</td>
                         <td>
                             <button class="btn btn-primary btn-custom">
@@ -196,6 +200,9 @@
                             </button>
                             <button class="btn btn-warning btn-custom">
                                 <i class='bx bx-archive'></i><a href="{% url 'archive_staff' user.id %}" style="color: white;">Archive</a>
+                            </button>
+                            <button class="btn btn-info btn-custom">
+                                <a href="{{ user.qr_code.url }}" style="color: white;">QR Code</a>
                             </button>
                         </td>
                     </tr>

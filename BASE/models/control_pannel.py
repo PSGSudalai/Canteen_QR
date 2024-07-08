@@ -27,7 +27,7 @@ class ItemImage(BaseModels):
 
 
 class Transaction(BaseModels):
-    student = models.ForeignKey(
+    user = models.ForeignKey(
         "BASE.CustomUser",
         on_delete=models.SET_NULL,
         null=True,
@@ -48,7 +48,7 @@ class Transaction(BaseModels):
     )
 
     def __str__(self) -> str:
-        return f"{self.student} - {self.payment_type}"
+        return f"{self.user} - {self.payment_type}"
 
 
 class Cart(BaseModels):
